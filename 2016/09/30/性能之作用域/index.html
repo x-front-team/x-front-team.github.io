@@ -1,0 +1,693 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript,hb,作用域,堆栈," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="‘编译’原理js是属于动态类语言，更多的时候是解释执行。不过如果仔细研究，会发现js引擎在处理js前其实有个完整的短暂生命周期。
+因为这个‘编译’不是提前，而是在执行前的几秒，所以属于动态类语言，寄生在引擎上。但是真正执行的代码，也是编译过的。
+
+程序是给人读的，偶尔才给计算机读一下（出自《高性能javascript》）
+
+例：
+12345678function show () &amp;#123;  c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="性能之作用域">
+<meta property="og:url" content="http://x-front-team.github.io/2016/09/30/性能之作用域/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="‘编译’原理js是属于动态类语言，更多的时候是解释执行。不过如果仔细研究，会发现js引擎在处理js前其实有个完整的短暂生命周期。
+因为这个‘编译’不是提前，而是在执行前的几秒，所以属于动态类语言，寄生在引擎上。但是真正执行的代码，也是编译过的。
+
+程序是给人读的，偶尔才给计算机读一下（出自《高性能javascript》）
+
+例：
+12345678function show () &amp;#123;  c">
+<meta property="og:updated_time" content="2016-10-08T09:14:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="性能之作用域">
+<meta name="twitter:description" content="‘编译’原理js是属于动态类语言，更多的时候是解释执行。不过如果仔细研究，会发现js引擎在处理js前其实有个完整的短暂生命周期。
+因为这个‘编译’不是提前，而是在执行前的几秒，所以属于动态类语言，寄生在引擎上。但是真正执行的代码，也是编译过的。
+
+程序是给人读的，偶尔才给计算机读一下（出自《高性能javascript》）
+
+例：
+12345678function show () &amp;#123;  c">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/09/30/性能之作用域/"/>
+
+  <title> 性能之作用域 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                性能之作用域
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-30T00:55:54+08:00" content="2016-09-30">
+              2016-09-30
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/30/性能之作用域/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/30/性能之作用域/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="‘编译’原理"><a href="#‘编译’原理" class="headerlink" title="‘编译’原理"></a><em>‘编译’</em>原理</h1><p>js是属于动态类语言，更多的时候是解释执行。不过如果仔细研究，会发现js引擎在处理js前其实有个完整的短暂生命周期。</p>
+<p>因为这个<em>‘编译’</em>不是提前，而是在执行前的几秒，所以属于动态类语言，寄生在引擎上。但是真正执行的代码，也是编译过的。</p>
+<blockquote>
+<p>程序是给人读的，偶尔才给计算机读一下（出自《高性能javascript》）</p>
+</blockquote>
+<p>例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">end</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(a)</div><div class="line">&#125;</div><div class="line">show()</div><div class="line">end()</div></pre></td></tr></table></figure>
+<p>上面这个错误的end() 方法，只有在使用end方法的时候才去执行编译，所以如果不使用end方法，那js不会报错。</p>
+<p>这就是动态语言的一些基本概念，如果有兴趣可以参考java做对比分析。</p>
+<a id="more"></a>
+<blockquote>
+<p>java是靠虚拟机来连接人和机器语言的沟通</p>
+</blockquote>
+<p>编译一般分以下几个步骤</p>
+<ul>
+<li>分词/词法分析</li>
+<li>解析/语法分析</li>
+<li>代码生成</li>
+</ul>
+<p>当然js的<em>‘编译’</em>，更有些语言所带的特性，比如优化性能。而这基础，就像上面代码一样，作用域在里面的作用非常重要。</p>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><h3 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h3><p>所以根据以上，我们全局作用域下千万要保持干净，因为如果全局下有代码报错，那整个js就再也执行不下去了，因为一开始js引擎就执行全局的<em>‘编译’</em>，错了，就象上文一样，直接执行阻断。</p>
+<p>全局作用域指的就是window对象（node指的是global）</p>
+<p>一般前端工程师会被要求，不要过多的污染全局，大多的说法是说会引起命名冲突，这里很多人忽略了性能泄漏的问题。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 全局作用域声明</span></div><div class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">start</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// start作用域下声明</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">show</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(a);</div><div class="line">  &#125;</div><div class="line">  show()</div><div class="line">&#125;</div><div class="line">start();</div></pre></td></tr></table></figure>
+<p>我借用下《你不知道的javascript》一个解释模式</p>
+<hr>
+<blockquote>
+<p><em>作用域show：</em>嗨，js引擎，你帮我问下谁那里有a这个声明，我要用。</p>
+<p><em>js引擎：</em>好的，我去问下<em>作用域start</em></p>
+<p><em>js引擎：</em>嗨，<em>作用域start</em>，你有没有对a声明过，你的下属要用 <em>作用域show</em></p>
+<p><em>作用域show：</em> 我没有，你问问我们的老大吧。</p>
+<p><em>js引擎：</em> <em>window（global）</em>，你肯定有声明a吧，没有就糟糕了。</p>
+<p><em>window（global）：</em> 我找找，嗯，还好我有声明了</p>
+<p><em>js引擎：</em> 好的，那我去回复了。</p>
+<p><em>作用域show：</em>谢谢引擎了，不过还得麻烦你，我这里被询问了这个值是多少，麻烦再去帮我问下</p>
+<p><em>js引擎：</em>好的，我问下 …… <em>window</em> 说是2</p>
+<p><em>作用域show：</em>嗯，我就去使用了</p>
+</blockquote>
+<hr>
+<p>js的解释代码的逻辑就是这样，如果是传统编译性的语言，一般会在一开始就做好所有的编译工作。</p>
+<p>那根据以上逻辑，如果全局作用域里去处理各种命名，那在js引擎在寻址到声明量的时候，js本身还不知道我所处的对象的具体位置，会多做很多次的问询。依次往上去执行，性能消耗非常明显。</p>
+<p>按照向上问询的理论，变量的作用域理执行代码的作用域的距离越小越好。（可以理解为子节点拿父节点的东西，每次都要开口要，还不如一开始就全部拿过来）</p>
+<p>性能测试：</p>
+<hr>
+<p>每次执行都需要问全局变量的代码 <span style="color:red"><em>bad</em></span></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 全局作用域声明</span></div><div class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">start</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// start作用域下声明</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">show</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> startTime = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i&lt;<span class="number">1000000000</span>; i++) &#123;</div><div class="line">      a++</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> endTime =  <span class="keyword">new</span> <span class="built_in">Date</span>().getTime() - startTime</div><div class="line">    <span class="built_in">console</span>.log(endTime);</div><div class="line">  &#125;</div><div class="line">  show();</div><div class="line">&#125;</div><div class="line">start();</div><div class="line"><span class="comment">// =&gt; endTime = 3046</span></div></pre></td></tr></table></figure>
+<hr>
+<p>把全局变量赋值到局部变量后再运行 <span style="color:blue"><em>good</em></span></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 全局作用域声明</span></div><div class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">start</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// start作用域下声明</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">show</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> startTime = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()</div><div class="line">    <span class="comment">// 变量指向全局</span></div><div class="line">	<span class="keyword">var</span> b = a</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i&lt;<span class="number">1000000000</span>; i++) &#123;</div><div class="line">      b++</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> endTime =  <span class="keyword">new</span> <span class="built_in">Date</span>().getTime() - startTime</div><div class="line">    <span class="built_in">console</span>.log(endTime);</div><div class="line">  &#125;</div><div class="line">  show();</div><div class="line">&#125;</div><div class="line">start();</div><div class="line"><span class="comment">// =&gt; endTime = 704</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="分析作用域"><a href="#分析作用域" class="headerlink" title="分析作用域"></a>分析作用域</h2><p>js发展到现在，es6规范中，有外部引入js的概念，特别是node开发，可以把这个全局理解为当前js作用域里面的顶级对象。这就需要我们开发者保持顶级对象的干净，也需要对变量的细化。</p>
+<p>但是变量多了，也会引起书写的各种不便。这个前后天平就需要开发者自己把控。</p>
+<p>而为什么会在向上问询（索引），会消耗如此多的性能，就涉及到了堆栈的概念</p>
+<p>而在开头，为什么会出现下面的对话</p>
+<blockquote>
+<p><em>作用域show：</em>谢谢引擎了，不过还得麻烦你，我这里被询问了这个值是多少，麻烦再去帮我问下</p>
+<p><em>js引擎：</em>好的，我问下 …… <em>window</em> 说是2</p>
+</blockquote>
+<p>就涉及到了RHS和LHS的概念，也同时涵盖到了堆栈，有兴趣的可以自己查阅文档。</p>
+<p>有空，我会在下一个文章里说明这些东西。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+            <a href="/tags/hb/" rel="tag">#hb</a>
+          
+            <a href="/tags/作用域/" rel="tag">#作用域</a>
+          
+            <a href="/tags/堆栈/" rel="tag">#堆栈</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/28/饶舌的深浅拷贝/" rel="next" title="饶舌的深浅拷贝">
+                <i class="fa fa-chevron-left"></i> 饶舌的深浅拷贝
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/07/模块系统之-CommonJS-vs-ES6/" rel="prev" title="模块系统之 CommonJS vs ES6">
+                模块系统之 CommonJS vs ES6 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/30/性能之作用域/"
+           data-title="性能之作用域" data-url="http://x-front-team.github.io/2016/09/30/性能之作用域/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#‘编译’原理"><span class="nav-number">1.</span> <span class="nav-text">‘编译’原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用域"><span class="nav-number">1.1.</span> <span class="nav-text">作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局作用域"><span class="nav-number">1.1.1.</span> <span class="nav-text">全局作用域</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析作用域"><span class="nav-number">1.2.</span> <span class="nav-text">分析作用域</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

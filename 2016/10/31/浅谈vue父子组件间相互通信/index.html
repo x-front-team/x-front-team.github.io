@@ -1,0 +1,655 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="vue,yzw," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="我们都知道Vue 实例实现了一个自定义的事件接口，用于在组件树中通信。这个事件系统独立于原生 DOM 事件，用法也不同。每个 Vue 实例都是一个事件触发器：
+
+使用 $on() 监听事件；
+使用 $emit() 在它上面触发事件；
+使用 $dispatch() 派发事件，事件沿着父链冒泡；
+使用 $broadcast() 广播事件，事件向下传导给所有的后代。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈vue父子组件间相互通信">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/31/浅谈vue父子组件间相互通信/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="我们都知道Vue 实例实现了一个自定义的事件接口，用于在组件树中通信。这个事件系统独立于原生 DOM 事件，用法也不同。每个 Vue 实例都是一个事件触发器：
+
+使用 $on() 监听事件；
+使用 $emit() 在它上面触发事件；
+使用 $dispatch() 派发事件，事件沿着父链冒泡；
+使用 $broadcast() 广播事件，事件向下传导给所有的后代。">
+<meta property="og:updated_time" content="2016-10-31T02:07:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈vue父子组件间相互通信">
+<meta name="twitter:description" content="我们都知道Vue 实例实现了一个自定义的事件接口，用于在组件树中通信。这个事件系统独立于原生 DOM 事件，用法也不同。每个 Vue 实例都是一个事件触发器：
+
+使用 $on() 监听事件；
+使用 $emit() 在它上面触发事件；
+使用 $dispatch() 派发事件，事件沿着父链冒泡；
+使用 $broadcast() 广播事件，事件向下传导给所有的后代。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/31/浅谈vue父子组件间相互通信/"/>
+
+  <title> 浅谈vue父子组件间相互通信 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                浅谈vue父子组件间相互通信
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-31T09:39:55+08:00" content="2016-10-31">
+              2016-10-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/31/浅谈vue父子组件间相互通信/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/浅谈vue父子组件间相互通信/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们都知道Vue 实例实现了一个自定义的事件接口，用于在组件树中通信。这个事件系统独立于原生 DOM 事件，用法也不同。<br>每个 Vue 实例都是一个事件触发器：</p>
+<ul>
+<li>使用 $on() 监听事件；</li>
+<li>使用 $emit() 在它上面触发事件；</li>
+<li>使用 $dispatch() 派发事件，事件沿着父链冒泡；</li>
+<li>使用 $broadcast() 广播事件，事件向下传导给所有的后代。</li>
+</ul>
+<a id="more"></a>
+<h3 id="一、父组件触发子组件内部事件"><a href="#一、父组件触发子组件内部事件" class="headerlink" title="一、父组件触发子组件内部事件"></a>一、父组件触发子组件内部事件</h3><h5 id="第一种是通-broadcast广播事件来进行通信"><a href="#第一种是通-broadcast广播事件来进行通信" class="headerlink" title="第一种是通$broadcast广播事件来进行通信"></a>第一种是通$broadcast广播事件来进行通信</h5><p>首先，父组件通过$broadcast广播一个<code>parent-msg</code>事件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.$broadcast(<span class="string">'parent-msg'</span>, <span class="string">'123'</span>)</div></pre></td></tr></table></figure></p>
+<p>这时子组件可以用以下方式来监听父组件触发的<code>parent-msg</code>事件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">events: &#123;</div><div class="line">    <span class="string">'parent-msg'</span>: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>或者也可以用以下方式来监听<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.$on(<span class="string">'parent-msg'</span>, (res) =&gt; &#123;&#125;)</div></pre></td></tr></table></figure></p>
+<h3 id="二、子组件触发父组件内部事件"><a href="#二、子组件触发父组件内部事件" class="headerlink" title="二、子组件触发父组件内部事件"></a>二、子组件触发父组件内部事件</h3><h5 id="第一种是通过-dispatch派发事件来进行通信"><a href="#第一种是通过-dispatch派发事件来进行通信" class="headerlink" title="第一种是通过$dispatch派发事件来进行通信"></a>第一种是通过$dispatch派发事件来进行通信</h5><p>首先，子组件通过$dispatch派发一个<code>child-msg</code>事件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.$dispatch(<span class="string">'child-msg'</span>, <span class="string">'456'</span>)</div></pre></td></tr></table></figure></p>
+<p>这时父组件可以用以下方式来监听子组件触发的<code>child-msg</code>事件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">events: &#123;</div><div class="line">    <span class="string">'child-msg'</span>: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>或者也可以用以下方式来监听<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.$on(<span class="string">'child-msg'</span>, (res) =&gt; &#123;&#125;)</div></pre></td></tr></table></figure></p>
+<h5 id="第二种"><a href="#第二种" class="headerlink" title="第二种"></a>第二种</h5><p>父组件中<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">v-select</span> <span class="attr">v-on:child-msg</span>=<span class="string">"handleIt"</span>&gt;</span><span class="tag">&lt;/<span class="name">v-select</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>子组件中通过$emit来触发child-msg事件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.$emit(<span class="string">'child-msg'</span>, <span class="string">'456'</span>)</div></pre></td></tr></table></figure></p>
+<p>当子组件触发了child-msg事件，就能触发父组件handleIt事件<br>父组件中<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">methods: &#123;</div><div class="line">    handleIt (res) &#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>此方法不需要events事件或this.$on来监听事件，因为父组件中已经加了v-on:child-msg来监听子组件的<code>child-msg</code>事件</p>
+<h5 id="另外，还有一种子组件传值给父组件的方法"><a href="#另外，还有一种子组件传值给父组件的方法" class="headerlink" title="另外，还有一种子组件传值给父组件的方法"></a>另外，还有一种子组件传值给父组件的方法</h5><p>这种方法并不会触发父组件中的事件<br>主要是通过子组件内部触发事件，通过事件的回调参数来传值</p>
+<p>首先，父组件中传递一个function类型的props给子组件<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">v-select</span> <span class="attr">:on-change</span>=<span class="string">"clickInput('123')"</span>&gt;</span><span class="tag">&lt;/<span class="name">v-select</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">  <span class="attr">methods</span>: &#123;</div><div class="line">      clickInput (model) &#123;</div><div class="line">          <span class="comment">// model为123</span></div><div class="line">          <span class="keyword">return</span> <span class="function">(<span class="params">option</span>) =&gt;</span> &#123;</div><div class="line">              <span class="comment">// option就是从子组件传回的456</span></div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>子组件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">  <span class="attr">props</span>: &#123;</div><div class="line">      <span class="attr">onChange</span>: &#123;</div><div class="line">          <span class="attr">type</span>: <span class="built_in">Function</span>,</div><div class="line">          <span class="attr">default</span>: <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;</div><div class="line">      &#125;</div><div class="line">  &#125;,</div><div class="line">  ready () &#123;</div><div class="line">      <span class="keyword">this</span>.handleOptionClick(<span class="string">'456'</span>)</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">methods</span>: &#123;</div><div class="line">      handleOptionClick(option) &#123;</div><div class="line">          <span class="keyword">this</span>.onChange(option)</div><div class="line">      &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>子组件接收这个props，然后触发onChange(option)，此时父组件中<code>clickInput</code>的回调函数就可以取得这个参数option的值456</p>
+<p>通过这种方式，onChange就好像父组件打入子组件内部的间谍，从子组件源源不断的传回值，好像有点猥琐- -</p>
+<p>我们看一下vue官网对于prop的介绍：</p>
+<blockquote>
+<p>prop 默认是单向绑定：当父组件的属性变化时，将传导给子组件，但是反过来不会。<br>这是为了防止子组件无意修改了父组件的状态——这会让应用的数据流难以理解。</p>
+</blockquote>
+<p>我们现在通过这种方式实现子组件传值给父组件，但是这个值并不是父组件中已有的值或者属性，所以并不会导致无意中修改了父组件的状态</p>
+<p>ps:有其他遗漏的通信方式，希望能继续补充…</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag">#vue</a>
+          
+            <a href="/tags/yzw/" rel="tag">#yzw</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/28/indeterminate/" rel="next" title="前端开发中的不确定性杂谈">
+                <i class="fa fa-chevron-left"></i> 前端开发中的不确定性杂谈
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/31/Scrolling/" rel="prev" title="浅谈视差滚动(parallaxScrolling)">
+                浅谈视差滚动(parallaxScrolling) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/31/浅谈vue父子组件间相互通信/"
+           data-title="浅谈vue父子组件间相互通信" data-url="http://x-front-team.github.io/2016/10/31/浅谈vue父子组件间相互通信/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、父组件触发子组件内部事件"><span class="nav-number">1.</span> <span class="nav-text">一、父组件触发子组件内部事件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一种是通-broadcast广播事件来进行通信"><span class="nav-number">1.0.1.</span> <span class="nav-text">第一种是通$broadcast广播事件来进行通信</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、子组件触发父组件内部事件"><span class="nav-number">2.</span> <span class="nav-text">二、子组件触发父组件内部事件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一种是通过-dispatch派发事件来进行通信"><span class="nav-number">2.0.1.</span> <span class="nav-text">第一种是通过$dispatch派发事件来进行通信</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第二种"><span class="nav-number">2.0.2.</span> <span class="nav-text">第二种</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#另外，还有一种子组件传值给父组件的方法"><span class="nav-number">2.0.3.</span> <span class="nav-text">另外，还有一种子组件传值给父组件的方法</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

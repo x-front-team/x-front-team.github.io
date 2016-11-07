@@ -1,0 +1,646 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="csd,npm," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="首先这是一个问题，但通过标题没法很好的表述出来，而大多数童鞋应该不会遇到这样的问题，然而我还是决定记录下来。
+我们知道，npm3把所有依赖模块路径拍扁了(工程目录下的node_modules出现了很多package.json中没有声明的模块)，解决了windows下路径名过长的问题，更使得公共依赖被充分共享。但如果多个模块依赖了同一个模块的不同版本，后安装的模块，为了不和别人冲突，就只能将这个依赖">
+<meta property="og:type" content="article">
+<meta property="og:title" content="npm install之依赖冗余">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/23/npm-install问题之依赖冗余/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="首先这是一个问题，但通过标题没法很好的表述出来，而大多数童鞋应该不会遇到这样的问题，然而我还是决定记录下来。
+我们知道，npm3把所有依赖模块路径拍扁了(工程目录下的node_modules出现了很多package.json中没有声明的模块)，解决了windows下路径名过长的问题，更使得公共依赖被充分共享。但如果多个模块依赖了同一个模块的不同版本，后安装的模块，为了不和别人冲突，就只能将这个依赖">
+<meta property="og:updated_time" content="2016-10-23T16:30:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="npm install之依赖冗余">
+<meta name="twitter:description" content="首先这是一个问题，但通过标题没法很好的表述出来，而大多数童鞋应该不会遇到这样的问题，然而我还是决定记录下来。
+我们知道，npm3把所有依赖模块路径拍扁了(工程目录下的node_modules出现了很多package.json中没有声明的模块)，解决了windows下路径名过长的问题，更使得公共依赖被充分共享。但如果多个模块依赖了同一个模块的不同版本，后安装的模块，为了不和别人冲突，就只能将这个依赖">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/23/npm-install问题之依赖冗余/"/>
+
+  <title> npm install之依赖冗余 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                npm install之依赖冗余
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-23T20:53:58+08:00" content="2016-10-23">
+              2016-10-23
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/23/npm-install问题之依赖冗余/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/23/npm-install问题之依赖冗余/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>首先这是一个问题，但通过标题没法很好的表述出来，而大多数童鞋应该不会遇到这样的问题，然而我还是决定记录下来。</p>
+<p>我们知道，npm3把所有依赖模块路径拍扁了(工程目录下的<code>node_modules</code>出现了很多<code>package.json</code>中没有声明的模块)，解决了windows下路径名过长的问题，更使得公共依赖被充分共享。但如果多个模块依赖了同一个模块的不同版本，后安装的模块，为了不和别人冲突，就只能将这个依赖安装在自己的<code>node_modules</code>下。</p>
+<a id="more"></a>
+<blockquote>
+<p>这个问题来源于我们实际某个基于VueJS的复杂项目的某次意外，为了使广大前端更容易理解，我们使用jquery作为栗子。</p>
+</blockquote>
+<p>假设，我们用webpack开发一个小页面，需要用到jquery和一个jquery插件(假设叫jplugin)。假设这个jquery插件，遵循了ES6规范，它的<code>package.json</code>声明依赖的jquery版本是^2.0.0(即&gt;=2.0.0, &lt;3.0.0):</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"dependencies"</span>: &#123;</div><div class="line">    <span class="attr">"jquery"</span>: <span class="string">"^2.0.0"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>它的主模块，应该会有类似这么几句：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">'jquery'</span></div><div class="line"></div><div class="line">$.fn.jplugin = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// 插件代码</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>而我们的项目直接依赖的jquery版本是^1.11.0(即&gt;=1.11.0, &lt;2.0.0):  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"dependencies"</span>: &#123;</div><div class="line">    <span class="attr">"jquery"</span>: <span class="string">"^1.11.0"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>很明显，<code>^2.0.0</code>和<code>^1.11.0</code>并不能兼容。那么，在<code>npm i</code>之后，依赖目录大致是这样的(无关文件已省略)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── node_modules</div><div class="line">│   ├── jquery     // ^1.11.0， 假定安装的是1.11.0版本</div><div class="line">│   └── jplugin</div><div class="line">│       ├── node_modules</div><div class="line">│       │   └── jquery  // ^2.0.0，假定安装的是2.0.0版本</div><div class="line">│       └── package.json</div><div class="line">└── package.json</div></pre></td></tr></table></figure>
+<p>我们的主模块代码应该会有类似这么几句：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">'jquery'</span></div><div class="line"><span class="keyword">import</span> <span class="string">'jplugin'</span></div><div class="line"></div><div class="line"><span class="comment">// 其他代码</span></div><div class="line"></div><div class="line">$(<span class="string">'#someId'</span>).jplugin()</div></pre></td></tr></table></figure></p>
+<p>最终运行代码，浏览器会报错，提示<code>jplugin</code>不是一个function，也就是<code>$(&#39;#someId&#39;).jplugin()</code>这句出错。</p>
+<p>为什么呢？</p>
+<p>webpack打包依赖时，与node查找依赖的方式一致，顶级依赖写法（比如这里的<code>jquery</code>）首先从当前目录的<code>node_modules</code>下查找，如果不存在，则向上级目录的<code>node_modules</code> 下查找，如果不存在则继续向上，以此类推。</p>
+<p>在我们这个例子里，<code>jplugin</code>模块本身查找到的<code>jquery</code>版本是<code>2.0.0</code>，在这个<code>2.0.0</code>的<code>jquery</code>上才会存在<code>jplugin</code>这个扩展。而我们的主模块查找到的<code>jquery</code>版本是<code>1.11.0</code>版本，在这个<code>1.11.0</code>版本的<code>jquery</code>上调用<code>jplugin</code>就出错了。</p>
+<p>说到这里，还并没有引出本文的主题，不过也能够解释依赖版本冲突导致发生奇怪问题的现象了。</p>
+<p>继续这个例子，当我们发现版本依赖有问题时，我们要处理它。假设我们把项目直接依赖的jquery升级到2.0.0，并不会导致其他兼容问题，我们执行<code>npm i jquery@2.0.0 --save</code>. 我们看一下现在的目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── node_modules</div><div class="line">│   ├── jquery     // ^2.0.0，假定安装的是2.0.0版本</div><div class="line">│   └── jplugin</div><div class="line">│       ├── node_modules</div><div class="line">│       │   └── jquery  // ^2.0.0，假定安装的是2.0.0版本</div><div class="line">│       └── package.json</div><div class="line">└── package.json</div></pre></td></tr></table></figure>
+<p>上层的jquery已经升级到2.0.0了。我们很兴奋的再次运行页面，发现仍然还是报同样的错。</p>
+<p>其实问题的原因是一样的，虽然大家都是2.0.0版本的jquery，但 <strong>此jquery非彼jquery</strong>，大家拿到的并不是同一个jquery对象。</p>
+<p>其实，此时只要把根目录的<code>node_modules</code>删除，再次执行<code>npm i</code>，看看最终的目录结构：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── node_modules</div><div class="line">│   ├── jquery</div><div class="line">│   └── jplugin</div><div class="line">│       └── package.json</div><div class="line">└── package.json</div></pre></td></tr></table></figure></p>
+<p>如此一来，大家拿到的就是同一个jquery对象啦，最后页面运行正常了~</p>
+<p>这个问题，才是本文要说的 <strong>依赖冗余</strong> 的问题，即，曾经由于依赖冲突导致安装了同个模块的多个版本，修正依赖版本后，再次<code>npm i</code>,仍然解决不了问题，删除全部<code>node_modules</code>重新安装依赖才正常。遗憾的是，npm并没有这么聪明，或者有其他原因，并没有在安装新模块后，自动帮我们梳理依赖关系。</p>
+<p>那么，遇上这样的问题，就只能删除全部依赖彻底重新安装一次依赖吗？有没有更优雅的方式？</p>
+<p>答案是<code>npm dedupe</code>(或简写<code>npm ddp</code>).</p>
+<p>这个命令会重新计算所有依赖关系，把可以公用的依赖上升到顶级<code>node_modlues</code>,并删除底层不必要的 <em>副本</em>。注意，需要整理的模块越多，所花的时间也越长。</p>
+<p>因此，建议在你的构建过程中添加此命令，从而避免这种问题的发生。</p>
+<p>ps: <code>npm update</code>命令也同样存在此问题。</p>
+<p>ps: 在写这篇文章之前，google到 <a href="http://www.alloyteam.com/2016/03/master-npm/" target="_blank" rel="external">玩转npm</a> 这篇文章, 蛮有参考价值，建议阅读。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/csd/" rel="tag">#csd</a>
+          
+            <a href="/tags/npm/" rel="tag">#npm</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/18/温习csrf/" rel="next" title="温习csrf">
+                <i class="fa fa-chevron-left"></i> 温习csrf
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/24/记一次格式化金额风波/" rel="prev" title="记一次格式化金额风波">
+                记一次格式化金额风波 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/23/npm-install问题之依赖冗余/"
+           data-title="npm install之依赖冗余" data-url="http://x-front-team.github.io/2016/10/23/npm-install问题之依赖冗余/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

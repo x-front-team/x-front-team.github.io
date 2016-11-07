@@ -1,0 +1,786 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="jyn,css,表格布局," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="国庆期间，看了一本讲表格布局的书，发现一些干货，在此做一下记录，查漏补缺。对于表格，我们的态度通常是不屑一顾，偶尔也会冒出一些疑问，比如：
+
+为什么有的时候给单元格设置了border却无效？
+
+为什么设置了某个单元格宽度，但是列宽并没有增加？
+
+单元格的vertcial-align到底是什么鬼…
+
+
+下面就来解答这些问题^^">
+<meta property="og:type" content="article">
+<meta property="og:title" content="表格布局那些事">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/12/表格布局那些事/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="国庆期间，看了一本讲表格布局的书，发现一些干货，在此做一下记录，查漏补缺。对于表格，我们的态度通常是不屑一顾，偶尔也会冒出一些疑问，比如：
+
+为什么有的时候给单元格设置了border却无效？
+
+为什么设置了某个单元格宽度，但是列宽并没有增加？
+
+单元格的vertcial-align到底是什么鬼…
+
+
+下面就来解答这些问题^^">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161010182634.jpg">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161010182755.jpg">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161012105205.jpg">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161012113232.jpg">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161010182846.jpg">
+<meta property="og:updated_time" content="2016-10-18T04:24:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="表格布局那些事">
+<meta name="twitter:description" content="国庆期间，看了一本讲表格布局的书，发现一些干货，在此做一下记录，查漏补缺。对于表格，我们的态度通常是不屑一顾，偶尔也会冒出一些疑问，比如：
+
+为什么有的时候给单元格设置了border却无效？
+
+为什么设置了某个单元格宽度，但是列宽并没有增加？
+
+单元格的vertcial-align到底是什么鬼…
+
+
+下面就来解答这些问题^^">
+<meta name="twitter:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161010182634.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/12/表格布局那些事/"/>
+
+  <title> 表格布局那些事 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                表格布局那些事
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-12T17:58:15+08:00" content="2016-10-12">
+              2016-10-12
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/12/表格布局那些事/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/12/表格布局那些事/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>国庆期间，看了一本讲表格布局的书，发现一些干货，在此做一下记录，查漏补缺。对于表格，我们的态度通常是不屑一顾，偶尔也会冒出一些疑问，比如：</p>
+<ul>
+<li><p>为什么有的时候给单元格设置了border却无效？</p>
+</li>
+<li><p>为什么设置了某个单元格宽度，但是列宽并没有增加？</p>
+</li>
+<li><p>单元格的vertcial-align到底是什么鬼…</p>
+</li>
+</ul>
+<p>下面就来解答这些问题^^</p>
+<a id="more"></a>
+<p>表格布局有两种，html布局（html标签）与css布局(css的 display属性)。</p>
+<p>表格元素默认的display样式如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">table</span>    &#123; <span class="attribute">display</span>: table &#125;</div><div class="line"><span class="selector-tag">tr</span>       &#123; <span class="attribute">display</span>: table-row &#125;</div><div class="line"><span class="selector-tag">thead</span>    &#123; <span class="attribute">display</span>: table-header-group &#125;</div><div class="line"><span class="selector-tag">tbody</span>    &#123; <span class="attribute">display</span>: table-row-group &#125;</div><div class="line"><span class="selector-tag">tfoot</span>    &#123; <span class="attribute">display</span>: table-footer-group &#125;</div><div class="line"><span class="selector-tag">col</span>      &#123; <span class="attribute">display</span>: table-column &#125;</div><div class="line"><span class="selector-tag">colgroup</span> &#123; <span class="attribute">display</span>: table-column-group &#125;</div><div class="line"><span class="selector-tag">td</span>, <span class="selector-tag">th</span>   &#123; <span class="attribute">display</span>: table-cell &#125;</div><div class="line"><span class="selector-tag">caption</span>  &#123; <span class="attribute">display</span>: table-caption &#125;</div></pre></td></tr></table></figure>
+<p>在css中，display: inline-table 是指定对象作为内联元素级的表格。</p>
+<p>但今天要说的，并不是这种布局，而是浏览器如何“布局”表格。</p>
+<p>一些约定，下面文中提到的元素。。。</p>
+<p>1）table元素指table标签及display: table，display: inline-table元素</p>
+<p>2）cell元素指td,th标签及display: table-cell的元素</p>
+<p>3）row元素指tr标签及display: table-row的元素</p>
+<p>4）row group元素指tbody,thead,tfoot标签及display: table-row-group,display: table-header-group,display: table-footer-group的元素</p>
+<p>5）column元素指col标签及display: table-column元素</p>
+<p>6）column group元素指colgroup标签及 display: table-column-group元素</p>
+<p>7）caption元素指caption标签及display: table-caption元素</p>
+<p>8）表格布局内部元素指cell，row，row group，column，column group元素</p>
+<h3 id="网格单元-grid-cells"><a href="#网格单元-grid-cells" class="headerlink" title="网格单元 grid cells"></a>网格单元 grid cells</h3><blockquote>
+<p>The visual layout of these boxes is governed by a rectangular, irregular grid of rows and columns. Each box occupies a whole number of grid cells, determined according to the following rules. These rules do not apply to HTML 4 or earlier HTML versions; HTML imposes its own limitations on row and column spans.</p>
+</blockquote>
+<p><a href="https://www.w3.org/TR/CSS21/tables.html" target="_blank" rel="external">W3C</a>提到了grid cell的概念，大致是说，表格内部元素排列是基于grid cell。</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161010182634.jpg" alt="grid cell"></p>
+<p>如上图，虚线部分就是grid cell。然而 grid cell 只是用来描述表格内部的元素（cell,row,row group,column, column group）如何排列的，只是理论上的概念，我们无法为其添加样式，也无法通过DOM访问。以单元格为例，一个单元格可以独占一个grid cell，也可以跨域多个grid cell，单元格边框总是在grid cell的边缘之上。</p>
+<h3 id="表格之6层结构"><a href="#表格之6层结构" class="headerlink" title="表格之6层结构"></a>表格之6层结构</h3><p>css为表格定义了6个层级，浏览器在渲染时css是在对应的层独立绘制，默认每一层的background都是透明的。</p>
+<p>从上到下依次是cells层、Rows层、Row groups层、Columns层、Column groups层和Table层。</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161010182755.jpg" alt="分层结构"></p>
+<p>这里需要注意的是，row层总是在column层之上，因此行样式会覆盖列样式。</p>
+<h3 id="被限制的column与column-group"><a href="#被限制的column与column-group" class="headerlink" title="被限制的column与column group"></a>被限制的column与column group</h3><p>在css中，表格布局是基于行的，虽然支持column和column group的样式，但是有一些限制。它们只支持四种css属性：<code>background</code>、<code>border</code>、 <code>visibility</code>与<code>width</code></p>
+<ul>
+<li><p>background: 由于表格6层结构限制，只有在当前column/column group之上的层背景颜色都为transparent时，设置background才有效</p>
+</li>
+<li><p>border: column/column group的border样式只有在table元素的<code>border-collapse</code>值为<code>collapse</code>时，才有效。这与表格边框模型有关，下面的会讲到。</p>
+</li>
+<li><p>width: 对column/column group而言，<code>width</code>其实更像是在设置最小宽度，因为表格的列宽还会受到单元格的影响。</p>
+</li>
+<li><p>visibility: 在其他元素中，<code>visibility</code>的值为<code>collapse</code>的效果等同<code>visible</code>。但当这个css属性添加到表格元素及表格内部布局元素中时，它的效果就等同于’display: none;’然而visibility在Chrome中并不支持。</p>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">col</span> <span class="attr">class</span>=<span class="string">"col1"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">col</span> <span class="attr">class</span>=<span class="string">"col2"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>1<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>2<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>3<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>4<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>5<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>6<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>7<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>8<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>9<span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">table</span>&#123;</div><div class="line">  <span class="attribute">border-collapse</span>: collapse;</div><div class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#000</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-tag">td</span> &#123;</div><div class="line">  </div><div class="line">&#125;</div><div class="line"><span class="selector-class">.col1</span> &#123;</div><div class="line">  <span class="attribute">width</span>: <span class="number">50px</span>;</div><div class="line">  <span class="attribute">visibility</span>: collapse;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.col2</span> &#123;</div><div class="line">  <span class="attribute">width</span>:<span class="number">80px</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-tag">td</span> &#123;</div><div class="line">  <span class="attribute">width</span>: <span class="number">20px</span>;</div><div class="line">  <span class="attribute">background-color</span>:<span class="number">#aaa</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>firefox效果如下：</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161012105205.jpg" alt="效果图"></p>
+<h3 id="caption与表格模型"><a href="#caption与表格模型" class="headerlink" title="caption与表格模型"></a>caption与表格模型</h3><p>caption是表格中除table元素外唯一一个可以设置margin的。这要从表格布局说起。</p>
+<blockquote>
+<p>In terms of the visual formatting model, a table can behave like a block-level (for ‘display: table’) or inline-level (for ‘display: inline-table’) element.</p>
+<p>In both cases, the table generates a principal block box called the table wrapper box that contains the table box itself and any caption boxes (in document order). The table box is a block-level box that contains the table’s internal table boxes. The caption boxes are block-level boxes that retain their own content, padding, margin, and border areas, and are rendered as normal block boxes inside the table wrapper box. Whether the caption boxes are placed before or after the table box is decided by the ‘caption-side’ property, as described below.</p>
+<p>The table wrapper box is a ‘block’ box if the table is block-level, and an ‘inline-block’ box if the table is inline-level. The table wrapper box establishes a block formatting context. The table box (not the table wrapper box) is used when doing baseline vertical alignment for an ‘inline-table’. The width of the table wrapper box is the border-edge width of the table box inside it, as described by section 17.5.2. Percentages on ‘width’ and ‘height’ on the table are relative to the table wrapper box’s containing block, not the table wrapper box itself.</p>
+<p>The computed values of properties ‘position’, ‘float’, ‘margin-*’, ‘top’, ‘right’, ‘bottom’, and ‘left’ on the table element are used on the table wrapper box and not the table box; all other values of non-inheritable properties are used on the table box and not the table wrapper box. (Where the table element’s values are not used on the table and table wrapper boxes, the initial values are used instead.)</p>
+</blockquote>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161012113232.jpg" alt="表格模型"></p>
+<p>最外层是<code>table wrapper box</code>,它包含<code>caption box</code>与<code>table box</code>，<code>table box</code>中是之前提到的一些内部元素（cell，row，row group，column，column group）。而<code>caption box</code>始终置于<code>table box</code>上方，它本身是块级元素。当我们给table元素添加css属性时，定位相关的css属性（position、float、top、right、bottom、left）与margin、caption可继承的属性是加在<code>table wrapper box</code>上的，而不可继承的属性则是加在<code>table box</code>上。</p>
+<h3 id="匿名元素"><a href="#匿名元素" class="headerlink" title="匿名元素"></a>匿名元素</h3><p>应该会有不少小伙伴对表格实现水平垂直居中很有好感，又因为书写麻烦而对之望而却步。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">td</span>&gt;</span>1<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>那使用css表格布局实现呢？就是辣么简洁</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"td"</span>&gt;</span>2<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.td</span>&#123;</div><div class="line">  <span class="attribute">display</span>: table-cell;</div><div class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#aaa</span>;</div><div class="line">  <span class="attribute">width</span>:<span class="number">40px</span>;</div><div class="line">  <span class="attribute">height</span>:<span class="number">40px</span>;</div><div class="line">  <span class="attribute">vertical-align</span>: middle;</div><div class="line">  <span class="attribute">text-align</span>: center;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这要归功于css匿名表格对象的机制。规则如下：</p>
+<p>1) 如果table-cell元素的父元素不是table-row元素，则插入匿名table-row对象</p>
+<p>2) 如果table-row元素的父元素不是table、inline-table或table-row-group元素，则插入匿名table元素</p>
+<p>3) 如果table-column元素父元素不是table、inline-table或table-row-group元素，则插入匿名table元素</p>
+<p>4) 如果table-row-group、table-header-group、table-footer-group、table-column-group或table-caption的父元素不是table元素，则插入匿名table元素</p>
+<p>5) 如果table元素或inline-table元素的子元素不是table-row-group、table-header-group、table-footer-group、table-column-group或table-caption，则插入匿名table-row元素</p>
+<p>6) 如果table-row-group、table-header-group、table-footer-group元素的子元素不是table-row元素，则插入匿名table-row元素</p>
+<p>7) 如果table-row元素的子元素不是table-cell元素，则插入匿名tabel-cell元素</p>
+<h3 id="表格边框模型"><a href="#表格边框模型" class="headerlink" title="表格边框模型"></a>表格边框模型</h3><p>table元素的<code>border-collapse</code>属性我们应该都不陌生。它的值<code>separate</code>与<code>collapse</code>分别对应了表格的两种边框模型<code>separated border model</code>与<code>collapsed border model</code>。</p>
+<h4 id="separated-border-model"><a href="#separated-border-model" class="headerlink" title="separated border model"></a>separated border model</h4><p>当边框模型为<code>separate</code>时，我们可以设置<code>border-spacing</code>属性，控制单元格之间的间距。也可以在table元素上设置<code>padding</code>,控制表格与其内部元素之间的间距。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">table &#123;</div><div class="line">  border-collapse:separate;</div><div class="line">  border-spacing: 2px 4px;</div><div class="line">  padding: 10px;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<iframe src="http://codepen.io/juzhishang/details/dpZERr/" frameborder="0" width="280" height="200" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+
+<p>但需要注意的是，这种模型下，<code>border-spacing</code>属性只在table元素上有效，在其内部元素中设置border属性会被忽略。</p>
+<h4 id="cell元素的empty-cells属性"><a href="#cell元素的empty-cells属性" class="headerlink" title="cell元素的empty-cells属性"></a>cell元素的empty-cells属性</h4><p>Values:show|hide|inherit|initial<br>应用于display: table-cell的元素，只在表格的border-collapse的值为separate时，此属性有效。</p>
+<p>值为<code>show</code>，则内容为空时它的边框与背景样式可见。<br>值为<code>hide</code>，如果当前单元格所在的行都为空元素，则row表现为<code>display:none</code></p>
+<p>注意，html表格布局与css表格布局元素毕竟有差异，在写demo时，如果是css表格布局，可以把单元格元素的<code>width</code>与<code>height</code>属性都写上。css表格布局时，如果不给cell元素添加width与height属性，empty-cells可能看不到效果。</p>
+<iframe src="http://codepen.io/juzhishang/details/RGJbjK/" frameborder="0" width="280" height="240" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+
+<h4 id="collapsed-border-model"><a href="#collapsed-border-model" class="headerlink" title="collapsed border model"></a>collapsed border model</h4><p>这种模型下，table及其内部元素（caption除外）都可以设置border属性，但是table元素的<code>border-spacing</code>与<code>padding</code>就无效。</p>
+<p>关于row的宽度如何计算。</p>
+<p>相较于分隔边框模型，这种合并边框模型在计算宽度时要更加费事：</p>
+<blockquote>
+<p>row width = (0.5 <em> border-width-0) + padding-left-1 + width-1 + padding-right-1+ border-width-1 + padding-left-2 +…+ padding-right-n + (0.5 </em> border-width-n)</p>
+</blockquote>
+<p>当后一个row与前一个row中边框宽度不一致时，如何表现：</p>
+<iframe src="http://codepen.io/juzhishang/details/JRLbqJ/" frameborder="0" width="280" height="200" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+
+
+<p>浏览器首先会计算出表格本身的左边框与右边框的宽度，它将第一行中第一个单元格的左边框的宽度的一半作为表格的初始左边框宽度，将第一行中最后一个单元格的右边框的一半作为表格初始右边框宽度。对于奇数边框，浏览器在渲染时还需要处理如何把border和grid-line对齐的问题。</p>
+<p>对于任何之后的行，如果他们的边框宽度大于初始宽度，就归为表格的外边距区域中。</p>
+<p>如果table元素添加<code>overflow:hidden;</code>发现超出部分被隐藏。</p>
+<iframe src="http://codepen.io/juzhishang/details/amKbNm/" frameborder="0" width="280" height="200" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+
+<h4 id="合并边框的样式优先级规则"><a href="#合并边框的样式优先级规则" class="headerlink" title="合并边框的样式优先级规则"></a>合并边框的样式优先级规则</h4><p>1）<code>border-style:hidden</code>优先级最高,该边框会被隐藏</p>
+<p>2) <code>border-width</code>值更大，优先级更高</p>
+<p>3) 当<code>border-width</code>都一样时，需要看border-style,优先级从高到低依次是double,solid,dashed,dotted,ridge,outset,groove,inset,none</p>
+<p>4) 如果<code>border-width</code>与<code>border-style</code>都一样，看<code>border-color</code>是在哪个元素上定义的,优先级从高到低依次是cell,row,row group,column,column group,table元素</p>
+<p>5) 如果<code>border-color</code>是在同种元素上定义的，则位置靠左和靠上的元素优先</p>
+<p>demo1:</p>
+<iframe src="http://codepen.io/juzhishang/details/zKWoJB/" frameborder="0" width="280" height="200" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+
+<p>demo2:</p>
+<iframe src="http://codepen.io/juzhishang/details/KgoQLP" frameborder="0" width="280" height="200" marginheight="0" marginwidth="0" scrolling="no"></iframe> 
+
+
+<h3 id="表格宽度布局"><a href="#表格宽度布局" class="headerlink" title="表格宽度布局"></a>表格宽度布局</h3><p>表格在计算宽度时也有两种计算方式，这是由它的<code>table-layout</code>属性所决定的。值<code>fixed</code>与<code>auto</code>分别对应两种宽度布局：固定宽度布局<code>fixed-width</code> layout 与 自动宽度布局<code>automatic-width</code> layout</p>
+<p>这两者最明显的区别就是，固定宽度布局速度更快。</p>
+<h4 id="固定宽度布局"><a href="#固定宽度布局" class="headerlink" title="固定宽度布局"></a>固定宽度布局</h4><p>固宽布局不依赖表格的单元格内容。表格的列宽是由表格第一行的元素决定的，之后几行的单元格宽度不需要再计算，设置width值也会被忽略。然而，当单元格内容过多超出单元格时，就不那么美妙了，或许需要使用<code>overflow: hidden</code>隐藏溢出，或者使用<code>word-break: break-all;word-wrap: break-word;</code>强制换行。</p>
+<p>固宽布局时表格是如何渲染的呢？</p>
+<p>column的宽度是这样计算的：</p>
+<ul>
+<li><p>1、如果column元素的width属性有值（非auto），为这一列设置宽度</p>
+</li>
+<li><p>2、如果colum的width值为auto，看表格中第一行的在这一列的单元格的width值是否为auto，如不为auto,为这一列设置宽度。如果单元格跨列，宽度均分后设置</p>
+</li>
+<li><p>3、对于<code>width</code>为auto的列，它的宽度是在table的width值-colum固定宽度值的总和之后，平均分配的。</p>
+</li>
+<li><p>4、column的<code>width</code>值更像是最小宽度，当第一行中这一列单元格宽度大于column的<code>width</code>值时，单元格优先。</p>
+</li>
+</ul>
+<p>表格的宽度可能是table元素的<code>width</code>值也可能是各个column宽度总和，就看哪一个值更大了。如果表格的宽度更大。则多余的宽度会被平均分配给各个column。</p>
+<h4 id="自动宽度布局"><a href="#自动宽度布局" class="headerlink" title="自动宽度布局"></a>自动宽度布局</h4><p>自动宽度布局，速度上虽然不如前者，但它是表格的默认宽度布局方案。慢的原因在于表格的每一个单元格宽度都需要计算。</p>
+<p>这种布局下，表格的宽度需要依据各个colum的宽度，每一个column的宽度都需要计算出最小宽度和最大宽度，它们是由每一列的单元格所决定的。每一个单元格的宽度是由其内容决定，它也需要根据一些规则计算自己的最小宽度与最大宽度。</p>
+<p>如果表格的<code>width</code>不为auto，它需要计算出column宽度、border与单元格间距的总和，将这个总和值与<code>width</code>比较，取大值。如果<code>width</code>更大，多余的宽度会均分给所有的列。如果表格的计算属性width是auto，则表格宽度就是由总和值决定。</p>
+<p>表格的宽度依赖于单元格，单元格的宽度依赖于单元格内容，当所有这些都计算好的时候，浏览器才开始布局。</p>
+<p>表格高度值，就是像最小高度啦。</p>
+<h3 id="垂直对齐"><a href="#垂直对齐" class="headerlink" title="垂直对齐"></a>垂直对齐</h3><p>vertial-align元素，这个大家都很熟悉。但在单元格中，它略有不同。只有四种取值，top,middle,bottom,baseline，是内容居于单元格什么位置的意思。设置居中方式后，内容高度与单元格之间的高度差用单元格自身的间距填充。</p>
+<p>其余三种都不需要解释，但我想对于基线对齐baseline，很多人会有疑惑。</p>
+<p>单元格的baseline对齐是与它所在的行的baseline对齐。而行的baseline是由初始单元格baseline的最低值决定的（即取该行中所有单元格内文本的第一行的基线中最低的一个）</p>
+<p>如图所示：</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20161010182846.jpg" alt="基线对齐示例"></p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p>《OReilly Table Layout in CSS》</p>
+<p><a href="https://www.w3.org/TR/CSS21/tables.html" target="_blank" rel="external">W3C-tables</a></p>
+<p><a href="http://www.cnblogs.com/xiaohuochai/p/5008466.html" target="_blank" rel="external">深入理解HTML表格</a></p>
+<p><a href="http://www.webhek.com/visibility-collapse" target="_blank" rel="external">CSS里的visibility属性有个鲜为人知的属性值：collapse</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jyn/" rel="tag">#jyn</a>
+          
+            <a href="/tags/css/" rel="tag">#css</a>
+          
+            <a href="/tags/表格布局/" rel="tag">#表格布局</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/11/JS函数节流策略/" rel="next" title="JS函数节流策略">
+                <i class="fa fa-chevron-left"></i> JS函数节流策略
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/17/浅谈Promise原理及方法/" rel="prev" title="浅谈Promise原理及方法">
+                浅谈Promise原理及方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/12/表格布局那些事/"
+           data-title="表格布局那些事" data-url="http://x-front-team.github.io/2016/10/12/表格布局那些事/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#网格单元-grid-cells"><span class="nav-number">1.</span> <span class="nav-text">网格单元 grid cells</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格之6层结构"><span class="nav-number">2.</span> <span class="nav-text">表格之6层结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#被限制的column与column-group"><span class="nav-number">3.</span> <span class="nav-text">被限制的column与column group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#caption与表格模型"><span class="nav-number">4.</span> <span class="nav-text">caption与表格模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匿名元素"><span class="nav-number">5.</span> <span class="nav-text">匿名元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格边框模型"><span class="nav-number">6.</span> <span class="nav-text">表格边框模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#separated-border-model"><span class="nav-number">6.1.</span> <span class="nav-text">separated border model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cell元素的empty-cells属性"><span class="nav-number">6.2.</span> <span class="nav-text">cell元素的empty-cells属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#collapsed-border-model"><span class="nav-number">6.3.</span> <span class="nav-text">collapsed border model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#合并边框的样式优先级规则"><span class="nav-number">6.4.</span> <span class="nav-text">合并边框的样式优先级规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格宽度布局"><span class="nav-number">7.</span> <span class="nav-text">表格宽度布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#固定宽度布局"><span class="nav-number">7.1.</span> <span class="nav-text">固定宽度布局</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动宽度布局"><span class="nav-number">7.2.</span> <span class="nav-text">自动宽度布局</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垂直对齐"><span class="nav-number">8.</span> <span class="nav-text">垂直对齐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文档"><span class="nav-number">9.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

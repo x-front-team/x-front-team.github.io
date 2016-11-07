@@ -1,0 +1,639 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="zl,vue-validator," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言输入验证在前端开发中必不可少，在vue的开发过程中，vue-validator作为目前项目中在用的一个验证插件，其用法还是比较简单直观的，vue-validator API也对验证的使用做了较为详细的讲解，但是仍然有一些隐藏的点是平时注意不到的，特别是随着需求的不断变更，前端的验证也要灵活变化。
+基本用法一个最简单的表单验证大概是这样的：1234&amp;lt;validator name=&quot;vali">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-validator验证">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/26/vue-validator验证/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="前言输入验证在前端开发中必不可少，在vue的开发过程中，vue-validator作为目前项目中在用的一个验证插件，其用法还是比较简单直观的，vue-validator API也对验证的使用做了较为详细的讲解，但是仍然有一些隐藏的点是平时注意不到的，特别是随着需求的不断变更，前端的验证也要灵活变化。
+基本用法一个最简单的表单验证大概是这样的：1234&amp;lt;validator name=&quot;vali">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161026/validator-1.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161026/validator-2.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161026/validator-3.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161026/validator-4.png">
+<meta property="og:updated_time" content="2016-10-30T02:44:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-validator验证">
+<meta name="twitter:description" content="前言输入验证在前端开发中必不可少，在vue的开发过程中，vue-validator作为目前项目中在用的一个验证插件，其用法还是比较简单直观的，vue-validator API也对验证的使用做了较为详细的讲解，但是仍然有一些隐藏的点是平时注意不到的，特别是随着需求的不断变更，前端的验证也要灵活变化。
+基本用法一个最简单的表单验证大概是这样的：1234&amp;lt;validator name=&quot;vali">
+<meta name="twitter:image" content="http://x-front-team.github.io/images/20161026/validator-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/26/vue-validator验证/"/>
+
+  <title> vue-validator验证 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                vue-validator验证
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-26T19:08:16+08:00" content="2016-10-26">
+              2016-10-26
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/26/vue-validator验证/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/26/vue-validator验证/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>输入验证在前端开发中必不可少，在vue的开发过程中，vue-validator作为目前项目中在用的一个验证插件，其用法还是比较简单直观的，<a href="https://github.com/vuejs/vue-validator" target="_blank" rel="external">vue-validator</a> API也对验证的使用做了较为详细的讲解，但是仍然有一些隐藏的点是平时注意不到的，特别是随着需求的不断变更，前端的验证也要灵活变化。</p>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>一个最简单的表单验证大概是这样的：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">validator</span> <span class="attr">name</span>=<span class="string">"validation"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">v-validate:name</span>=<span class="string">"['required']"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"$validation.name.required"</span>&gt;</span>不可为空<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">validator</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>验证器名称是由validator元素的name属性加$前缀组成，上例中验证器名称为$validation,在每次input标签的value值发生改变时触发验证，并将验证的结果保存在验证器中。$validation验证器的各个字段的属性及验证结果，如下图所示：</p>
+<a id="more"></a>
+<p><img src="/images/20161026/validator-1.png" alt=""><br>对于全局的各个验证字段的结果，会有相同的验证属性，其验证结果取决于所有验证字段的结果，如：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">v-validate:name</span>=<span class="string">"['required']"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">v-validate:address</span>=<span class="string">"&#123; required: true, maxlength: 10 &#125;"</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>此时$validation.valid取决于$validation.name.valid &amp;&amp; $validation.address.valid的值，只有当两者都为true时 $validation.name.valid 为 true，需要特别注意的是 全局的验证结果 是只读的，在设置全局的属性时会报错，而各自定义字段的验证结果都是可读可写的，这对于恢复验证结果、设置验证时机都是很方便的，下文会有介绍。另外一个经常使用的比较基础点是验证时机，通常验证的操作是发生在input的值改变或者失去焦点的情况下，因此对于初始化时并不需要验证，通常我们使用initial=”off”屏蔽初始化验证，但这导致了一些问题。</p>
+<h2 id="一个问题"><a href="#一个问题" class="headerlink" title="一个问题"></a>一个问题</h2><p>一个在开发中碰到的问题，先看代码：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">validator</span> <span class="attr">name</span>=<span class="string">"validation"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">form</span> <span class="attr">novalidate</span> &gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span>  </span></div><div class="line">           <span class="attr">class</span>=<span class="string">"form-control"</span> </div><div class="line">           <span class="attr">initial</span>=<span class="string">"off"</span></div><div class="line">           <span class="attr">v-validate:price</span>=<span class="string">"&#123; required: true, onlyNum: true"</span>/&gt;</div><div class="line">           <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"$validation.price.required"</span>&gt;</span>Price is required<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"!$validation.price.required &amp;&amp; $validation.price.onlyNum"</span>&gt;</span>Price is number<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">form</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">validator</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 局部注册onlyNum:</span></div><div class="line">validators: &#123;</div><div class="line">  onlyNum(val) &#123;</div><div class="line">    <span class="keyword">let</span> addTest = <span class="regexp">/^[0-9.]*$/</span></div><div class="line">    <span class="keyword">if</span> (!addTest.test(val)) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">  &#125;,</div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<p>代码比较简单，简单说明下，输入的价格不能为空，必须是一个数字，并且初始时并不验证。</p>
+<p>然后出现了比较诡异的现象，当输入任意一个字符的时候，并没有启动onlyNum的验证，当输入到两个字符的时候对onlyNum验证，如下图所示：<br><img src="/images/20161026/validator-2.png" alt=""><br><img src="/images/20161026/validator-3.png" alt=""><br>经验证，在required 属性搭配任意验证规则的时候都会有这种现象（当然如果不设置detect-blur=”false”，即使是第一个字符，在失去焦点时也是会触发验证的），究其原因是在initial=”off”即关闭自动验证的情况下，输入的第一个字符并不会被验证，在第二个字符或者删掉第一个字符后才会被验证，不知是vue-validator存在的bug还是设计如此，但个人认为initial=”on”是 vue-validator 完成初始编译时进行的验证，而为false 是在input 的value值进行验证，如果设计如此应该做出说明。目前采用的解决方案是：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span>  </span></div><div class="line">          <span class="attr">class</span>=<span class="string">"form-control"</span> </div><div class="line">          <span class="attr">v-validate:price</span>=<span class="string">"&#123; required: &#123; rule: true, initial: 'off'&#125;, onlyNum: true"</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p><img src="/images/20161026/validator-4.png" alt=""><br>问题得解。</p>
+<h2 id="一些需求"><a href="#一些需求" class="headerlink" title="一些需求"></a>一些需求</h2><p>这一部分主要介绍一些不常见的需求，由于我们项目里的新增和编辑基本都是在新的页面完成的，因此目前可能不会经常碰到下面的情况，但在迭代过程中，调整了一些交互方式，使用下拉框新增和修改，因此其验证的方式也会做一些调整，使用vue-validator时需要灵活处理，众所周知我们通过<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$validate( [field], [touched], [cb] ) </div><div class="line">  &#123;String&#125; [field] 验证的目标元素，如果不设置就验证全部</div><div class="line">  &#123;Boolean&#125; [touched] 设置为true时，即默认该input已经获得过焦点</div><div class="line">  &#123;Function&#125; [cb] 验证的回调函数</div></pre></td></tr></table></figure></p>
+<p>来对目标表单元素进行验证，在设置this.$validate(true)后会将所有的input的value值进行验证，得到验证结果。<br>现在需求是这样的，通过一个下拉组件完成列表项数的添加，其中一个input为必填项，另外一个input为非必填项，但两者都需要对输入进行验证。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">validator</span> <span class="attr">lazy</span> <span class="attr">name</span>=<span class="string">"validation"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">drop-form-group</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-group-title"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"color: red"</span>&gt;</span>*<span class="tag">&lt;/<span class="name">span</span>&gt;</span>标签名称<span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line">     <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span></span></div><div class="line">       <span class="attr">id</span>=<span class="string">"labelName"</span></div><div class="line">       <span class="attr">placeholder</span>=<span class="string">"必填项"</span></div><div class="line">       <span class="attr">v-model</span>=<span class="string">"filterCache.labelName"</span></div><div class="line">       <span class="attr">v-validate:label-name</span>=<span class="string">"&#123; required: &#123; rule: true, initial: 'off' &#125;, isComm: &#123; rule: true, initial: 'off'&#125; &#125;"</span>/&gt;</div><div class="line">       <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"$validation.labelName.required"</span>&gt;</span>标签名称必须填写<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"!$validation.labelName.required &amp;&amp; &amp;&amp; $validation.labelName.isComm"</span>&gt;</span>标签名称为数字、字母或汉字<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">drop-form-group</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">drop-form-group</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"form-group-title"</span>&gt;</span>链接地址<span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">     <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"half"</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span></span></div><div class="line">         <span class="attr">placeholder</span>=<span class="string">"非必填项"</span></div><div class="line">         <span class="attr">class</span>=<span class="string">"form-control"</span></div><div class="line">         <span class="attr">v-model</span>=<span class="string">"filterCache.labelUrl"</span></div><div class="line">         <span class="attr">v-validate:label-url</span>=<span class="string">"&#123; labelUri: &#123; rule: true, initial: 'off' &#125;&#125;"</span>&gt;</div><div class="line">         <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"$validation.labelUrl.labelUri"</span>&gt;</span>请填写正确的链接地址<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">drop-form-group</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">validator</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>由于名称是必填的，因此在提交时设置 this.$validate(‘labelName’, true)，这样在提交时会对name进行必填验证，在点击取消或者关闭后，重新打开该下拉框，会发现验证的结果依然还在，这就不符合打开后恢复初始状态的需求了，这就很尴尬了。现在的需求是在点击取消或者关闭的情况下，重新打开后恢复到最原始的验证状态下，vue-validator提供了一个方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$resetValidation([cb])</div><div class="line">  &#123;<span class="built_in">Function</span>&#125; [cb] 重置验证结果的回调</div></pre></td></tr></table></figure></p>
+<p>发现是好的，再进行下一项输入的验证，输入特殊字符后会出现“标签名称为数字、字母或汉字”的验证结果，此时再关闭弹出框，默认是清空掉所有输入内容的，通过打印 this.$validation.valid 发现此时为 true，即重置会将所有的都清空，如果只是想重置掉名称的验证结果而保留链接地址的验证结果呢，现在怎么做呢？前面已经说过全局的验证结果是只读属性而无法设置，因此我们设置自定义属性的值：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">addCancel () &#123;</div><div class="line">  <span class="keyword">this</span>.filterCache = &#123; <span class="attr">labelUrl</span>: <span class="string">''</span>, <span class="attr">labelName</span>: <span class="string">''</span> &#125;</div><div class="line">  <span class="keyword">this</span>.$validation.labelName.required = <span class="literal">false</span></div><div class="line">  <span class="keyword">this</span>.$validation.labelName.isComm = <span class="literal">false</span></div><div class="line">  <span class="keyword">this</span>.dropDown.showDropDown = <span class="literal">false</span></div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>下一个需求是输入的名称不能和列表中已存在的名称重复，对于重复名称的验证其实一开始我是拒绝的，因为按照国际惯例这种重复验证都是后端同学进行操作的，按道理来说，后端同学一条sql语句就可以解决，然后给前端返回个标识就好。不过对于一些特殊场景特殊需求如果能够减少一次请求，也是一个极好的体验。我在做某个功能时就碰到了需要前端做重复验证的需求，其特殊性在于该页面已经将存在的名称全部展示在页面并且其数量也是有限的，小于等于十个，因此在前端需要做其他验证的情况下，遍历有限的名称做重复验证也未尝不可：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 验证规则</span></div><div class="line"> isSame(val) &#123;</div><div class="line">   <span class="keyword">if</span> (<span class="keyword">this</span>.vm.$data.labelList &amp;&amp; <span class="keyword">this</span>.vm.$data.labelList.length) &#123;</div><div class="line">     <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.vm.$data.labelList.length; i++) &#123;</div><div class="line">       <span class="keyword">if</span> (<span class="keyword">this</span>.vm.$data.labelList[i].name === val) &#123;</div><div class="line">         <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">       &#125;</div><div class="line">     &#125;</div><div class="line">   &#125;</div><div class="line">   <span class="keyword">return</span> <span class="literal">true</span></div><div class="line"> &#125;,</div></pre></td></tr></table></figure></p>
+<p>将 isName 添加到名称的验证项里面，labelList是页面加载时得到的数据，通过对比可以完成名称是否重复的验证。<br>还有一个需求，就是要处理用户的输入，如最大值要求不超过50，如果用户输入了51，则要提示“不能超过50”，并且将用户的输入强行改为5，其实这种需求是强制更改用户输入的，不知道用户体验如何，但既然产品提出来，实现看一下效果如何，其实比较简单，看代码：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span></span></div><div class="line">  <span class="attr">placeholder</span>=<span class="string">"必填项，请填整数，例如：10"</span></div><div class="line">  <span class="attr">v-model</span>=<span class="string">"filterCache.seats"</span></div><div class="line">  <span class="attr">:value</span>=<span class="string">"filterCache.seats"</span></div><div class="line">   <span class="attr">v-validate:seats</span>=<span class="string">"&#123; required: &#123; rule: true, initial: 'off' &#125;, maxFifth: &#123; rule: true, initial: 'off' &#125; ···（验证输入是否为整数） &#125;"</span>&gt;</div><div class="line">   <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"$validation.seats.required"</span>&gt;</span>座位数为必填<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"!$validation.seats.required &amp;&amp; $validation.seats.maxFifth"</span>&gt;</span>座位数小于50<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">maxFifth(val) &#123;</div><div class="line">  <span class="keyword">if</span> (val &gt; <span class="number">50</span>) &#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="keyword">this</span>.vm.$data.filterCache.seats = val.slice(<span class="number">0</span>, <span class="number">1</span>)</div><div class="line">    &#125;, <span class="number">2000</span>)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> val &lt; <span class="number">51</span></div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<p>代码中省略了一部分是否为整数的验证，在是整数并且大于50时，对其进行切割只保留第一位，设置一个定时器的原因是希望用户看到这一提示，避免蒙圈。<br>三个小需求都是在输入的时候处理掉，避免提交时再遍历验证。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>vue-validator基本能完成一些常见的验证，另外还有其它的vue验证插件如：<br><a href="https://github.com/fergaldoyle/vue-form" target="_blank" rel="external">vue-form</a><br>暂且将在工作中遇到的不常见情况做了一些特殊处理，如果大家有更好的方式，欢迎留言。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/zl/" rel="tag">#zl</a>
+          
+            <a href="/tags/vue-validator/" rel="tag">#vue-validator</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/25/浅谈虚拟DOM之词法分析器（一）/" rel="next" title="浅谈虚拟DOM之词法分析器（一）">
+                <i class="fa fa-chevron-left"></i> 浅谈虚拟DOM之词法分析器（一）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/28/vue-router的简单流程/" rel="prev" title="vue-router的简单流程">
+                vue-router的简单流程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/26/vue-validator验证/"
+           data-title="vue-validator验证" data-url="http://x-front-team.github.io/2016/10/26/vue-validator验证/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本用法"><span class="nav-number">2.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个问题"><span class="nav-number">3.</span> <span class="nav-text">一个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些需求"><span class="nav-number">4.</span> <span class="nav-text">一些需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

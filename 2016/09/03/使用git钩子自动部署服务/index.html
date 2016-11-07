@@ -1,0 +1,659 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="csd,git," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="首先声明一下，我们公司的开发流程比较严(fan)谨(suo)，真实环境并没有像本文这样自动部署的做法。我们要达到的效果是：我们本地开发好的代码，推送到服务器后，服务器自动部署最新版本的代码。
+这里介绍两种方式：
+
+裸仓库方式
+非裸仓库方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用git钩子自动部署服务">
+<meta property="og:url" content="http://x-front-team.github.io/2016/09/03/使用git钩子自动部署服务/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="首先声明一下，我们公司的开发流程比较严(fan)谨(suo)，真实环境并没有像本文这样自动部署的做法。我们要达到的效果是：我们本地开发好的代码，推送到服务器后，服务器自动部署最新版本的代码。
+这里介绍两种方式：
+
+裸仓库方式
+非裸仓库方式">
+<meta property="og:updated_time" content="2016-09-04T17:03:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用git钩子自动部署服务">
+<meta name="twitter:description" content="首先声明一下，我们公司的开发流程比较严(fan)谨(suo)，真实环境并没有像本文这样自动部署的做法。我们要达到的效果是：我们本地开发好的代码，推送到服务器后，服务器自动部署最新版本的代码。
+这里介绍两种方式：
+
+裸仓库方式
+非裸仓库方式">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/09/03/使用git钩子自动部署服务/"/>
+
+  <title> 使用git钩子自动部署服务 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用git钩子自动部署服务
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-03T21:58:45+08:00" content="2016-09-03">
+              2016-09-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/03/使用git钩子自动部署服务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/03/使用git钩子自动部署服务/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>首先声明一下，我们公司的开发流程比较严(fan)谨(suo)，真实环境并没有像本文这样自动部署的做法。<br>我们要达到的效果是：我们本地开发好的代码，推送到服务器后，服务器自动部署最新版本的代码。</p>
+<p>这里介绍两种方式：</p>
+<ul>
+<li>裸仓库方式</li>
+<li>非裸仓库方式</li>
+</ul>
+<a id="more"></a>
+<h2 id="裸仓库方式"><a href="#裸仓库方式" class="headerlink" title="裸仓库方式"></a>裸仓库方式</h2><p>这也是比较推荐的方式，不太有副作用，尤其需要多人共享时。<br>那什么是裸仓库呢？<br>就是没有工作目录的仓库, 不能执行有关git的任何命令，只记录历史提交信息，只能通过clone它的仓库对它进行push操作对它进行更新。裸仓库一般用来做多人代码交换的中转站，它只有这么些目录：<br><code>branches  config  description  HEAD  hooks  info  objects  refs</code><br>接下来，仅以一个简单的node服务为例，演示整个过程。<br>ps: 本地和服务器都要安装git和node，否则没法玩~</p>
+<h3 id="1-本地创建仓库并开发"><a href="#1-本地创建仓库并开发" class="headerlink" title="1.本地创建仓库并开发"></a>1.本地创建仓库并开发</h3><p>终端cd到你喜欢的一个新目录(这里以githook-test为例)，然后：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git init</div></pre></td></tr></table></figure></p>
+<p>创建index.js,使用你喜欢的编辑器，输入以下代码(摘自node官网，改了下host)：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> hostname = <span class="string">'0.0.0.0'</span>;</div><div class="line"><span class="keyword">const</span> port = <span class="number">3000</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> server = http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</div><div class="line">  res.statusCode = <span class="number">200</span>;</div><div class="line">  res.setHeader(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>);</div><div class="line">  res.end(<span class="string">'Hello World\n'</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">server.listen(port, hostname, () =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`Server running at http://<span class="subst">$&#123;hostname&#125;</span>:<span class="subst">$&#123;port&#125;</span>/`</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>本地跑一下试试看：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node index.js</div></pre></td></tr></table></figure></p>
+<p>然后用浏览器访问<code>http://locaohost:3000/</code>,看到了<code>Hello World</code>。<br>嗯，很好。<br>提交代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git add .</div><div class="line">git commit -m <span class="string">'init'</span></div></pre></td></tr></table></figure></p>
+<h3 id="2-创建远程裸仓库"><a href="#2-创建远程裸仓库" class="headerlink" title="2.创建远程裸仓库"></a>2.创建远程裸仓库</h3><p>ssh登陆到服务器，cd到你喜欢的目录(比如<code>~/git_projects</code>),创建一个新仓库目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir githook-test.git &amp;&amp; <span class="built_in">cd</span> <span class="variable">$_</span></div></pre></td></tr></table></figure></p>
+<p>裸仓库一般都命名为xxx.git,然后初始化git：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git init --bare</div></pre></td></tr></table></figure></p>
+<p>注意，这里的bare参数很重要，就是创建裸仓库的意思</p>
+<h3 id="3-推送代码到服务器"><a href="#3-推送代码到服务器" class="headerlink" title="3.推送代码到服务器"></a>3.推送代码到服务器</h3><p>配置本地仓库的remote，比如你的服务器host为vps.xx.com,登陆用户为git，刚刚创建的远程仓库路径为~/git_projects/githook-test.git，那么就在本地仓库执行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote add origin git@vps.xx.com:~/git_projects/githook-test.git</div></pre></td></tr></table></figure></p>
+<p>最好配置服务器免密登陆，把你的公钥塞到服务器的~/.ssh/authorized_keys文件中即可。<br>第一次推送：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push -u origin master</div></pre></td></tr></table></figure></p>
+<p>如果提示信息的最后两行是：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> * [new branch]      master -&gt; master</div><div class="line">Branch master <span class="built_in">set</span> up to track remote branch master from origin.</div></pre></td></tr></table></figure></p>
+<p>就说明推送成功了。</p>
+<h3 id="4-创建远程非裸仓库"><a href="#4-创建远程非裸仓库" class="headerlink" title="4.创建远程非裸仓库"></a>4.创建远程非裸仓库</h3><p>由于裸仓库没有工作目录，没法执行真正的代码，所以需要另一个目录(非裸仓库)拉取实际代码，通过clone的方式拉取即可，cd到你喜欢的目录，比如<code>~/www</code>,执行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> ~/git_projects/githook-test.git</div></pre></td></tr></table></figure></p>
+<h3 id="5-在服务器上启动服务"><a href="#5-在服务器上启动服务" class="headerlink" title="5.在服务器上启动服务"></a>5.在服务器上启动服务</h3><p>由于服务器的服务进程需要在后台执行，我们借助<a href="http://pm2.keymetrics.io/" target="_blank" rel="external">pm2</a>这个神器帮我们管理node服务.首先全局安装pm2：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install pm2 -g</div></pre></td></tr></table></figure></p>
+<p>然后cd到真正运行服务的仓库:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd ~/www/githook-test</div></pre></td></tr></table></figure></p>
+<p>启动服务：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 start index.js --name githook-test</div></pre></td></tr></table></figure></p>
+<p>name参数用来给当前的服务起一个名字标识，用于后续给指定的服务执行操作，比如重启，停止等.<br>打开浏览器，访问这个服务，比如，你的服务器host是vps.xx.com，那么就访问<code>http://vps.xx.com:3000</code>.<br>如果也看到了<code>Hello World</code>，就说明服务器上的服务已经跑起来了~</p>
+<h3 id="6-配置git钩子"><a href="#6-配置git钩子" class="headerlink" title="6.配置git钩子"></a>6.配置git钩子</h3><p><em>这里才是重点~</em><br>git钩子可以理解为一个触发器，当仓库发生指定事件，可以触发执行指定的shell脚本。我们这里需要的是post-receive钩子。<br>在服务器的仓库中创建钩子文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi ~/git_projects/githook-test.git/hooks/post-receive</div></pre></td></tr></table></figure></p>
+<p>粘贴如下脚本：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="built_in">unset</span> GIT_DIR</div><div class="line"><span class="built_in">cd</span> ~/www/githook-test</div><div class="line"><span class="built_in">echo</span> <span class="string">'Pulling code:'</span></div><div class="line">git pull origin master</div><div class="line"><span class="built_in">echo</span> <span class="string">'Restarting server:'</span></div><div class="line">pm2 restart githook-test</div><div class="line"><span class="built_in">echo</span> <span class="string">'Deployment Done'</span></div><div class="line"><span class="built_in">exit</span> 0</div></pre></td></tr></table></figure></p>
+<p>保存并退出<br>其中，<code>unset GIT_DIR</code>是必须的，和Makefile一样，在每一行，目录都是固定的，需要解除环境变量GIT_DIR环境变量才能自由移动当前位置，这东西坑了我好一会儿~<br>感谢<a href="https://argcv.com/articles/2078.c" target="_blank" rel="external">https://argcv.com/articles/2078.c</a>  这篇文章~<br>现在这个钩子只是个普通文件，需要给它加上可执行权限：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod +x ~/git_projects/githook-test.git/hooks/post-receive</div></pre></td></tr></table></figure></p>
+<h3 id="7-测试自动部署"><a href="#7-测试自动部署" class="headerlink" title="7.测试自动部署"></a>7.测试自动部署</h3><p>修改本地的index.js，比如把<code>res.end(&#39;Hello World\n&#39;);</code>这句改成<code>res.end(&#39;Hello World. I Love Git!\n&#39;);</code><br>然后提交，并推送：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -a -m &apos;edit&apos; &amp;&amp; git push</div></pre></td></tr></table></figure></p>
+<p>你会在本地终端看到类似如下的信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">Counting objects: 3, done.</div><div class="line">Delta compression using up to 4 threads.</div><div class="line">Compressing objects: 100% (2/2), done.</div><div class="line">Writing objects: 100% (3/3), 269 bytes | 0 bytes/s, done.</div><div class="line">Total 3 (delta 1), reused 0 (delta 0)</div><div class="line">remote: Pulling code:</div><div class="line">remote: From &lt;和谐内容&gt;/git_projects/githook-test</div><div class="line">remote:  * branch            master     -&gt; FETCH_HEAD</div><div class="line">remote:    <span class="built_in">cd</span>2b660..50118a9  master     -&gt; origin/master</div><div class="line">remote: Updating <span class="built_in">cd</span>2b660..50118a9</div><div class="line">remote: Fast-forward</div><div class="line">remote:  index.js | 2 +-</div><div class="line">remote:  1 file changed, 1 insertion(+), 1 deletion(-)</div><div class="line">remote: Restarting server:</div><div class="line">remote: [PM2] Applying action restartProcessId on app [githook-test](ids: 1)</div><div class="line">remote: [PM2] [githook-test](1) ✓</div><div class="line">remote: ┌──────────────┬────┬──────┬───────┬────────┬─────────┬────────┬─────────────┬──────────┐</div><div class="line">remote: │ App name     │ id │ mode │ pid   │ status │ restart │ uptime │ memory      │ watching │</div><div class="line">remote: ├──────────────┼────┼──────┼───────┼────────┼─────────┼────────┼─────────────┼──────────┤</div><div class="line">remote: │ githook-test │ 1  │ fork │ 17297 │ online │ 4       │ 0s     │ 11.789 MB   │ disabled │</div><div class="line">remote: └──────────────┴────┴──────┴───────┴────────┴─────────┴────────┴─────────────┴──────────┘</div><div class="line">remote:  Use `pm2 show &lt;id|name&gt;` to get more details about an app</div><div class="line">remote: Deployment Done</div><div class="line">To &lt;和谐内容&gt;@&lt;和谐内容&gt;:~/git_projects/githook-test.git</div><div class="line">   <span class="built_in">cd</span>2b660..50118a9  master -&gt; master</div></pre></td></tr></table></figure></p>
+<p>然后，再次打开浏览器访问服务器上的服务，如果能看到<code>Hello World. I Love Git!</code> 说明自动部署已经成功了！</p>
+<h2 id="非裸仓库方式"><a href="#非裸仓库方式" class="headerlink" title="非裸仓库方式"></a>非裸仓库方式</h2><p>这种方式，不需要创建裸仓库，只需创建非裸仓库，感觉会节省点磁盘空间~<br>具体操与裸仓库方式大体一致：<br>裸仓库方式中的 <code>2.创建远程裸仓库</code>步骤，更改为:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~/www &amp;&amp; mkdir githook-test &amp;&amp; <span class="built_in">cd</span> &amp;_ &amp;&amp; git init</div></pre></td></tr></table></figure></p>
+<p>由于默认情况下，git不允许push代码到非裸仓库，我们需要对这个非裸仓库进行一些设置：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config receive.denyCurrentBranch ignore</div></pre></td></tr></table></figure></p>
+<p><code>3.推送代码到服务器</code>步骤中，由于不存在裸仓库了，我们直接push代码到非裸仓库，我们本地仓库的远程仓库地址也要修改一下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote add origin git@vps.xx.com:~/www/githook-test</div></pre></td></tr></table></figure></p>
+<p>如果远程仓库不执行<code>git config receive.denyCurrentBranch ignore</code>的话，直接推送会看到如下错误信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">remote: error: refusing to update checked out branch: refs/heads/master</div><div class="line">remote: error: By default, updating the current branch <span class="keyword">in</span> a non-bare repository</div><div class="line">remote: error: is denied, because it will make the index and work tree inconsistent</div><div class="line">remote: error: with what you pushed, and will require <span class="string">'git reset --hard'</span> to match</div><div class="line">remote: error: the work tree to HEAD.</div><div class="line">remote: error:</div><div class="line">remote: error: You can <span class="built_in">set</span> <span class="string">'receive.denyCurrentBranch'</span> configuration variable to</div><div class="line">remote: error: <span class="string">'ignore'</span> or <span class="string">'warn'</span> <span class="keyword">in</span> the remote repository to allow pushing into</div><div class="line">remote: error: its current branch; however, this is not recommended unless you</div><div class="line">remote: error: arranged to update its work tree to match what you pushed <span class="keyword">in</span> some</div><div class="line">remote: error: other way.</div><div class="line">remote: error:</div><div class="line">remote: error: To squelch this message and still keep the default behaviour, <span class="built_in">set</span></div><div class="line">remote: error: <span class="string">'receive.denyCurrentBranch'</span> configuration variable to <span class="string">'refuse'</span>.</div></pre></td></tr></table></figure></p>
+<p>跳过<code>4.创建远程非裸仓库</code> 步骤.<br>即使可以向远程非裸仓库push，远程仓库的工作目录也不会随之改变，需要通过钩子，将工作目录更新，所以<code>6.配置git钩子</code>步骤中，钩子的脚本也要改一下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="built_in">unset</span> GIT_DIR</div><div class="line"><span class="built_in">cd</span> ~/www/githook-test</div><div class="line"><span class="built_in">echo</span> <span class="string">'Checkout working copy:'</span></div><div class="line">git checkout <span class="_">-f</span></div><div class="line"><span class="built_in">echo</span> <span class="string">'Restarting server:'</span></div><div class="line">pm2 restart githook-test</div><div class="line"><span class="built_in">echo</span> <span class="string">'Deployment Done'</span></div><div class="line"><span class="built_in">exit</span> 0</div></pre></td></tr></table></figure></p>
+<p>再次测试，发现也可以自动部署啦！<br>从git的默认行为来看，非裸仓库的方式，并不推荐，尤其是生产环境，一定要慎用。<br>在一些不重要的小应用里使用还是不错的~</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/csd/" rel="tag">#csd</a>
+          
+            <a href="/tags/git/" rel="tag">#git</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/22/Vue-Class/" rel="next" title="Vue源码解析之 Vue Class">
+                <i class="fa fa-chevron-left"></i> Vue源码解析之 Vue Class
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/04/translate动画定位之坑/" rel="prev" title="vue + translate动画之坑">
+                vue + translate动画之坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/03/使用git钩子自动部署服务/"
+           data-title="使用git钩子自动部署服务" data-url="http://x-front-team.github.io/2016/09/03/使用git钩子自动部署服务/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#裸仓库方式"><span class="nav-number">1.</span> <span class="nav-text">裸仓库方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-本地创建仓库并开发"><span class="nav-number">1.1.</span> <span class="nav-text">1.本地创建仓库并开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-创建远程裸仓库"><span class="nav-number">1.2.</span> <span class="nav-text">2.创建远程裸仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-推送代码到服务器"><span class="nav-number">1.3.</span> <span class="nav-text">3.推送代码到服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-创建远程非裸仓库"><span class="nav-number">1.4.</span> <span class="nav-text">4.创建远程非裸仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-在服务器上启动服务"><span class="nav-number">1.5.</span> <span class="nav-text">5.在服务器上启动服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-配置git钩子"><span class="nav-number">1.6.</span> <span class="nav-text">6.配置git钩子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-测试自动部署"><span class="nav-number">1.7.</span> <span class="nav-text">7.测试自动部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非裸仓库方式"><span class="nav-number">2.</span> <span class="nav-text">非裸仓库方式</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

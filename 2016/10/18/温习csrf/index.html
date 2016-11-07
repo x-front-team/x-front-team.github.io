@@ -1,0 +1,656 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="wj,网页安全," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是CSRF?下面这个炸裂的图片就是
+
+是不是感觉很奇幻，就点进了一篇文章。怎么就被攻击了呢大家可以打开开发者工具，会发现有个图片请求 crsf?from=1&amp;amp;to=b，指向的服务器是localhost:8080这就是一次crsf攻击，攻击的是服务器localhost，也就是我在本地开启的一个服务器服务器上的日志清晰的打印出来了这次访问记录  
+1[2016-10-17 20:22:30">
+<meta property="og:type" content="article">
+<meta property="og:title" content="温习csrf">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/18/温习csrf/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="什么是CSRF?下面这个炸裂的图片就是
+
+是不是感觉很奇幻，就点进了一篇文章。怎么就被攻击了呢大家可以打开开发者工具，会发现有个图片请求 crsf?from=1&amp;amp;to=b，指向的服务器是localhost:8080这就是一次crsf攻击，攻击的是服务器localhost，也就是我在本地开启的一个服务器服务器上的日志清晰的打印出来了这次访问记录  
+1[2016-10-17 20:22:30">
+<meta property="og:image" content="http://localhost:8080/home/index/csrf?from=1&to=b">
+<meta property="og:updated_time" content="2016-10-29T13:36:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="温习csrf">
+<meta name="twitter:description" content="什么是CSRF?下面这个炸裂的图片就是
+
+是不是感觉很奇幻，就点进了一篇文章。怎么就被攻击了呢大家可以打开开发者工具，会发现有个图片请求 crsf?from=1&amp;amp;to=b，指向的服务器是localhost:8080这就是一次crsf攻击，攻击的是服务器localhost，也就是我在本地开启的一个服务器服务器上的日志清晰的打印出来了这次访问记录  
+1[2016-10-17 20:22:30">
+<meta name="twitter:image" content="http://localhost:8080/home/index/csrf?from=1&to=b">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/18/温习csrf/"/>
+
+  <title> 温习csrf | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                温习csrf
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-18T10:00:56+08:00" content="2016-10-18">
+              2016-10-18
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/18/温习csrf/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/18/温习csrf/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>什么是CSRF?<br>下面这个炸裂的图片就是</p>
+<p><img src="http://localhost:8080/home/index/csrf?from=1&amp;to=b" alt="csrf"></p>
+<p>是不是感觉很奇幻，就点进了一篇文章。怎么就被攻击了呢<br>大家可以打开开发者工具，会发现有个图片请求 crsf?from=1&amp;to=b，指向的服务器是localhost:8080<br>这就是一次crsf攻击，攻击的是服务器localhost，也就是我在本地开启的一个服务器<br>服务器上的日志清晰的打印出来了这次访问记录  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[2016-10-17 20:22:30] [HTTP] GET /home/index/csrf?from=1&amp;to=b 200 24ms</div></pre></td></tr></table></figure>
+<p>而且如果你之前访问过localhost:8080,那么这次访问还会把你在localhost:8080的cookie也带过去<br>这是一个很可怕的事情，因为这次请求完全在你不知情的请求下发生的<br>假设这个接口换成银行转账，或者知乎留言<br>在你刚刚访问完知乎之后，打开我这篇文章，你可能就被csrf了<br>你会在不知情的情况下被转账or被留言  </p>
+<blockquote>
+<p>在大部分正常的网站，这种操作不太可能是GET请求，上面仅仅为了举例</p>
+</blockquote>
+<a id="more"></a>
+<p>再看一个csrf的例子<br>假设一个网站嵌入了如下代码  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">steal</span>(<span class="params"></span>)</span>&#123;</div><div class="line">            iframe = <span class="built_in">document</span>.frames[<span class="string">"steal"</span>];</div><div class="line">            iframe.document.Submit(<span class="string">"transfer"</span>);</div><div class="line">        &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">"steal()"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">iframe</span> <span class="attr">name</span>=<span class="string">"steal"</span> <span class="attr">display</span>=<span class="string">"none"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">"POST"</span> <span class="attr">name</span>=<span class="string">"transfer"</span><span class="attr">action</span>=<span class="string">"http://www.myBank.com/Transfer.php"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"toBankId"</span> <span class="attr">value</span>=<span class="string">"11"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"money"</span> <span class="attr">value</span>=<span class="string">"1000"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">form</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在你进入网站的同时<br>会自动提交iframe里面的表单，表单可能指向某银行的服务器<br>而你如果之前登陆过该银行，这次请求也许就会被服务器误认为是正常的请求而被执行<br>你账号的钱也许就这样被转了  </p>
+<h2 id="怎么防范"><a href="#怎么防范" class="headerlink" title="怎么防范"></a>怎么防范</h2><p>上面举了两个例子来简要阐述csrf是怎么发生的，可以看到类似例子一的csrf制作起来真是超简单  </p>
+<p>当然，防御csrf的方式也五花八门：<br>简单描述几种常见的防御机制  </p>
+<p>___为了好描述，下文定义我们的网站为A，攻击者的网站为B  </p>
+<ol>
+<li>基本防护，不要将请求参数放到get请求的query中<br> 由上面例子可知，get请求的csrf是最容易的</li>
+<li>Token验证<br> 在每个HTTP请求里附加一部分信息是一个防御CSRF攻击的很好的方法，因为这样可以判断请求是否已经授权。这个“验证token”应该不能轻易的被未登录的用户猜测出来。如果请求里面没有这个验证token或者token不能匹配的话，服务器应该拒绝这个请求。</li>
+</ol>
+<p>一个简单的token制造，加密session。<br>简单的方案，因为伪造攻击者不太可能获得服务器的session<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 伪代码</div><div class="line">let session = ctx.sessionID()</div><div class="line">let csrf_token = md5(session)</div><div class="line"></div><div class="line">// 前端表单</div><div class="line">&lt;form method=”POST” action=”/transfer”&gt;</div><div class="line">    &lt;input type=”text” name=”toBankId”&gt;</div><div class="line">    &lt;input type=”text” name=”money”&gt;</div><div class="line">    &lt;input type=”hidden” name=”hash” value=”&lt;%= $csrf_token %&gt;”&gt;</div><div class="line">    &lt;input type=”submit” name=”submit” value=”Submit”&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
+<p>表单由服务器模板直接生成在正常的网站 A 上<br>攻击者的 B 网站因为无法获取 A 网站的session，也就无法计算出表单的csrf_token这个字段<br>A网站服务端只需要校验csrf_token的正确性，便可以防御这类攻击了<br>当然这个防御并非完美，是建立在session不被盗取的基础上</p>
+<blockquote>
+<p>生成token的方式还有很多很多，但或多或少都有些缺陷<br>显著的缺陷: 很多网站的表单是由js生成的</p>
+</blockquote>
+<ol>
+<li><p>验证码<br> 目前我们访问大部分支付类网站时，都会要求输入手机验证码<br> 这个已经可以防御大部分csrf了，但不能每一个表单都要求用户输入手机验证码，<br> 会产生巨额的费用和降低用户体验</p>
+</li>
+<li><p>Referer<br> 大多数情况下，当浏览器发起一个HTTP请求，其中的Referer标识了请求是从哪里发起的。如果HTTP头里包含有Referer的时候，我们可以区分请求是同域下还是跨站发起的，因为Referer离标明了发起请求的URL。网站也可以通过判断有问题的请求是否是同域下发起的来防御CSRF攻击。</p>
+<blockquote>
+<p>如果网站选择使用Referer来防御CSRF攻击的话，那么网站的开发人员就需要决定到底是使用比较宽松还是比较严格的Referer验证策略。如果采用宽松的Referer验证策略，网站就应该阻止Referer值不对的请求。如果请求里面没有Referer，就接收请求。尽管这个方法用的很普遍，但是它很容易被绕过。因为攻击者可以在header里面去掉Referer。例如，FTP和数据URL发起的请求里面就不包含Referer。如果使用严格的Referer验证策略，网站还要阻止没有Referer的请求。这样做主要是为了防止恶意网站主动隐藏Referer，但也会带来兼容性问题，比如会误杀一部分合法的请求，因为有些浏览器和网络的设置默认就是不含有Referer的。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上面简单阐述了一下csrf跨站攻击的原理和防范措施<br>虽然大部分防范措施都是配合服务端开发人员编写（nodejs程序员则需要着重研究）<br>有兴趣的同学可以自行google和查阅相关书籍~~<br>本人水平有限，若有错误，还请指出  </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/wj/" rel="tag">#wj</a>
+          
+            <a href="/tags/网页安全/" rel="tag">#网页安全</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/17/浅谈Promise原理及方法/" rel="next" title="浅谈Promise原理及方法">
+                <i class="fa fa-chevron-left"></i> 浅谈Promise原理及方法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/23/npm-install问题之依赖冗余/" rel="prev" title="npm install之依赖冗余">
+                npm install之依赖冗余 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/18/温习csrf/"
+           data-title="温习csrf" data-url="http://x-front-team.github.io/2016/10/18/温习csrf/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#怎么防范"><span class="nav-number">1.</span> <span class="nav-text">怎么防范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

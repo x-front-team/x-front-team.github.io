@@ -1,0 +1,668 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="qsy,vue-router," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言因为路由权限问题，简单的看了一下vue-router（v0.7.13）。整理了一下router的一个简单过程
+
+beforeEach -&amp;gt; canReuse -&amp;gt; canDeactivate -&amp;gt; canActivate -&amp;gt; deactivate -&amp;gt; afterEach -&amp;gt; activate
+
+其中canDeactivate | canActivate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-router的简单流程">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/28/vue-router的简单流程/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="前言因为路由权限问题，简单的看了一下vue-router（v0.7.13）。整理了一下router的一个简单过程
+
+beforeEach -&amp;gt; canReuse -&amp;gt; canDeactivate -&amp;gt; canActivate -&amp;gt; deactivate -&amp;gt; afterEach -&amp;gt; activate
+
+其中canDeactivate | canActivate">
+<meta property="og:updated_time" content="2016-10-31T06:37:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-router的简单流程">
+<meta name="twitter:description" content="前言因为路由权限问题，简单的看了一下vue-router（v0.7.13）。整理了一下router的一个简单过程
+
+beforeEach -&amp;gt; canReuse -&amp;gt; canDeactivate -&amp;gt; canActivate -&amp;gt; deactivate -&amp;gt; afterEach -&amp;gt; activate
+
+其中canDeactivate | canActivate">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/28/vue-router的简单流程/"/>
+
+  <title> vue-router的简单流程 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                vue-router的简单流程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-28T10:43:03+08:00" content="2016-10-28">
+              2016-10-28
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/28/vue-router的简单流程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/28/vue-router的简单流程/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>因为路由权限问题，简单的看了一下vue-router（v0.7.13）。整理了一下router的一个简单过程</p>
+<blockquote>
+<p><code>beforeEach</code> -&gt; <code>canReuse</code> -&gt; <code>canDeactivate</code> -&gt; <code>canActivate</code> -&gt; <code>deactivate</code> -&gt; <code>afterEach</code> -&gt; <code>activate</code></p>
+</blockquote>
+<p>其中<code>canDeactivate</code> | <code>canActivate</code> | <code>deactivate</code> | <code>activate</code>这几个钩子涉及组件复用的问题，所以有可能不会被调用，但是当<code>canReuse</code>返回false时，就一定会被调用了</p>
+<blockquote>
+<p>注：canDeactivate，deactivate与canActivate，activate分别作用于<code>要销毁</code>和<code>要生成</code>的组件。<br>如：a/b -&gt; a/c，这里b组件要被销毁，c组件要被生成。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="一、vue-router组成"><a href="#一、vue-router组成" class="headerlink" title="一、vue-router组成"></a>一、vue-router组成</h1><p>vue-router组件有三个部分:</p>
+<ol>
+<li>link：即v-link</li>
+<li>view：元素指令，即<router-view></router-view></li>
+<li>router：核心部分</li>
+</ol>
+<h1 id="二、vue-router简单的一个流程"><a href="#二、vue-router简单的一个流程" class="headerlink" title="二、vue-router简单的一个流程"></a>二、vue-router简单的一个流程</h1><ol>
+<li><p>url 变化</p>
+</li>
+<li><p>history监听（onChange事件）<br>例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// hashbang路由模式，如：http://localhost/#!/login</span></div><div class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'hashchange'</span>, () =&gt; &#123;&#125;)</div><div class="line"><span class="comment">// h5 history路由模式，如：http://localhost/login</span></div><div class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'popstate'</span>, () =&gt; &#123;&#125;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>调用路由匹配（ this._match）<br>会保存老的transition和新的transition</p>
+</li>
+<li><p>走一遍beforeEach</p>
+</li>
+<li><p>走startTransition开始进入transition的撕逼周期（也算是vue-router的核心所在）<br> 这里会涉及组件复用的问题<br>1). canReuse：调用canReuse钩子</p>
+<pre><code>看当前的&lt;vue-router&gt;和将要跳转的&lt;vue-router&gt;之间有没有可重用的组件
+a/b/c
+a/b/d  =&gt;  可复用[a,b]，需要销毁[c]，需要生成[d]
+</code></pre><p>2). canDeactivate(c)：调用canDeactivate钩子</p>
+   <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">route: &#123;</div><div class="line">  canDeactivate() &#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3). canActivate(d)：调用canActivate钩子</p>
+<p>4). deactivate(c)：调用deactivate钩子</p>
+<p>5). _afterEachHooks(c)：调用afterEach钩子</p>
+<p>6). reuse([a,b])：调用data钩子</p>
+<p>7). activate(d) ：调用activate | data钩子</p>
+</li>
+<li><p>若activate(d)，则调用vue中的build方法，新生成component</p>
+</li>
+</ol>
+<h1 id="三、两个应用场景"><a href="#三、两个应用场景" class="headerlink" title="三、两个应用场景"></a>三、两个应用场景</h1><h2 id="1-组件复用-a-b-id"><a href="#1-组件复用-a-b-id" class="headerlink" title="1.组件复用(a/b/:id)"></a>1.组件复用(a/b/:id)</h2><p>这次遇到了类似(a/b/:id)这样的路由，这种路由一直都只是（:id）在变化，<vue-router>一直是被复用的。所以不会走canDeactive， canActivate，deactivate，activate，只会调用<code>router.beforeEach</code>，<code>canReuse</code>，<code>router.afterEach</code>和<code>this.data</code>当然没有被transition.abort()的前提下。</vue-router></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> VueRouter().beforeEach(<span class="function"><span class="keyword">function</span> (<span class="params">transition</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (transition.to.path === <span class="string">'/forbidden'</span>) &#123;</div><div class="line">       transition.abort()</div><div class="line">     &#125; <span class="keyword">else</span> &#123;</div><div class="line">       transition.next()</div><div class="line">     &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> VueRouter().afterEach(<span class="function"><span class="keyword">function</span> (<span class="params">transition</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'成功浏览到: '</span> + transition.to.path)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">route: &#123;</div><div class="line">    canReuse() &#123;</div><div class="line">      <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">    &#125;,</div><div class="line">    data() &#123;</div><div class="line">        <span class="comment">// TODO 没有被transition.abort()的时候，会被调用</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="2-路由切换"><a href="#2-路由切换" class="headerlink" title="2.路由切换"></a>2.路由切换</h2><p>有一种场景是组件a切换到组件b时，想要先停留在a，等b获取了数据才进行切换，想做到这个可以使用<a href="https://github.com/vuejs/vue-router/blob/1.0/docs/zh-cn/pipeline/data.md#详情" target="_blank" rel="external">waitForData</a>，在b组件作如下操作：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">route: &#123;</div><div class="line">    data() &#123;</div><div class="line">        <span class="comment">// TODO 数据请求加载</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">waitForData</span>: <span class="literal">true</span>  <span class="comment">//数据加载完在切换</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/qsy/" rel="tag">#qsy</a>
+          
+            <a href="/tags/vue-router/" rel="tag">#vue-router</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/26/vue-validator验证/" rel="next" title="vue-validator验证">
+                <i class="fa fa-chevron-left"></i> vue-validator验证
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/28/浅谈浏览器的渲染原理/" rel="prev" title="浅谈浏览器的渲染原理">
+                浅谈浏览器的渲染原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/28/vue-router的简单流程/"
+           data-title="vue-router的简单流程" data-url="http://x-front-team.github.io/2016/10/28/vue-router的简单流程/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一、vue-router组成"><span class="nav-number">2.</span> <span class="nav-text">一、vue-router组成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、vue-router简单的一个流程"><span class="nav-number">3.</span> <span class="nav-text">二、vue-router简单的一个流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、两个应用场景"><span class="nav-number">4.</span> <span class="nav-text">三、两个应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-组件复用-a-b-id"><span class="nav-number">4.1.</span> <span class="nav-text">1.组件复用(a/b/:id)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-路由切换"><span class="nav-number">4.2.</span> <span class="nav-text">2.路由切换</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

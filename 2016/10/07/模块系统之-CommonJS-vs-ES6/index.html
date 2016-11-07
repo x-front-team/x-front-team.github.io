@@ -1,0 +1,660 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="csd,module system,es6,commonjs," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="想了半天标题,终于决定还是它了。主要就是对比两个规范下的模块系统。对于ES6模块系统,截止目前还没有环境原生支持,大多通过babel转换来实现。node环境的模块系统本身就是CommonJS的一个实现,浏览器环境通过webpack进行构建也可以支持大部分CommonJS,所以这个话题多数场景与宿主环境没有直接关系。
+接下来开始VS:
+导入模块CommonJS:12const Koa = requi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模块系统之 CommonJS vs ES6">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/07/模块系统之-CommonJS-vs-ES6/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="想了半天标题,终于决定还是它了。主要就是对比两个规范下的模块系统。对于ES6模块系统,截止目前还没有环境原生支持,大多通过babel转换来实现。node环境的模块系统本身就是CommonJS的一个实现,浏览器环境通过webpack进行构建也可以支持大部分CommonJS,所以这个话题多数场景与宿主环境没有直接关系。
+接下来开始VS:
+导入模块CommonJS:12const Koa = requi">
+<meta property="og:updated_time" content="2016-10-08T09:54:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="模块系统之 CommonJS vs ES6">
+<meta name="twitter:description" content="想了半天标题,终于决定还是它了。主要就是对比两个规范下的模块系统。对于ES6模块系统,截止目前还没有环境原生支持,大多通过babel转换来实现。node环境的模块系统本身就是CommonJS的一个实现,浏览器环境通过webpack进行构建也可以支持大部分CommonJS,所以这个话题多数场景与宿主环境没有直接关系。
+接下来开始VS:
+导入模块CommonJS:12const Koa = requi">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/07/模块系统之-CommonJS-vs-ES6/"/>
+
+  <title> 模块系统之 CommonJS vs ES6 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                模块系统之 CommonJS vs ES6
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-07T19:52:56+08:00" content="2016-10-07">
+              2016-10-07
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/07/模块系统之-CommonJS-vs-ES6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/07/模块系统之-CommonJS-vs-ES6/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>想了半天标题,终于决定还是它了。主要就是对比两个规范下的模块系统。<br>对于ES6模块系统,截止目前还没有环境原生支持,大多通过babel转换来实现。node环境的模块系统本身就是CommonJS的一个实现,浏览器环境通过webpack进行构建也可以支持大部分CommonJS,所以这个话题多数场景与宿主环境没有直接关系。</p>
+<p>接下来开始VS:</p>
+<h2 id="导入模块"><a href="#导入模块" class="headerlink" title="导入模块"></a>导入模块</h2><p>CommonJS:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">'koa'</span>)</div><div class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</div></pre></td></tr></table></figure></p>
+<p>ES6:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> Koa <span class="keyword">from</span> <span class="string">'koa'</span></div><div class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</div></pre></td></tr></table></figure></p>
+<p>看起来似乎ES6更加『正统』,还霸占了两个关键字呢(/得意).</p>
+<a id="more"></a>
+<h2 id="导出模块"><a href="#导出模块" class="headerlink" title="导出模块"></a>导出模块</h2><p>CommonJS:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> anyData</div><div class="line"><span class="comment">// ... 为anyData赋值需要导出的任何数据</span></div><div class="line"><span class="built_in">module</span>.exports = anyData</div><div class="line"><span class="comment">// =&gt; 别的模块导入此模块,拿到的是anyData</span></div></pre></td></tr></table></figure></p>
+<p>这是较常见的,还可以这样:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">exports.a = <span class="string">'a'</span></div><div class="line">exports.b = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="comment">// do something</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// =&gt; 别的模块导入此模块,拿到的是&#123; a: 'a', b: function &#125;</span></div></pre></td></tr></table></figure></p>
+<p>甚至这样:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> myModule = <span class="built_in">module</span>.exports</div><div class="line">myModule.c = <span class="string">'ccc'</span></div><div class="line">myModule.d = &#123;</div><div class="line">  <span class="attr">m</span>: <span class="number">111</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// =&gt; 别的模块导入此模块,拿到的是&#123; c: 'ccc', d: &#123; m: 111 &#125; &#125;</span></div></pre></td></tr></table></figure></p>
+<p>ES6:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> anyData</div><div class="line"><span class="comment">// ... 为anyData赋值需要导出的任何数据</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> anyData</div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> a = <span class="string">'a'</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> b = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="comment">// do something</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>别的模块可以按需取出需要的东西,比如我只想要<code>anyData</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 这里可以直接重命名为你想要的变量</span></div><div class="line"><span class="keyword">import</span> ad <span class="keyword">from</span> <span class="string">'./any-data'</span></div><div class="line"><span class="comment">// do something with ad</span></div></pre></td></tr></table></figure>
+<p>比如我只想要<code>a</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; a &#125; <span class="keyword">from</span> <span class="string">'./any-data'</span></div><div class="line"><span class="comment">// 注意这里的a,必须写a,如果希望重命名需要这样写 import &#123; a as A &#125; from './any-data'</span></div><div class="line"><span class="comment">// do something with a</span></div></pre></td></tr></table></figure>
+<p>看到这里,似乎还是ES6看起来更加优雅。是的,这是<em>一般的</em>,<em>多数的</em>场景。而且,经过babel的转译,ES6的导入还兼容CommonJS的导出。</p>
+<h2 id="ES6兼容CommonJS"><a href="#ES6兼容CommonJS" class="headerlink" title="ES6兼容CommonJS"></a>ES6兼容CommonJS</h2><p>CommonJS导出 a.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">greeting</span>: <span class="string">'hello'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>ES6导入:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> a <span class="keyword">from</span> <span class="string">'./a'</span></div><div class="line"><span class="built_in">console</span>.log(a.greeting) <span class="comment">// =&gt; hello</span></div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="string">'xxx'</span></div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// do something</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>观察一下babel转译后的代码:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"></div><div class="line"><span class="built_in">Object</span>.defineProperty(exports, <span class="string">"__esModule"</span>, &#123;</div><div class="line">  <span class="attr">value</span>: <span class="literal">true</span></div><div class="line">&#125;);</div><div class="line">exports.test = test;</div><div class="line"></div><div class="line"><span class="keyword">var</span> _a = <span class="built_in">require</span>(<span class="string">'./a'</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> _a2 = _interopRequireDefault(_a);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">_interopRequireDefault</span>(<span class="params">obj</span>) </span>&#123; <span class="keyword">return</span> obj &amp;&amp; obj.__esModule ? obj : &#123; <span class="attr">default</span>: obj &#125;; &#125;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(_a2.default.greeting); <span class="comment">// =&gt; hello</span></div><div class="line"></div><div class="line">exports.default = <span class="string">'xxx'</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// do something</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>发现导出模块时,babel会给当前模块对象添加<code>__esModule: true</code>这个键值对,表示是ES6模块。为ES6的默认导出,指定<code>default</code>这个key。当导入模块时,会做一个预处理,判断当前模块的<code>__esModule</code>是否为<code>true</code>,如果为<code>true</code>,则直接返回,否则返回包装了一层的<code>{ default: obj }</code>。如此就兼容了CommonJS模块,感觉棒棒哒,但是如果反过来呢?</p>
+<p>ES6导出 b.js:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> z = <span class="string">'z'</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> m = <span class="string">'m'</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> n = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// do something</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>CommonJS模块:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> b = <span class="built_in">require</span>(<span class="string">'./b'</span>)</div><div class="line"><span class="built_in">console</span>.log(b)</div></pre></td></tr></table></figure></p>
+<p>我们拿到的将会是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  default: &apos;z&apos;,</div><div class="line">  m: &apos;m&apos;,</div><div class="line">  n: &apos;n&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们必须通过<code>default</code>这个key去访问默认导出, 虽然可行,但就是觉得不舒服!也许你可以说,我们可以用单向导入啊,只允许ES6模块导入CommonJS模块,不允许反过来,这样就不会出现default这种『异类』了。但是你真的能保证,永远是单向吗?难保哪个CommonJS模块有一天就『逆反』,需要引入ES6模块了。node服务端有些配置模块,没有被babel转译,只能使用CommonJS,有时候需要加载被babel转译的ES6模块,这时候真的就要疯了。如果你依然觉得ES6模块很完美的话,请接着往下看。</p>
+<h2 id="CommonJS杀手锏–动态加载"><a href="#CommonJS杀手锏–动态加载" class="headerlink" title="CommonJS杀手锏–动态加载"></a>CommonJS杀手锏–动态加载</h2><p>ES6模块是不支持动态加载的,即它的导入模块不能是表达式,只能是字面量。而CommonJS是可以的,而且node环境已经完美实现了。我想这应该是node6.x到目前为止还未原生实现ES6模块系统的原因之一吧.<br>举个栗子: 我想导入test目录下的所有模块。ES6无法实现,CommonJS可以这样写:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</div><div class="line"></div><div class="line">fs.readdirSync(<span class="string">'./test'</span>).forEach(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">const</span> testModule = <span class="built_in">require</span>(<span class="string">'./test'</span> + file)</div><div class="line">  <span class="comment">// do something with testModule</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>但是,需要强调的是,动态加载在node环境下表现良好。在浏览器端,源码是经过构建工具(典型如webpack)构建过的,构建工具只能做静态分析, 为了保证模块不丢失,在运行时不会找不到目标模块,构建工具会把匹配目标模块表达式的所有模块全部打包,极端情况下,会造成很大浪费。因为浏览器需要从服务器下载代码,打包多余的代码对网页性能是一种隐患。</p>
+<p>这一点,就是开头所说的『所以这个话题多数场景与宿主环境没有直接关系。』</p>
+<p>——-update—–<br>用webpack做了个实验验证:<br>假设目录<code>zzz</code>下有<code>a.js</code>, <code>b.js</code>, <code>c.js</code>三个模块,模块内容分别为:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// a.js</span></div><div class="line"><span class="built_in">module</span>.exports = <span class="string">'aaaaa'</span></div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// a.js</span></div><div class="line"><span class="built_in">module</span>.exports = <span class="string">'bbbbb'</span></div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// a.js</span></div><div class="line"><span class="built_in">module</span>.exports = <span class="string">'ccccc'</span></div></pre></td></tr></table></figure>
+<p>我在主模块下动态引入<code>a.js</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> m = <span class="string">'a'</span></div><div class="line"><span class="built_in">require</span>([<span class="string">'./zzz/'</span> + m], (q) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(q)</div><div class="line">&#125;)</div><div class="line"><span class="string">`</span></div></pre></td></tr></table></figure>
+<p>结果是对的,打印了aaaaa<br>但是观察一下打包出来的bundle,里面也附带了<code>b.js</code>和<code>c.js</code>的内容!!!  也就是我上面说的隐患!!!</p>
+<blockquote>
+<p>注意: webpack的require.ensure不支持动态模块写法</p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽说ES6模块在功能上比CommonJS稍逊,但ES6模块毕竟是未来的标准。网上据说ES6有动态加载的API,但是我没有找到,似乎还在TODO列表中。鉴于浏览器使用动态加载有一定隐患,我们尽量避免使用动态加载。另外,前端代码可以通过构建工具全部转译(至少能够保证单向依赖),因此前端代码使用ES6模块并没有什么问题。而在node环境,对动态加载的需求更高,那么还是使用CommonJS吧。<br>ps: 观察了一些知名node框架/库,它们也还是使用CommonJS。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/csd/" rel="tag">#csd</a>
+          
+            <a href="/tags/module-system/" rel="tag">#module system</a>
+          
+            <a href="/tags/es6/" rel="tag">#es6</a>
+          
+            <a href="/tags/commonjs/" rel="tag">#commonjs</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/30/性能之作用域/" rel="next" title="性能之作用域">
+                <i class="fa fa-chevron-left"></i> 性能之作用域
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/09/vertical-align-解析（一）/" rel="prev" title="vertical-align 解析（一）">
+                vertical-align 解析（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/07/模块系统之-CommonJS-vs-ES6/"
+           data-title="模块系统之 CommonJS vs ES6" data-url="http://x-front-team.github.io/2016/10/07/模块系统之-CommonJS-vs-ES6/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#导入模块"><span class="nav-number">1.</span> <span class="nav-text">导入模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出模块"><span class="nav-number">2.</span> <span class="nav-text">导出模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES6兼容CommonJS"><span class="nav-number">3.</span> <span class="nav-text">ES6兼容CommonJS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CommonJS杀手锏–动态加载"><span class="nav-number">4.</span> <span class="nav-text">CommonJS杀手锏–动态加载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,667 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="xhy,js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="视差滚动(Parallax Scrolling)是指让多层背景以不同的速度移动，形成立体的运动效果，带来非常出色的视觉体验。作为今年网页设计的热点趋势，越来越多的网站应用了这项技术。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈视差滚动(parallaxScrolling)">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/31/Scrolling/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="视差滚动(Parallax Scrolling)是指让多层背景以不同的速度移动，形成立体的运动效果，带来非常出色的视觉体验。作为今年网页设计的热点趋势，越来越多的网站应用了这项技术。">
+<meta property="og:image" content="https://camo.githubusercontent.com/80c16a0af52ed6764922f55ed135d126e976c0cb/68747470733a2f2f7261772e6769746875622e636f6d2f5072696e7a686f726e2f736b726f6c6c722f6d61737465722f67756964652f616e63686f722d706f736974696f6e2d67756964652e706e67">
+<meta property="og:updated_time" content="2016-10-31T08:46:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈视差滚动(parallaxScrolling)">
+<meta name="twitter:description" content="视差滚动(Parallax Scrolling)是指让多层背景以不同的速度移动，形成立体的运动效果，带来非常出色的视觉体验。作为今年网页设计的热点趋势，越来越多的网站应用了这项技术。">
+<meta name="twitter:image" content="https://camo.githubusercontent.com/80c16a0af52ed6764922f55ed135d126e976c0cb/68747470733a2f2f7261772e6769746875622e636f6d2f5072696e7a686f726e2f736b726f6c6c722f6d61737465722f67756964652f616e63686f722d706f736974696f6e2d67756964652e706e67">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/31/Scrolling/"/>
+
+  <title> 浅谈视差滚动(parallaxScrolling) | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                浅谈视差滚动(parallaxScrolling)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-31T13:45:53+08:00" content="2016-10-31">
+              2016-10-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/31/Scrolling/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/Scrolling/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>视差滚动(Parallax Scrolling)是指让多层背景以不同的速度移动，形成立体的运动效果，带来非常出色的视觉体验。作为今年网页设计的热点趋势，越来越多的网站应用了这项技术。</p>
+<a id="more"></a>
+<h2 id="视差滚动"><a href="#视差滚动" class="headerlink" title="视差滚动"></a>视差滚动</h2><p>视差效果，原本是一个天文学术语，当我们观察星空时，离我们远的星星移动速度较慢，离我们近的星星移动速度则较快。当我们坐在车上向车窗外看时，也会有这样的感觉，远处的群山似乎没有在动，而近处的稻田却在飞速掠过。许多游戏中都使用视差效果来增加场景的立体感。说的简单点就是网页内的元素在滚动屏幕时发生的位置的变化，然而各个不同的元素位置变化的速度不同，导致网页内的元素有层次错落的错觉，这和我们人体的眼球效果很像。我看到多家产品商用视差滚动效果来展示产品，从不同的空间角度和用户体验，起到了非常不错的效果。</p>
+<p>目前这种视差滚动效果被越来越多的国外网站所应用， 成为网页设计的热点趋势。</p>
+<p>通过一个很长的网页页面，其中利用一些令人惊叹的插图和图形，并使用视差滚动（Parallax Scrolling）效果，让多层背景以不同的速度移动，形成立体的运动效果，带来非常出色的视觉体验。</p>
+<h2 id="视差滚动效果的主要特点"><a href="#视差滚动效果的主要特点" class="headerlink" title="视差滚动效果的主要特点"></a>视差滚动效果的主要特点</h2><ol>
+<li>直观的设计，快速的响应速度，更合适运用于单页面。</li>
+<li>差异滚动 分层视差<br>页面上很多的元素在相互独立地滚动着，如果我们来对其它分层的话，可以有两到三层 ：背景层，内容层，贴图层。</li>
+<li>差异滚动的实现规则：<ul>
+<li>背景层的滚动 (最慢)</li>
+<li>贴图层(内容层和背景层之间的元素)的滚动 (次慢)</li>
+<li>内容层的滚动 (可以和页面的滚动速度一致)</li>
+</ul>
+</li>
+</ol>
+<p>三个图层的滚动速度不一致，就做出了漂亮的差异滚动效果</p>
+<hr>
+<p>下面主要介绍视差滚动插件skrollr的使用</p>
+<h4 id="skrollr"><a href="#skrollr" class="headerlink" title="skrollr"></a>skrollr</h4><p>skrollr 0.6.30的js库支持移动端（Andriod,ios）和PC端，大小仅12K。</p>
+<p>设计友好，不需要知晓过多的js技巧，只需要清楚CSS和HTML。</p>
+<h4 id="skrollr使用"><a href="#skrollr使用" class="headerlink" title="skrollr使用"></a>skrollr使用</h4><p>正确引入skrollr.min.js，调用skrollr.init()函数来初始化skrollr</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"skrollr.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">    <span class="keyword">var</span> s = skrollr.init();</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="for-example"><a href="#for-example" class="headerlink" title="for example"></a>for example</h4><ol>
+<li>改变一个背景色div的起始值#00f时，当用户向下滑动500像素，逐渐改变div的背景颜色从#00f到#f00<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-0</span>=<span class="string">"background-color:rgb(0,0,255);"</span> <span class="attr">data-500</span>=<span class="string">"background-color:rgb(255,0,0);"</span>&gt;</span>WOOOT<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><a href="http://prinzhorn.github.io/skrollr/examples/docu/1.html" target="_blank" rel="external">查看DEMO</a></p>
+<ol>
+<li>在1例子的基础上增加背景滚动效果</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-0</span>=<span class="string">"background-color:rgb(0,0,255);transform:rotate(0deg);"</span> <span class="attr">data-500</span>=<span class="string">"background-color:rgb(255,0,0);transform:rotate(360deg);"</span>&gt;</span>WOOOT<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><a href="http://prinzhorn.github.io/skrollr/examples/docu/2.html" target="_blank" rel="external">查看DEMO</a></p>
+<ol>
+<li>我们在动画结束的时候，元素的顶部到达视口顶部</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-0</span>=<span class="string">"background-color:rgb(0,0,255);transform[bounce]:rotate(0deg);"</span> <span class="attr">data-500</span>=<span class="string">"background-color:rgb(255,0,0);transform[bounce]:rotate(360deg);"</span>&gt;</span>WOOOT<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><a href="http://prinzhorn.github.io/skrollr/examples/docu/3.html" target="_blank" rel="external">查看DEMO</a></p>
+<h4 id="绝对和相对模式"><a href="#绝对和相对模式" class="headerlink" title="绝对和相对模式"></a>绝对和相对模式</h4><p>例如，如果你不知道到底哪里的元素将在页面当中。这就是为什么有两种模式关键帧，也就是<code>absolute</code>和<code>relative</code>模式。</p>
+<h5 id="绝对模式"><a href="#绝对模式" class="headerlink" title="绝对模式"></a>绝对模式</h5><p>关键帧：描述多少绝对值文件已被向下滚动。</p>
+<p>语法<code>data-[offset]-[anchor]</code>，其中offset可以是任意整数（0为默认值）和anchor可以是start（默认）或end。任一offset或anchor可以在某些情况下可以省略。</p>
+<p>data-0= data-start= data-0-start：当滚动顶部是0。<br>data-100= data-100-start：当滚动顶部是100。<br>data–100= data–100-start：当滚动顶部为-100（听起来像废话，但请记住，插值将相对于这一点）。<br>data-end= data-0-end：当偏移量是0，但是从文档的底部，而不是从顶部计数。总之：当你到达页面的底部。<br>data-100-end：100px的之前，我们到达底部。<br>data–100-end：100px的后，我们到达底部（再次，它取决于你是否需要它）。</p>
+<h5 id="相对模式"><a href="#相对模式" class="headerlink" title="相对模式"></a>相对模式</h5><p>代替限定相对于该关键帧的文件（即绝对值），我们能够定义它们取决于任何元件的相对于所述位置的视口。</p>
+<p>语法是data-[offset]-(viewport-anchor)-[element-anchor]，在这里offset又可以是任意整数，缺省值为0两者viewport-anchor（强制性）和element-anchor（可选）可以是一个top，center或bottom。如果element-anchor省略，的值viewport-anchor将采取（就像与背景位置）。这里的关键帧和它们的含义的一些例子。</p>
+<p>data-top= data-0-top= data-top-top= data-0-top-top：当元素的顶部与视口的顶部对齐。</p>
+<p>data-100-top= data-100-top-top：当元素的顶部是100像素以上的视口的顶部。</p>
+<p>data–100-top= data–100-top-top：当元素的顶部是低于100像素视口的顶部。</p>
+<p>data-top-bottom= data-0-top-bottom：当元素的底部是在视口的顶部（它只是不可见）。</p>
+<p>data-center-center= data-0-center-center：当元素位于视口的中心。</p>
+<p>data-bottom-center= data-0-bottom-center：当元件的中心是在视口的底部，从而在元件的上半部分是可见的。</p>
+<p>默认关键帧由其中关键帧中描述的元件的位置触发。然而有的时候的第二元件的位置应触发所述第一元件的关键帧。该<code>data-anchor-target</code> 属性可在这些情况下可以使用。<code>data-anchor-target</code>属性接受任何CSS选择并在页面匹配选择将被用于触发其中该属性被定义在元件上关键帧的第一个元素的位置。data-anchor-target需要IE 8或更大。</p>
+<p>例如：任何CSS选择都可以使用，即 data-anchor-target=”.bar:not(.bacon) ~ span &gt; a[href]”</p>
+<p>注意：如果你需要支持IE 7，那么你可能只使用ID作为anchor-targetS，即#foo。该IE插件映射querySelector到getElementById。</p>
+<p>这里有一个更好的了解锚的信息图表：</p>
+<p><img src="https://camo.githubusercontent.com/80c16a0af52ed6764922f55ed135d126e976c0cb/68747470733a2f2f7261772e6769746875622e636f6d2f5072696e7a686f726e2f736b726f6c6c722f6d61737465722f67756964652f616e63686f722d706f736974696f6e2d67756964652e706e67" alt="image"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/xhy/" rel="tag">#xhy</a>
+          
+            <a href="/tags/js/" rel="tag">#js</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/31/浅谈vue父子组件间相互通信/" rel="next" title="浅谈vue父子组件间相互通信">
+                <i class="fa fa-chevron-left"></i> 浅谈vue父子组件间相互通信
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/31/Mac-Surge-2-初体验/" rel="prev" title="Surge for Mac 2 初体验与教程">
+                Surge for Mac 2 初体验与教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/31/Scrolling/"
+           data-title="浅谈视差滚动(parallaxScrolling)" data-url="http://x-front-team.github.io/2016/10/31/Scrolling/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#视差滚动"><span class="nav-number">1.</span> <span class="nav-text">视差滚动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视差滚动效果的主要特点"><span class="nav-number">2.</span> <span class="nav-text">视差滚动效果的主要特点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#skrollr"><span class="nav-number">2.0.1.</span> <span class="nav-text">skrollr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#skrollr使用"><span class="nav-number">2.0.2.</span> <span class="nav-text">skrollr使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for-example"><span class="nav-number">2.0.3.</span> <span class="nav-text">for example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绝对和相对模式"><span class="nav-number">2.0.4.</span> <span class="nav-text">绝对和相对模式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#绝对模式"><span class="nav-number">2.0.4.1.</span> <span class="nav-text">绝对模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相对模式"><span class="nav-number">2.0.4.2.</span> <span class="nav-text">相对模式</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

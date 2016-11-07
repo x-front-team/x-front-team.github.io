@@ -1,0 +1,645 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="zym,vm,vh," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="响应式布局常用方法在响应式布局中，为了使不同的显示设备拥有更合理的显示效果，比如内容字体大小，我们经常用的是Media query，百分比以及文字大小单位em，rem
+12345678910111213141516171819202122232425262728293031323334353637&amp;lt;html&amp;gt;  &amp;lt;body&amp;gt;	&amp;lt;p&amp;gt;测试字体大小  测试字体大小&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈Viewport单位">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/09/浅谈视口单位/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="响应式布局常用方法在响应式布局中，为了使不同的显示设备拥有更合理的显示效果，比如内容字体大小，我们经常用的是Media query，百分比以及文字大小单位em，rem
+12345678910111213141516171819202122232425262728293031323334353637&amp;lt;html&amp;gt;  &amp;lt;body&amp;gt;	&amp;lt;p&amp;gt;测试字体大小  测试字体大小&amp;">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161010/browser-support.png">
+<meta property="og:updated_time" content="2016-10-19T05:01:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈Viewport单位">
+<meta name="twitter:description" content="响应式布局常用方法在响应式布局中，为了使不同的显示设备拥有更合理的显示效果，比如内容字体大小，我们经常用的是Media query，百分比以及文字大小单位em，rem
+12345678910111213141516171819202122232425262728293031323334353637&amp;lt;html&amp;gt;  &amp;lt;body&amp;gt;	&amp;lt;p&amp;gt;测试字体大小  测试字体大小&amp;">
+<meta name="twitter:image" content="http://x-front-team.github.io/images/20161010/browser-support.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/09/浅谈视口单位/"/>
+
+  <title> 浅谈Viewport单位 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                浅谈Viewport单位
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-09T14:24:18+08:00" content="2016-10-09">
+              2016-10-09
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/09/浅谈视口单位/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/09/浅谈视口单位/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="响应式布局常用方法"><a href="#响应式布局常用方法" class="headerlink" title="响应式布局常用方法"></a>响应式布局常用方法</h4><p>在响应式布局中，为了使不同的显示设备拥有更合理的显示效果，比如内容字体大小，我们经常用的是Media query，百分比以及文字大小单位em，rem</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">p</span>&gt;</span>测试字体大小  测试字体大小<span class="tag">&lt;/<span class="name">P</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">h1</span>&gt;</span>h1字体<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span>文本内容<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="css"></span></div><div class="line">  <span class="comment">/* 先设置根元素字体大小 */</span></div><div class="line">  <span class="selector-tag">body</span> &#123;</div><div class="line">	<span class="attribute">font-size</span>: <span class="number">12px</span></div><div class="line">	@media screen and (min-width: <span class="number">360px</span>) &#123;</div><div class="line">	  font-size: <span class="number">16px</span></div><div class="line">	&#125;</div><div class="line">	@<span class="keyword">media</span> screen and (min-width: <span class="number">400px</span>) &#123;</div><div class="line">	  <span class="selector-tag">font-size</span>: 18<span class="selector-tag">px</span></div><div class="line">	&#125;</div><div class="line">	@<span class="keyword">media</span> screen and (min-width: <span class="number">440px</span>) &#123;</div><div class="line">	  <span class="selector-tag">font-size</span>: 20<span class="selector-tag">px</span></div><div class="line">	&#125; </div><div class="line">	@<span class="keyword">media</span> screen and (min-width: <span class="number">480px</span>) &#123;</div><div class="line">	  <span class="selector-tag">font-size</span>: 22<span class="selector-tag">px</span></div><div class="line">	&#125;</div><div class="line">	@<span class="keyword">media</span> screen and (min-width: <span class="number">640px</span>) &#123;</div><div class="line">	  <span class="selector-tag">font-size</span>: 28<span class="selector-tag">px</span></div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">  <span class="selector-tag">p</span> &#123;</div><div class="line">    <span class="attribute">font-size</span>: <span class="number">1rem</span></div><div class="line">  &#125;</div><div class="line">  <span class="selector-tag">h1</span> &#123;</div><div class="line">    <span class="attribute">font-size</span>: <span class="number">1.25rem</span></div><div class="line">  &#125;</div><div class="line">  <span class="selector-class">.content</span> &#123;</div><div class="line">	<span class="attribute">font-size</span>: .<span class="number">85rem</span></div><div class="line">  &#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>有时候为了更好地适用所有的设备排版效果，需要添加多个<code>@media</code>，而视口单位的应用可以让媒体查询声明字体大小更方便</p>
+<a id="more"></a>
+<h4 id="什么是视口-Viewport-单位"><a href="#什么是视口-Viewport-单位" class="headerlink" title="什么是视口(Viewport)单位"></a>什么是视口(Viewport)单位</h4><p>在 CSS 规范中，有4种类型的可用视口单位：</p>
+<ul>
+<li><code>vw</code>: 1vw 等于视口宽度的 1%</li>
+<li><code>vh</code>: 1vh 等于视口高度的 1%</li>
+<li><code>vmin</code>: vw 和 vh 中的较小值</li>
+<li><code>vmax</code>: vw 和 vh 中的较大值</li>
+</ul>
+<p>视口指的是浏览器内部可视区域大小<br>即：</p>
+<ul>
+<li><code>100vw = window.innerWidth</code></li>
+<li><code>100vh = window.innerHeight</code><br>这种根据区域大小弹性的自适应效果将很好的用于响应式布局</li>
+</ul>
+<p>假如我们有一个宽度1000px 和 高度800px的Viewport<br>那么 50vm = 500px<br>     50vh = 400px<br>     50vim = 400px<br>     50vmax = 500px</p>
+<h4 id="浏览器宽度在一定范围变化时字体大小相应的在一定范围内变化"><a href="#浏览器宽度在一定范围变化时字体大小相应的在一定范围内变化" class="headerlink" title="浏览器宽度在一定范围变化时字体大小相应的在一定范围内变化"></a>浏览器宽度在一定范围变化时字体大小相应的在一定范围内变化</h4><p> 为了更好的用户体验，比如希望浏览器大小在320-600范围内，字体大小在16px-24px范围内变动，怎么实现呢？</p>
+<p> dang dang dang 公式来了<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* v1: font-size 差值 */</span></div><div class="line"><span class="comment">/* v2: 可视区域宽度差值 */</span></div><div class="line"><span class="comment">/* smaller-viewport-width: 较小的可视区域宽度 */</span></div><div class="line"><span class="comment">/* smaller-font-size: 较小的font-size值 */</span></div><div class="line"></div><div class="line"><span class="selector-tag">html</span> &#123;</div><div class="line">  <span class="attribute">font-size</span>: <span class="built_in">calc</span>(smaller-font-size/16 * 100% - v1/v2 * (100vw - smaller-viewport-width))</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 实例 */</span></div><div class="line"><span class="comment">/* 浏览器在375~600范围内,字体在16px~24px范围内变化 */</span></div><div class="line"><span class="comment">/* smaller-font-size: 16 */</span></div><div class="line"><span class="comment">/* v1: 8 */</span></div><div class="line"><span class="comment">/* v2: 225 */</span></div><div class="line"><span class="comment">/* smaller-viewport-width: 375px */</span></div><div class="line"></div><div class="line"><span class="selector-tag">html</span> &#123;</div><div class="line">  <span class="attribute">font-size</span>: <span class="built_in">calc</span>(16/16 * 100% - 8/225 * (100vw - 375px))</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p> 结合<code>@media</code>可以更好地设置移动端及PC端根元素字体大小</p>
+<p> [拿来主义]借用一段大神的代码</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">html</span> &#123;</div><div class="line">  <span class="comment">/* iPhone6的375px尺寸作为16px基准，600px正好18px大小 */</span></div><div class="line">  <span class="attribute">font-size</span>: <span class="built_in">calc</span>(100% + 2 * (100vw - 375px) / <span class="number">225</span>);</div><div class="line">&#125;</div><div class="line">@<span class="keyword">media</span> screen and (min-width: <span class="number">600px</span>) &#123;</div><div class="line">  <span class="selector-tag">html</span> &#123;</div><div class="line">    <span class="comment">/* 600px-1000px每100像素宽字体增加1px(18px-22px) */</span></div><div class="line">    <span class="attribute">font-size</span>: <span class="built_in">calc</span>(112.5% + 4 * (100vw - 600px) / <span class="number">400</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">@<span class="keyword">media</span> screen and (min-width: <span class="number">1000px</span>) &#123;</div><div class="line">  <span class="selector-tag">html</span> &#123;</div><div class="line">    <span class="comment">/* 1000px往后是每100像素0.5px增加 */</span></div><div class="line">    <span class="attribute">font-size</span>: <span class="built_in">calc</span>(137.5% + 5 * (100vw - 1000px) / <span class="number">1000</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>使用视口单位实现弹框的垂直居中</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.u-modal</span>&#123;</div><div class="line">  <span class="attribute">width</span>: <span class="number">60vw</span>;</div><div class="line">  <span class="attribute">height</span>: <span class="number">60vh</span>;</div><div class="line">  <span class="attribute">margin</span>: <span class="number">20vh</span> auto;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="浏览器兼容情况"><a href="#浏览器兼容情况" class="headerlink" title="浏览器兼容情况"></a>浏览器兼容情况</h4><p><img src="/images/20161010/browser-support.png" alt="浏览器兼容情况"><br>好了，在浏览器支持的情况下将<code>em</code>, <code>rem</code>, <code>vm</code>, <code>vh</code>, <code>@media</code>,百分比合理运用起来吧，响应式布局更容易了</p>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><hr>
+<p><em><a href="https://github.com/dwqs/blog/issues/5" target="_blank" rel="external">《基于视口单位的网页排版》</a> </em><br><em><a href="http://www.zhangxinxu.com/wordpress/2016/08/vw-viewport-responsive-layout-typography/" target="_blank" rel="external">《基于vw等viewport视区相对单位的响应式排版和布局》</a> </em><br><em><a href="http://www.zhangxinxu.com/wordpress/2012/09/new-viewport-relative-units-vw-vh-vm-vmin/" target="_blank" rel="external">《视区相关单位vw, vh..简介以及可实际应用场景》</a> </em><br><em><a href="https://segmentfault.com/a/1190000004189237" target="_blank" rel="external">《移动端应该如何动态设置字体大小？》</a> </em><br><em><a href="https://drafts.csswg.org/css-values/#vw/" target="_blank" rel="external">《vm unit》</a> </em></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/zym/" rel="tag">#zym</a>
+          
+            <a href="/tags/vm/" rel="tag">#vm</a>
+          
+            <a href="/tags/vh/" rel="tag">#vh</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/09/vertical-align-解析（一）/" rel="next" title="vertical-align 解析（一）">
+                <i class="fa fa-chevron-left"></i> vertical-align 解析（一）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/09/如何编写一个Chrome扩展/" rel="prev" title="如何编写一个Chrome扩展">
+                如何编写一个Chrome扩展 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/09/浅谈视口单位/"
+           data-title="浅谈Viewport单位" data-url="http://x-front-team.github.io/2016/10/09/浅谈视口单位/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#响应式布局常用方法"><span class="nav-number">1.</span> <span class="nav-text">响应式布局常用方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是视口-Viewport-单位"><span class="nav-number">2.</span> <span class="nav-text">什么是视口(Viewport)单位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浏览器宽度在一定范围变化时字体大小相应的在一定范围内变化"><span class="nav-number">3.</span> <span class="nav-text">浏览器宽度在一定范围变化时字体大小相应的在一定范围内变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例"><span class="nav-number">4.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浏览器兼容情况"><span class="nav-number">5.</span> <span class="nav-text">浏览器兼容情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

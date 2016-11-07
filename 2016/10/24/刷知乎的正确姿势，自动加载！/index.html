@@ -1,0 +1,640 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ggf,脚本,知乎," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本来打算写一下网络工具在开发中应用的文章，不过呢，咱公司网络工具用的不是很多，只是在用charles, gas mask 和 mamp没有用，好像是也没有用的必要。而且真要写，篇幅也是挺大的。
+所以呢，咱就写篇接地气的，解决一个痛点。刷知乎居然要用鼠标，不能忍。
+大家在刷知乎的过程中，可能会点赞，收藏，关注，这些行为都会在 最新动态 中展示。如果想要回味一下自己感兴趣的东西，刷一遍 最新动态 那是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="刷知乎的正确姿势，自动翻页!">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/24/刷知乎的正确姿势，自动加载！/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="本来打算写一下网络工具在开发中应用的文章，不过呢，咱公司网络工具用的不是很多，只是在用charles, gas mask 和 mamp没有用，好像是也没有用的必要。而且真要写，篇幅也是挺大的。
+所以呢，咱就写篇接地气的，解决一个痛点。刷知乎居然要用鼠标，不能忍。
+大家在刷知乎的过程中，可能会点赞，收藏，关注，这些行为都会在 最新动态 中展示。如果想要回味一下自己感兴趣的东西，刷一遍 最新动态 那是">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161024/1.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161024/2.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161024/3.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161024/4.png">
+<meta property="og:updated_time" content="2016-10-31T01:58:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="刷知乎的正确姿势，自动翻页!">
+<meta name="twitter:description" content="本来打算写一下网络工具在开发中应用的文章，不过呢，咱公司网络工具用的不是很多，只是在用charles, gas mask 和 mamp没有用，好像是也没有用的必要。而且真要写，篇幅也是挺大的。
+所以呢，咱就写篇接地气的，解决一个痛点。刷知乎居然要用鼠标，不能忍。
+大家在刷知乎的过程中，可能会点赞，收藏，关注，这些行为都会在 最新动态 中展示。如果想要回味一下自己感兴趣的东西，刷一遍 最新动态 那是">
+<meta name="twitter:image" content="http://x-front-team.github.io/images/20161024/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/24/刷知乎的正确姿势，自动加载！/"/>
+
+  <title> 刷知乎的正确姿势，自动翻页! | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                刷知乎的正确姿势，自动翻页!
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-24T17:58:52+08:00" content="2016-10-24">
+              2016-10-24
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/24/刷知乎的正确姿势，自动加载！/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/24/刷知乎的正确姿势，自动加载！/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本来打算写一下网络工具在开发中应用的文章，不过呢，咱公司网络工具用的不是很多，只是在用charles, gas mask 和 mamp没有用，好像是也没有用的必要。而且真要写，篇幅也是挺大的。</p>
+<p>所以呢，咱就写篇接地气的，解决一个痛点。刷知乎居然要用鼠标，不能忍。</p>
+<p>大家在刷知乎的过程中，可能会点赞，收藏，关注，这些行为都会在 <code>最新动态</code> 中展示。如果想要回味一下自己感兴趣的东西，刷一遍 <code>最新动态</code> 那是极好的。</p>
+<a id="more"></a>
+<p>可是知乎的 <code>最新动态</code> 是有长度限制的，每看几条，就得点一下 <code>更多</code> 按钮，简直不能忍。如下图：</p>
+<p><img src="/images/20161024/1.png" alt="更多按键"></p>
+<p>点一下，点一下，完全没有刷的快感。<br>所以呢，我决定用个脚本来让它自动加载。<br>准备工具： firefox GreaseMonkey(油猴子）插件</p>
+<blockquote>
+<p>chrome 也可以，名字叫Tampermonkey。其它浏览器就未知了。以下仅以火狐为例</p>
+</blockquote>
+<p>装好GreaseMonkey之后，新建脚本</p>
+<p><img src="/images/20161024/2.png" alt="新建脚本"></p>
+<p>起一个名字，自己能看懂就好。 <code>脚本应用到</code> 把最后一个单词换成 <code>*</code>, 意味着匹配所有的用户的 <code>最新动态</code>  页。<br>知乎的搜索用的也是一样的加载模式，所以可以再加上一条<br><code>https://www.zhihu.com/search*</code><br>然后就可以写代码了，闲话不多说，接下来就到了上代码的时候了。<br><img src="/images/20161024/3.png" alt="配置一下"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ==UserScript==</span></div><div class="line"><span class="comment">// @name        scroll for zhihu</span></div><div class="line"><span class="comment">// @namespace   594030667</span></div><div class="line"><span class="comment">// @include     https://www.zhihu.com/people/*</span></div><div class="line"><span class="comment">// @include     https://www.zhihu.com/search*</span></div><div class="line"><span class="comment">// @version     1</span></div><div class="line"><span class="comment">// @grant       none</span></div><div class="line"><span class="comment">// ==/UserScript==</span></div><div class="line"><span class="comment">// 注册一个滚动事件监听,绑定Loadmore方法</span></div><div class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'scroll'</span>, loadmore, <span class="literal">false</span>)</div><div class="line"><span class="comment">// requestFlag 是为了防止重复请求的，因为滚动是个触发频率很高的事件，滚一下触发个几十次，显然不是很合适</span></div><div class="line"><span class="comment">// 使用requestFlag 目的就是尽量一次滚动只触发一次加载</span></div><div class="line"><span class="keyword">var</span> requestFlag = <span class="literal">true</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadmore</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// scrollMaxY - scrollY = 滚动条距底部的距离</span></div><div class="line">  <span class="comment">// warn 不保证兼容性</span></div><div class="line">  <span class="comment">// scrollMaxY 很神奇啊，dash上查不到兼容性， can i use 上完全查不到......</span></div><div class="line">  <span class="comment">// 不过因为看起来和scrollY 很和谐，所以我要用它</span></div><div class="line">  <span class="keyword">var</span> pixToBottom = <span class="built_in">window</span>.scrollMaxY - <span class="built_in">window</span>.scrollY</div><div class="line">  <span class="comment">// 找到知乎的 更多 按钮</span></div><div class="line">  <span class="keyword">var</span> zhMore = <span class="built_in">document</span>.querySelector(<span class="string">'.zu-button-more'</span>)</div><div class="line">  <span class="comment">// 什么时候触发 自动加载</span></div><div class="line">  <span class="comment">// 这里取得是 屏幕调试一半 与 600 之中的最小值</span></div><div class="line">  <span class="comment">// 比如屏幕调试是 1080 ，那么就是 540</span></div><div class="line">  <span class="keyword">var</span> triggerPix = <span class="built_in">Math</span>.min(<span class="built_in">window</span>.screen.availHeight / <span class="number">2</span>, <span class="number">600</span>)</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'pixToBottom'</span>, pixToBottom)</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'MaxY'</span>, <span class="built_in">window</span>.scrollMaxY)</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'scrollY'</span>, <span class="built_in">window</span>.scrollY)</div><div class="line">  <span class="comment">// 滚动条距底部的距离符合判定时</span></div><div class="line">  <span class="keyword">if</span> (<span class="number">0</span> &lt; pixToBottom &amp;&amp; pixToBottom &lt; triggerPix) &#123;</div><div class="line">    <span class="comment">// requestFlag 派上用场了</span></div><div class="line">    <span class="keyword">if</span> (requestFlag) &#123;</div><div class="line">      <span class="comment">// 模拟点击知乎 更多 按钮</span></div><div class="line">      zhMore.click()</div><div class="line">      <span class="comment">//  requestFlag 初始为true, 加载一次后，变成false</span></div><div class="line">      requestFlag = <span class="literal">false</span></div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'request success'</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// requestFlag 终究要变回 true的， 要不然就不能进入模拟点击的判定了</span></div><div class="line">  <span class="comment">// requestFlag 变成 true 的条件可以根据自己的体验来写</span></div><div class="line">  <span class="comment">// 写得宽泛的话，重复触发的概率大一点,比如说，一下子加载了10页</span></div><div class="line">  <span class="comment">// 写得比较严苛，重复触发的概率小一点,也有可能不触</span></div><div class="line"></div><div class="line">  <span class="keyword">if</span> (pixToBottom &gt; triggerPix &amp;&amp; pixToBottom &lt; triggerPix + <span class="number">500</span>) &#123;</div><div class="line">    requestFlag = <span class="literal">true</span></div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'pixToBottom'</span>, pixToBottom)</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'requestFlag'</span>, requestFlag)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码比较少，可能有3分之2都是注释和console.log，让诸位见笑了。<br>再献上一个网页淘宝登录时，不用手动从二维码切换密码输入的脚本。（有了1password,我还怕输密码？）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ==UserScript==</span></div><div class="line"><span class="comment">// @name        taobao-no-qr</span></div><div class="line"><span class="comment">// @namespace   594030667</span></div><div class="line"><span class="comment">// @include     https://login.taobao.com/member/login.jhtml*</span></div><div class="line"><span class="comment">// @version     1</span></div><div class="line"><span class="comment">// @grant       none</span></div><div class="line"><span class="comment">// ==/UserScript==</span></div><div class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'DOMContentLoaded'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'DOM fully loaded and parsed'</span>);</div><div class="line">  <span class="keyword">var</span> loginForm = <span class="built_in">document</span>.getElementById(<span class="string">'J_StaticForm'</span>);</div><div class="line">  loginForm.setAttribute(<span class="string">'style'</span>, <span class="string">'display:block !important'</span>)</div><div class="line">  <span class="built_in">console</span>.log(loginForm.style.display)</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>效果如图<br><img src="/images/20161024/4.png" alt="淘宝不想扫二维码"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ggf/" rel="tag">#ggf</a>
+          
+            <a href="/tags/脚本/" rel="tag">#脚本</a>
+          
+            <a href="/tags/知乎/" rel="tag">#知乎</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/24/记一次格式化金额风波/" rel="next" title="记一次格式化金额风波">
+                <i class="fa fa-chevron-left"></i> 记一次格式化金额风波
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/24/移动端适配方案/" rel="prev" title="移动端适配方案">
+                移动端适配方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/24/刷知乎的正确姿势，自动加载！/"
+           data-title="刷知乎的正确姿势，自动翻页!" data-url="http://x-front-team.github.io/2016/10/24/刷知乎的正确姿势，自动加载！/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

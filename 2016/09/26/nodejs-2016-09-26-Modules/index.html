@@ -1,0 +1,636 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="wj,nodejs," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在这里记录下nodejs各种小细节
+
+ch1  Modules作为一个新世纪的前端，npm早已经是我们生活中必不可少的工具了那么，这其中有多少奇怪的事情呢
+1. 全局安装不等于全局require初学nodejs的时，听闻npm i xxx之后，便可以在项目中直接require使用了又听闻有一个npm i xxx -g的全局安装命令，下意识以为这样安装之后在任何地方都可以require其实不然,这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nodejs查漏补缺-Modules">
+<meta property="og:url" content="http://x-front-team.github.io/2016/09/26/nodejs-2016-09-26-Modules/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="在这里记录下nodejs各种小细节
+
+ch1  Modules作为一个新世纪的前端，npm早已经是我们生活中必不可少的工具了那么，这其中有多少奇怪的事情呢
+1. 全局安装不等于全局require初学nodejs的时，听闻npm i xxx之后，便可以在项目中直接require使用了又听闻有一个npm i xxx -g的全局安装命令，下意识以为这样安装之后在任何地方都可以require其实不然,这">
+<meta property="og:updated_time" content="2016-10-08T09:14:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nodejs查漏补缺-Modules">
+<meta name="twitter:description" content="在这里记录下nodejs各种小细节
+
+ch1  Modules作为一个新世纪的前端，npm早已经是我们生活中必不可少的工具了那么，这其中有多少奇怪的事情呢
+1. 全局安装不等于全局require初学nodejs的时，听闻npm i xxx之后，便可以在项目中直接require使用了又听闻有一个npm i xxx -g的全局安装命令，下意识以为这样安装之后在任何地方都可以require其实不然,这">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/09/26/nodejs-2016-09-26-Modules/"/>
+
+  <title> Nodejs查漏补缺-Modules | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Nodejs查漏补缺-Modules
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-26T08:18:07+08:00" content="2016-09-26">
+              2016-09-26
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/26/nodejs-2016-09-26-Modules/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/nodejs-2016-09-26-Modules/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在这里记录下nodejs各种小细节</p>
+</blockquote>
+<h1 id="ch1-Modules"><a href="#ch1-Modules" class="headerlink" title="ch1  Modules"></a>ch1  Modules</h1><p>作为一个新世纪的前端，npm早已经是我们生活中必不可少的工具了<br>那么，这其中有多少奇怪的事情呢</p>
+<h2 id="1-全局安装不等于全局require"><a href="#1-全局安装不等于全局require" class="headerlink" title="1. 全局安装不等于全局require"></a>1. 全局安装不等于全局require</h2><p>初学nodejs的时，听闻<code>npm i xxx</code>之后，便可以在项目中直接require使用了<br>又听闻有一个<code>npm i xxx -g</code>的全局安装命令，下意识以为这样安装之后在任何地方都可以<code>require</code><br>其实不然,这个<code>-g</code>的意义更多的在于将nodejs写的命令行工具装在全局<br>这样就可以直接在命令行使用，而不需要敲全路径了</p>
+<p>比如 <code>npm i gulp -g</code><br>然后直接在命令行敲 gulp,就能使用它</p>
+<blockquote>
+<blockquote>
+<p>如果想require全局的包，则需要设置 NODE_PATH 环境变量<br>指向nodejs全局安装路径的node_modules文件夹<br>window 目录: <code>%USERPROFILE%\AppData\Roaming\npm\node_modules</code></p>
+</blockquote>
+</blockquote>
+<h2 id="2-为什么要使用module-exports-xxx-而不是-exports-xxx"><a href="#2-为什么要使用module-exports-xxx-而不是-exports-xxx" class="headerlink" title="2. 为什么要使用module.exports = xxx,而不是 exports = xxx"></a>2. 为什么要使用<code>module.exports = xxx</code>,而不是 <code>exports = xxx</code></h2><p>我们可以使用如下语句导出一个模块<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">exports.foo1 = bar1</div><div class="line">exports.foo2 = bar2</div><div class="line"></div><div class="line"><span class="comment">// or:</span></div><div class="line"><span class="built_in">module</span>.exports = bar</div></pre></td></tr></table></figure></p>
+<p>而不能使用<code>exports = bar</code><br>因为nodejs将你的模块文件包裹成<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">exports, require, module, __filename, __dirname</span>) </span>&#123;</div><div class="line">   <span class="comment">//your module</span></div><div class="line">   <span class="comment">// ...</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>其中<code>exports</code>是<code>module.exports</code>的引用<br>当我们改变<code>exports</code>的属性时，修改的是<code>module.exports</code>内存地址的对象<br>而当我们直接给<code>exports</code>赋值时，仅仅只是将<code>exports</code>指向的内存地址改变<br>而不会修改 <code>module.exports</code>的指向</p>
+<h2 id="3-解除modules缓存"><a href="#3-解除modules缓存" class="headerlink" title="3. 解除modules缓存"></a>3. 解除modules缓存</h2><p>我们知道nodejs会自动缓存require的模块，以防止多次require重复加载文件浪费性能<br>那如果我们的场景需要清除缓存，该怎么做呢？<br>其实nodejs的模块都缓存在<code>require.cache</code>对象里面，模块的键都是其文件的绝对路径<br>而通过require.resolve(‘./module/name’)可以获取到模块绝对路径<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">delete</span> <span class="built_in">require</span>.cache[<span class="built_in">require</span>.resolve(<span class="string">'./module/name'</span>)]</div></pre></td></tr></table></figure></p>
+<p>就可以删除相对应模块的缓存</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/wj/" rel="tag">#wj</a>
+          
+            <a href="/tags/nodejs/" rel="tag">#nodejs</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/14/性能之浏览器的重绘与重排/" rel="next" title="性能之浏览器的重绘与重排">
+                <i class="fa fa-chevron-left"></i> 性能之浏览器的重绘与重排
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/26/nodejs-2016-09-26-Standard-IO/" rel="prev" title="Nodejs查漏补缺-Standard I/O">
+                Nodejs查漏补缺-Standard I/O <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/26/nodejs-2016-09-26-Modules/"
+           data-title="Nodejs查漏补缺-Modules" data-url="http://x-front-team.github.io/2016/09/26/nodejs-2016-09-26-Modules/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ch1-Modules"><span class="nav-number">1.</span> <span class="nav-text">ch1  Modules</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-全局安装不等于全局require"><span class="nav-number">1.1.</span> <span class="nav-text">1. 全局安装不等于全局require</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-为什么要使用module-exports-xxx-而不是-exports-xxx"><span class="nav-number">1.2.</span> <span class="nav-text">2. 为什么要使用module.exports = xxx,而不是 exports = xxx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-解除modules缓存"><span class="nav-number">1.3.</span> <span class="nav-text">3. 解除modules缓存</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

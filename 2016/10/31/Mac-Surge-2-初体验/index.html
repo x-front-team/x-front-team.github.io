@@ -1,0 +1,718 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="csd,surge,mac," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="使用Surge for Mac已有两周，今日写下一路以来的感受，并给后来的小伙伴填坑铺路。如果想看Surge for iOS教程，请继续Google，本人认为iOS下用小火箭足以。需要强调的是，Surge只是一款网络工具，支持多种网络协议，但本身并不提供出墙功能，需要自己搞定ss账号，可以直接从ss提供商购买，或是自己购买VPS搭建ss服务。
+
+先放大招：
+[前端攻城狮]可能是使用Mac Sur">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Surge for Mac 2 初体验与教程">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/31/Mac-Surge-2-初体验/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="使用Surge for Mac已有两周，今日写下一路以来的感受，并给后来的小伙伴填坑铺路。如果想看Surge for iOS教程，请继续Google，本人认为iOS下用小火箭足以。需要强调的是，Surge只是一款网络工具，支持多种网络协议，但本身并不提供出墙功能，需要自己搞定ss账号，可以直接从ss提供商购买，或是自己购买VPS搭建ss服务。
+
+先放大招：
+[前端攻城狮]可能是使用Mac Sur">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161031/drop-down.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161031/dashboard.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161031/1p.png">
+<meta property="og:updated_time" content="2016-11-03T00:39:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Surge for Mac 2 初体验与教程">
+<meta name="twitter:description" content="使用Surge for Mac已有两周，今日写下一路以来的感受，并给后来的小伙伴填坑铺路。如果想看Surge for iOS教程，请继续Google，本人认为iOS下用小火箭足以。需要强调的是，Surge只是一款网络工具，支持多种网络协议，但本身并不提供出墙功能，需要自己搞定ss账号，可以直接从ss提供商购买，或是自己购买VPS搭建ss服务。
+
+先放大招：
+[前端攻城狮]可能是使用Mac Sur">
+<meta name="twitter:image" content="http://x-front-team.github.io/images/20161031/drop-down.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/31/Mac-Surge-2-初体验/"/>
+
+  <title> Surge for Mac 2 初体验与教程 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Surge for Mac 2 初体验与教程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-31T15:25:11+08:00" content="2016-10-31">
+              2016-10-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/31/Mac-Surge-2-初体验/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/Mac-Surge-2-初体验/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>使用Surge for Mac已有两周，今日写下一路以来的感受，并给后来的小伙伴填坑铺路。如果想看Surge for iOS教程，请继续Google，本人认为iOS下用小火箭足以。需要强调的是，Surge只是一款网络工具，支持多种网络协议，但本身并不提供出墙功能，需要自己搞定ss账号，可以直接从ss提供商购买，或是自己购买VPS搭建ss服务。</p>
+</blockquote>
+<p>先放大招：</p>
+<h1 id="前端攻城狮-可能是使用Mac-Surge性价比最高的职业！"><a href="#前端攻城狮-可能是使用Mac-Surge性价比最高的职业！" class="headerlink" title="[前端攻城狮]可能是使用Mac Surge性价比最高的职业！"></a>[前端攻城狮]可能是使用Mac Surge性价比最高的职业！</h1><p>为什么？<br>因为前端攻城狮：懂编程，懂正则，要抓包，爱折腾，更需要科学上网！</p>
+<p>早就听闻Surge的大名，由于其高昂的价格，一直将其拒之门外。直到看到池大大这篇文章 <a href="http://www.weixinduba.com/n/369435" target="_blank" rel="external">Surge for Mac 快捷如风</a>,我动心了。于是第二天在公司里众筹买了Mega License，当天也是各种忙，到了周末在家一顿鼓捣。</p>
+<p>Google了一晚上，找到的文章，大部分讲的是Surge for iOS或者Surge for mac 1.x，我看的莫名其妙。其中几篇提供了配置文件模板，但大都讲的不清不楚。<br>当天晚上我是一头雾水，困觉去了。真是应了其中一篇文章所说，Surge的使用，确实需要门槛。</p>
+<p>第二天不死心，继续折腾，回顾了所有看过的文章，并结合我当前的Surge版本的面貌，终于成功折腾出了一个能科学上网的ss配置。随后就一发不可收，哇擦咧，此乃神器也！</p>
+<a id="more"></a>
+<p>接下来进入正题。官方称Surge是一款网络调试工具，而大部分人用它当梯子，两者都没错。</p>
+<ul>
+<li>梯子：于我而言，当今前端界，风起云涌，新技术层出不穷，不用Google怎能张罗的过来？而对于互联网工作者，则同样需要更广阔的资源。在此之前一直用小灰机, 但它的配置文件维护起来略微力不从心。蓝灯？算了。。。</li>
+<li>网络调试工具：作为移动端开发者，抓包调接口是家常便饭，而对于移动web开发者则更加有意义。因为我们可以通过设置客户端代理，将静态资源代理到本地，调试线上应用，内个feel倍儿爽~如果是调试单页应用，就更省心了。</li>
+</ul>
+<p>接下来，我们一个个搞定。</p>
+<h2 id="梯子"><a href="#梯子" class="headerlink" title="梯子"></a>梯子</h2><p>这个算是刚需。</p>
+<ol>
+<li>打开Surge</li>
+<li>首次打开，会让我们选择配置文件存储位置，推荐选择『Store in User Documents』，Surge会在文稿目录下创建带有示例配置的Surge目录。选择存储在 iCloud Drive 似乎是个更好的方案，但是 Surge 并没有成功创建文件目录，不知道是否是软件的 bug(摘自上面那篇文章，我自己也是在这里卡了好一会儿)。</li>
+<li>点开状态栏上的Surge菜单，选择『Set as System Proxy』,顾名思义Surge成为系统代理，几乎所有http(s)请求都会被拦截，但shell的网络请求并不会被拦截（下文再说如何让shell也出墙）</li>
+<li><p>翻山越岭我最终选择了<a href="http://www.abclite.cn/1995.html" target="_blank" rel="external">AbcLite</a>的这个配置作为基础，进行定制。 已上传至 <a href="https://github.com/stoneChen/Surge-config/blob/master/surge.conf" target="_blank" rel="external">github</a>。<br>复制其内容并保存到<code>~/Documents/Surge</code>目录下，比如<code>my-surge.conf</code>.重点来了,请看： </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[Proxy]</div><div class="line">   🇭🇰 HK = custom,<span class="variable">$&#123;ss-server host&#125;</span>,<span class="variable">$&#123;ss-server port&#125;</span>,<span class="variable">$&#123;ss encrypt type&#125;</span>,<span class="variable">$&#123;ss-password&#125;</span>,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</div><div class="line">   🇸🇬 SG = custom,<span class="variable">$&#123;ss-server host&#125;</span>,<span class="variable">$&#123;ss-server port&#125;</span>,<span class="variable">$&#123;ss encrypt type&#125;</span>,<span class="variable">$&#123;ss-password&#125;</span>,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</div><div class="line">   🇯🇵 JP = custom,<span class="variable">$&#123;ss-server host&#125;</span>,<span class="variable">$&#123;ss-server port&#125;</span>,<span class="variable">$&#123;ss encrypt type&#125;</span>,<span class="variable">$&#123;ss-password&#125;</span>,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</div><div class="line">   🇺🇸 US = custom,<span class="variable">$&#123;ss-server host&#125;</span>,<span class="variable">$&#123;ss-server port&#125;</span>,<span class="variable">$&#123;ss encrypt type&#125;</span>,<span class="variable">$&#123;ss-password&#125;</span>,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</div><div class="line">   🇰🇷 KR = custom,<span class="variable">$&#123;ss-server host&#125;</span>,<span class="variable">$&#123;ss-server port&#125;</span>,<span class="variable">$&#123;ss encrypt type&#125;</span>,<span class="variable">$&#123;ss-password&#125;</span>,https://github.com/stoneChen/Surge-config/raw/master/SSEncrypt.module</div><div class="line">   </div><div class="line">[Proxy Group]</div><div class="line"> Proxy = select,🇭🇰 HK,🇸🇬 SG,🇯🇵 JP,🇺🇸 US,🇰🇷 KR</div></pre></td></tr></table></figure>
+<p><code>[Proxy]</code>是具体的代理配置，它下面就是5个ss服务器节点, 这里只是5个国家例子，根据你拥有的ss账号数来决定，拥有几个账号就留下其中几个对应国旗配置就好。表面上看就是5个键值对(键可以自定义)，键中加上国旗可以很直观的区分不同国家的ss节点，值中的变量分别表示：</p>
+<ul>
+<li>ss-server host: ss主机，ip或域名</li>
+<li>ss-server port: ss主机端口</li>
+<li>ss encrypt type: 加密方式</li>
+<li>ss-password: ss密码</li>
+</ul>
+<p><code>custom</code>不能改，是一个约定类型(ss协议)，最末一项是ss模块下载地址，也不需要改,当选择了当前配置所在的配置文件，Surge会去下载ss模块，有弹窗提示。<br><code>[Proxy Group]</code>是一个组策略配置，它的某一项配置可以引用<code>[Proxy]</code>中的配置，也可以引用其他的组策略配置。这里有<code>select</code>, <code>url-test</code>, <code>ssid</code>三种策略可以用，具体请阅读<code>example-chinese.conf</code>中的注释。<br>简单讲：</p>
+<ul>
+<li>select：在菜单上手动选择ss节点</li>
+<li>url-test：定时轮询向指定的地址发起请求，哪个节点响应时间最短，则切换到哪个ss节点</li>
+<li>ssid： 根据wifi名字进行切换ss节点</li>
+</ul>
+<p>ss配置完毕后，保存。然后点击状态栏中的Surge,选择 <code>Switch Configuration</code> , 右侧会出现<code>~/Documents/Surge</code>下的配置文件列表，选择刚刚的<code>my-surge.conf</code>.<br>上个图：<br><img src="/images/20161031/drop-down.png" alt=""></p>
+<p>然后就是见证奇迹的时刻~<br>打开浏览器: <code>http://www.google.cn/</code> 肥车~<br>外面的世界很精彩~</p>
+</li>
+</ol>
+<h2 id="使用Surge-Dashboard"><a href="#使用Surge-Dashboard" class="headerlink" title="使用Surge Dashboard"></a>使用Surge Dashboard</h2><p><img src="/images/20161031/dashboard.png" alt=""><br>左上角有四个tab：</p>
+<ul>
+<li>Recent: 最近的网络请求</li>
+<li>Active: 未完成的网络请求</li>
+<li>DNS:    DNS解析记录</li>
+<li>Proxy:  GUI方式的规则配置</li>
+</ul>
+<p>左边<code>Local Clients</code>是发出请求的应用列表，点击相应的应用，右侧会过滤掉其他应用发出的请求.点击表格区的某一条请求记录，底部会显示这条请求的详细信息。</p>
+<p>右上角分别是偏好设置，保存，关键字过滤.<br>这算是体现了Surge的网络调试功能了。</p>
+<h2 id="网络规则设置"><a href="#网络规则设置" class="headerlink" title="网络规则设置"></a>网络规则设置</h2><p>有5种匹配规则：</p>
+<ul>
+<li>DOMAIN: 基于域名</li>
+<li>DOMAIN-SUFFIX: 基于域名后缀</li>
+<li>DOMAIN-KEYWORD: 基于域名关键字</li>
+<li>IP-CIDR: 基于”无类别域间路由”，具体我也不懂啥意思，大概就是基于IP段</li>
+<li>GEOIP:   表示IP所属区域，有CN(中国),US(美国)等值</li>
+</ul>
+<p>匹配规则后，可以对匹配的请求作出三种处理</p>
+<ul>
+<li>DIRECT</li>
+<li>REJECT</li>
+<li>${某个自定义策略}</li>
+</ul>
+<p>举个栗子：</p>
+<ul>
+<li>DOMAIN-SUFFIX, *.google.com,Proxy  # 所有以google.com结尾的请求，都走Proxy代理  </li>
+<li>DOMAIN,xyz.cn,DIRECT               # xyz.cn的请求，都走直连</li>
+<li>DOMAIN-KEYWORD, advertise,REJECT   # 所有域名中带advertise的请求，都拒绝</li>
+<li>IP-CIDR,61.160.200.252/32,REJECT   # 屏蔽61.160.200.252这个ip</li>
+<li>GEOIP,CN,DIRECT                    # 国内IP都走直连</li>
+</ul>
+<h2 id="广告屏蔽"><a href="#广告屏蔽" class="headerlink" title="广告屏蔽"></a>广告屏蔽</h2><p>这个是Surge的特色之一，只要匹配规则，就可以直接拒绝网络请求，从而阻止广告。<br>基于上面的例子，我们继续扩展：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">DOMAIN-KEYWORD, advertise,REJECT</div><div class="line">DOMAIN-SUFFIX,stat.tudou.com,REJECT</div><div class="line">DOMAIN-SUFFIX,stat.youku.com,REJECT      </div><div class="line">DOMAIN-SUFFIX,strip.taobaocdn.com,REJECT</div></pre></td></tr></table></figure>
+<p>看懂了么？偷偷告诉你，视频广告也可以屏蔽奥~(亲测youku，tudou有效)<br>如果在以后的上网过程中，你遇到了『漏网』的广告，打开你的Surge配置文件，添加相应的配置，就可以干掉它了，世界就变得清静多了。</p>
+<h2 id="让shell也能出墙"><a href="#让shell也能出墙" class="headerlink" title="让shell也能出墙"></a>让shell也能出墙</h2><p>默认情况下，shell不会被代理，我们需要设置shell环境变量，将代理服务指向Surge的端口。<br>将以下代码复制到~/.zshrc的底部<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">proxy=http://127.0.0.1:6152</div><div class="line"><span class="built_in">export</span> http_proxy=<span class="variable">$proxy</span></div><div class="line"><span class="built_in">export</span> https_proxy=<span class="variable">$proxy</span></div><div class="line"><span class="built_in">export</span> ftp_proxy=<span class="variable">$proxy</span></div></pre></td></tr></table></figure></p>
+<p>什么？你还没有用oh-my-zsh? 我不跟你玩了。</p>
+<h2 id="代理转发网络请求"><a href="#代理转发网络请求" class="headerlink" title="代理转发网络请求"></a>代理转发网络请求</h2><p>这个功能，基于<code>URL Rewrite</code>配置实现，简单讲，就是写正则。举个栗子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[URL Rewrite]</div><div class="line">^http://a.net/m/(.*) http://b.net:9999/m/$1</div></pre></td></tr></table></figure>
+<p>意思就是，所有以<code>http://a.net/m/</code>开头的url全部代理到<code>http://b.net:9999/m/</code>下(注意中间的空格)。<br>用代码解释就是：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> regStr = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'^http://a.net/m/(.*)'</span>)</div><div class="line"><span class="keyword">let</span> proxyUrl = url.replace(regStr, <span class="string">'http://b.net:9999/m/$1'</span>)</div></pre></td></tr></table></figure></p>
+<p>当有请求匹配该规则，就会被代理转发，在Surge Dashboard上会看到代理后的记录.</p>
+<p>规则可以设置多条。</p>
+<p>这样写，默认是<code>header</code>模式，客户端不会感知到当前请求被代理了。上面配置的等价写法是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">^http://a.net/m/(.*) http://b.net:9999/m/$1 header</div></pre></td></tr></table></figure></p>
+<p>还有一种模式是<code>302</code>重定向，客户端是可感知的,<code>302</code>模式这样写：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">^http://aaa.com http://bbb.cn 302</div></pre></td></tr></table></figure></p>
+<p>这样<code>http://aaa.com</code>就被重定向到<code>http://bbb.cn</code>了。</p>
+<p>如此一来，只要你正则玩的溜，各种代理转发随你翻转~<br>有时候，通过域名规则过滤广告太暴力，有时候只是想屏蔽指定域名下个别请求，那么<code>URL Rewrite</code>就能实现，针对不想看到的东西，撸一个正则，转发到不可响应的地址即可(比如loclahost)。</p>
+<h2 id="连接移动设备代理转发请求"><a href="#连接移动设备代理转发请求" class="headerlink" title="连接移动设备代理转发请求"></a>连接移动设备代理转发请求</h2><p>用过<a href="https://www.charlesproxy.com/" target="_blank" rel="external">charles</a>的童鞋会知道, 它也是一种网络调试工具，我们平常用的最多的就是代理静态资源。<br>其实单单对网络调试而言，charles足够了。但自从有了Surge，科学上网+网络调试就可以合体了~</p>
+<p>起初，我并不确定Surge支持这样的功能，但理论上应该是支持的，于是按照我自己的想法，像使用charles一样使用Surge：</p>
+<p>打开手机设置，将代理指向Surge默认的<code>6152</code>端口，然后用微信随意打开一张网页，发现迟迟加载不出来，我瞬间懵逼了。。。<br>Surge你作为一款所谓的 <em>神器</em>，这点功能都不支持吗？！</p>
+<p>我不甘心，于是上知乎，开了个问题，咨询Surge作者。令我惊喜的是，作者当天下午就回复我了，详见 <a href="https://www.zhihu.com/question/51749728" target="_blank" rel="external">surge for MAC 不支持 像Charles那样的http代理吗？</a></p>
+<p>原来答案如此简单，想想自己本该想到的囧。然后兴奋的把监听ip设置为<code>0.0.0.0</code>，手机连上代理，打开网页，搞定！再一看Dashboard，有记录了！</p>
+<p>现在，连接上Surge代理，就能够查看手机上的请求和响应数据包了！那如何实现url代理转发呢？其实就是上一小节中的<code>URL Rewrite</code>，这些规则配置适用于所有被Surge接管的请求。</p>
+<p>如此一来，charles最常用的功能，Surge也具备了，一般情况下就不需要开启charles去调试移动设备的开发了，完美！</p>
+<h2 id="Host设置"><a href="#Host设置" class="headerlink" title="Host设置"></a>Host设置</h2><p>这个配置不仅包含了本机的<code>/etc/hosts</code>功能，而且还提供了 <em>泛解析</em> 和 <em>别名</em> 支持，相当好用。<br>举个栗子：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[Host]</div><div class="line"><span class="comment"># 这个是泛解析,a.test.com  b.test.com 等通通指向 192.168.1.100</span></div><div class="line">*.test.com = 192.168.1.100</div><div class="line"></div><div class="line"><span class="comment"># 这个是别名设置，c.me  d.me 等通通指向localhost</span></div><div class="line">*.me = localhost</div></pre></td></tr></table></figure></p>
+<h2 id="与1password的冲突"><a href="#与1password的冲突" class="headerlink" title="与1password的冲突"></a>与1password的冲突</h2><p>最近，一个小伙伴发现，开启了Surge后，1password就无法正常工作了，问了下我的情况。我当天一切正常，谁知第二天我也出现了同样的问题,网页上按填充快捷键无反应，点击chrome插件，出现了这个：<br><img src="/images/20161031/1p.png" alt=""><br>该小伙伴翻山越岭，最终的解决方案是，将配置文件中的<code>skip-proxy</code>添加<code>127.0.0.1</code>这条记录就好了，上述的配置文件已经解决了这个问题。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>Surge无疑是很强大的，称之为『神器』不为过，其价格导致很多人望而却步，但长久来看，我觉得它还是值得入手的。目前我只发掘了这么多用法，还没有充分发挥。其实Surge for mac是由Surge for iOS发展而来，但我毕竟平时工作大都在mac上，手机上大多时间都在微信上，对于我个人来说，用在mac上意义更大。于是我在手机上选择了<a href="https://itunes.apple.com/cn/app/shadowrocket/id932747118?mt=8" target="_blank" rel="external">Shadowrocket</a>这个后起之秀，只要6RMB,性价比高的多，而且可复用Surge配置文件。</p>
+<p>注意：规则配置过多会导致响应变慢，请定制最适合自己的配置~</p>
+<p>PS:小灰机并没有被我彻底抛弃,它的『从屏幕上扫描二维码』功能倒是给了我一个小小的惊喜- -</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/csd/" rel="tag">#csd</a>
+          
+            <a href="/tags/surge/" rel="tag">#surge</a>
+          
+            <a href="/tags/mac/" rel="tag">#mac</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/31/Scrolling/" rel="next" title="浅谈视差滚动(parallaxScrolling)">
+                <i class="fa fa-chevron-left"></i> 浅谈视差滚动(parallaxScrolling)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/31/Mac-Surge-2-初体验/"
+           data-title="Surge for Mac 2 初体验与教程" data-url="http://x-front-team.github.io/2016/10/31/Mac-Surge-2-初体验/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前端攻城狮-可能是使用Mac-Surge性价比最高的职业！"><span class="nav-number">1.</span> <span class="nav-text">[前端攻城狮]可能是使用Mac Surge性价比最高的职业！</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#梯子"><span class="nav-number">1.1.</span> <span class="nav-text">梯子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Surge-Dashboard"><span class="nav-number">1.2.</span> <span class="nav-text">使用Surge Dashboard</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络规则设置"><span class="nav-number">1.3.</span> <span class="nav-text">网络规则设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广告屏蔽"><span class="nav-number">1.4.</span> <span class="nav-text">广告屏蔽</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#让shell也能出墙"><span class="nav-number">1.5.</span> <span class="nav-text">让shell也能出墙</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理转发网络请求"><span class="nav-number">1.6.</span> <span class="nav-text">代理转发网络请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接移动设备代理转发请求"><span class="nav-number">1.7.</span> <span class="nav-text">连接移动设备代理转发请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Host设置"><span class="nav-number">1.8.</span> <span class="nav-text">Host设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与1password的冲突"><span class="nav-number">1.9.</span> <span class="nav-text">与1password的冲突</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">2.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

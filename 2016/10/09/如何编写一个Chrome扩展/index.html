@@ -1,0 +1,694 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript,Chrome,lwl," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Chrome的V8引擎出来以后，javascript再也不仅仅只是一个简单的web脚本语言了，最为突出的一个特点便是我们所熟悉的Nodejs，基于V8引擎进行解析。还有一个很有意思的玩法，就是开发Chrome扩展小程序。
+Chrome扩展程序的界面是基于html来编写的，也就是我们正常开发网页是一样的，这对于前端工程师来说，实在有点轻松。
+所以，基础的文件结构是：
+
+manifest.json
+p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何编写一个Chrome扩展">
+<meta property="og:url" content="http://x-front-team.github.io/2016/10/09/如何编写一个Chrome扩展/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="Chrome的V8引擎出来以后，javascript再也不仅仅只是一个简单的web脚本语言了，最为突出的一个特点便是我们所熟悉的Nodejs，基于V8引擎进行解析。还有一个很有意思的玩法，就是开发Chrome扩展小程序。
+Chrome扩展程序的界面是基于html来编写的，也就是我们正常开发网页是一样的，这对于前端工程师来说，实在有点轻松。
+所以，基础的文件结构是：
+
+manifest.json
+p">
+<meta property="og:updated_time" content="2016-10-19T06:26:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何编写一个Chrome扩展">
+<meta name="twitter:description" content="Chrome的V8引擎出来以后，javascript再也不仅仅只是一个简单的web脚本语言了，最为突出的一个特点便是我们所熟悉的Nodejs，基于V8引擎进行解析。还有一个很有意思的玩法，就是开发Chrome扩展小程序。
+Chrome扩展程序的界面是基于html来编写的，也就是我们正常开发网页是一样的，这对于前端工程师来说，实在有点轻松。
+所以，基础的文件结构是：
+
+manifest.json
+p">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/10/09/如何编写一个Chrome扩展/"/>
+
+  <title> 如何编写一个Chrome扩展 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                如何编写一个Chrome扩展
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-09T15:58:00+08:00" content="2016-10-09">
+              2016-10-09
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/09/如何编写一个Chrome扩展/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/09/如何编写一个Chrome扩展/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Chrome的V8引擎出来以后，javascript再也不仅仅只是一个简单的web脚本语言了，最为突出的一个特点便是我们所熟悉的Nodejs，基于V8引擎进行解析。还有一个很有意思的玩法，就是开发Chrome扩展小程序。</p>
+<p>Chrome扩展程序的界面是基于html来编写的，也就是我们正常开发网页是一样的，这对于前端工程师来说，实在有点轻松。</p>
+<p>所以，基础的文件结构是：</p>
+<ul>
+<li>manifest.json</li>
+<li>popup.html</li>
+<li>images/</li>
+<li>js/</li>
+</ul>
+<a id="more"></a>
+<p>manifest.json是配置文件，Chrome浏览器加载扩展程序的时候，会先寻找该文件，可以说，manifest.json是整个程序的一个入口。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  "manifest_version": 2,  // manifest的版本</div><div class="line">  "name": "Clock",        // 扩展的名称</div><div class="line">  "author": "Wellaiyo",</div><div class="line">  "version": "1.0",   // 扩展的版本号</div><div class="line">  "description": "Chrome扩展小应用，时钟",    // 扩展的描述</div><div class="line">  "icons": &#123;     // 图标</div><div class="line">    "16": "images/icon16.png",</div><div class="line">    "48": "images/icon48.png",</div><div class="line">    "128": "images/icon128.png"</div><div class="line">  &#125;,</div><div class="line">  "browser_action": &#123;</div><div class="line">    "default_icon": &#123;    // 扩展图标在工具栏中的位置</div><div class="line">      "19": "images/icon19.png",  // 正常显示</div><div class="line">      "38": "images/icon38.png"   // 视网膜屏幕下显示</div><div class="line">    &#125;,</div><div class="line">    "default_title": "时钟",    // 鼠标移动到扩展图标上显示的文字</div><div class="line">    "default_popup": "popup.html"   // 点击扩展图标显示的界面</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是一个简单的manifest.json</p>
+<p>从上述代码中，我们可以看到popup.html，这便是指向我们扩展程序界面的代码文件。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></div><div class="line">    <span class="selector-tag">body</span>, <span class="selector-tag">body</span> * &#123;</div><div class="line">      <span class="attribute">margin</span>:<span class="number">0</span>;</div><div class="line">      <span class="attribute">padding</span>:<span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="selector-tag">body</span> &#123;</div><div class="line">      <span class="attribute">width</span>:<span class="number">160px</span>;</div><div class="line">      <span class="attribute">height</span>:<span class="number">60px</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="selector-id">#clock</span> &#123;</div><div class="line">      <span class="attribute">text-align</span>:center;</div><div class="line">      <span class="attribute">font-size</span>:<span class="number">24px</span>;</div><div class="line">      <span class="attribute">line-height</span>:<span class="number">60px</span>;</div><div class="line">    &#125;</div><div class="line">  <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"clock"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"js/clock.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>可以看到的是，这个html文件中省略了很多东西，比如&lt;!doctype html&gt;，为什么不需要声明呢？首先扩展程序并不是网页程序，它虽然是用html编写的，但因为不需要遵循任何协议标准，所以像web的开头声明在Chrome扩展程序中是没有任何意义的。</p>
+<p>还有就是title标签，试过效果之后你就会明白为什么不需要这个标签。当然，如果你的程序中有中文的话，编码格式utf8还是要的。</p>
+<p>Chrome不允许将JavaScript代码段直接内嵌入HTML文档，所以我们需要通过外部引入的方式引用JS文件。</p>
+<h3 id="操作用户正在浏览的页面"><a href="#操作用户正在浏览的页面" class="headerlink" title="操作用户正在浏览的页面"></a>操作用户正在浏览的页面</h3><p>通过配置manifest.json文件，还可以让扩展程序做更多的事情，比如操作用户正在浏览的页面。</p>
+<p>这个是利用content_script属性来完成的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">"content_scripts": [&#123;</div><div class="line">  "matches": ["*://wellued.cn/"],</div><div class="line">  "js": ["js/app.js"]</div><div class="line">&#125;]</div></pre></td></tr></table></figure>
+<p>也许，你已经开始YY了，这可能会造成网页的安全性问题吧。</p>
+<p>这种情况当然是不会存在的，你注入的js脚本，只能操作DOM，无法干扰到网页内嵌的js脚本，所以关于安全性的YY完全可以停止了。</p>
+<p>不过这就已经够我们做很多事情了，比如用户访问淘宝（扩展程序配置了<code>content_scripts</code>中的<code>matches</code>为<code>*://taobao.com</code>），你可以监听用户是否查看的是详情页面，然后给加入购物车这个按钮也增加一个事件，点击的时候将数据保存起来。这样就形成了一个购物记录的应用了。</p>
+<h3 id="跨域请求"><a href="#跨域请求" class="headerlink" title="跨域请求"></a>跨域请求</h3><p>Chrome扩展程序同样受到同源策略的限制，跨域请求需要事先声明权限</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">"permissions": [</div><div class="line">  "*://*.wellued.cn/*"</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>这样，扩展程序就可以在任意页面请求该域下的资源了。</p>
+<p>顺便提一下，跨域js函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">httpRequest</span>(<span class="params">url, callback</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">  xhr.open(<span class="string">"GET"</span>, url, <span class="literal">true</span>);</div><div class="line">  xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (xhr.readyState == <span class="number">4</span>) &#123;</div><div class="line">      callback(xhr.responseText);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  xhr.send();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="后台监听"><a href="#后台监听" class="headerlink" title="后台监听"></a>后台监听</h3><p>每次调用都得用户手动点击，这明显是一种很笨的方法，我们希望用户安装了该扩展程序后，该程序就一直后台监控执行。</p>
+<p>Chrome扩展程序也是允许这样做的，而且当后台检测到状态发生改变的时候，也会通知UI界面刷新。</p>
+<p>这依赖于manifest.json中的<code>background</code>属性，<code>background</code>属性包含3个子属性：<code>scripts</code>、<code>page</code>、<code>persistent</code>，指定了scripts属性，那么Chrome扩展在启动的时候，会创建一个包含所有指定脚本的页面；如果指定了<code>page</code>属性，则将指定的page页面作为后台html页面运行；persistent属性定义了其方式，true为一直运行，false为按需运行，显然一直运行是很浪费性能资源的。persistent属性的默认值是true，所以在配置的时候要将persistent设置为false。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">"background": &#123;</div><div class="line">  "scripts": [</div><div class="line">    "js/status.js"</div><div class="line">  ],</div><div class="line">  "persistent": false</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一般来说我们只需要后台运行的脚本程序，而不需要特定的UI界面，所以只需要配置了scripts属性就OK了。</p>
+<h3 id="数据存储"><a href="#数据存储" class="headerlink" title="数据存储"></a>数据存储</h3><p>一般来说，用户在网站中的很多数据都会存储在Cookie中，或者是网站的服务器数据库中。而存储在javascript变量中的话，在关闭浏览器的时候，这些数据就会消失。</p>
+<p>好在html5提供了localStorage接口，允许JavaScript在用户计算机硬盘上永久储存数据。不过它也有一些限制，首先是类似Cookie一样，受域的限制，不允许跨域调用。其次是单个域中最大只能储存5MB大小的数据。最后localStorage只能储存字符串型的数据，无法保存数组和对象，但可以通过join、toString和JSON.stringify等方法先转换成字符串再储存。</p>
+<h3 id="开启选项"><a href="#开启选项" class="headerlink" title="开启选项"></a>开启选项</h3><p>鼠标右键点击扩展图标的时候，会弹出一些选项，其中有一个名叫“选项”的选项，它是灰色的（无法点击）。有时候我们需要为扩展程序做一些个性化的设置等等，所以会需要开启选项这个功能。</p>
+<p>实现很简单，manifest.json配置中增加一个 options_page ，它会指定一个页面用来做扩展的选项设置页面。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">"options_page": "options.html"</div></pre></td></tr></table></figure>
+<p>Chrome提供的大部分API是不支持在content_scripts中运行的，但runtime.sendMessage和runtime.onMessage可以在content_scripts中运行，所以扩展的其他页面也可以同content_scripts相互通信。</p>
+<p>runtime.sendMessage和runtime.onMessage是扩展页面之间的通信接口，使用方法为</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chrome.runtime.sendMessage(extensionId, message, options, callback);</div></pre></td></tr></table></figure>
+<p>其中extensionId为所发送消息的目标扩展，如果不指定这个值，则默认为发起此消息的扩展本身；message为要发送的内容，类型随意，内容随意，可以是字符串、数组、JSON等等。options为对象类型，包含一个值为布尔型的includeTlsChannelId属性（仅在扩展和网页间通信时才会用到），此属性的值决定扩展发起此消息时是否要将TLS通道ID发送给监听此消息的外部扩展。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chrome.runtime.onMessage.addListener(callback);</div></pre></td></tr></table></figure>
+<p>onMessage中的callback接收到的参数有三个，分别是message、sender和sendResponse，即消息内容、消息发送者相关信息和相应函数</p>
+<p>回到UI界面，关于图标，Chrome扩展也是可以灵活设置的，通过setIcon方法可以动态更改扩展的图标。另外，如果配置文件中的 default_icon 没有指定的话，那么Chrome会使用一个默认的图标。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chrome.browserAction.setIcon(details, callback);</div></pre></td></tr></table></figure>
+<p>其中details的类型为对象，可以包含三个属性，分别是imageData、path和tabId。</p>
+<p>这里主要讲下path属性，path的值可以是字符串，也可以是对象。如果是对象，结构为{size: imagePath}。imagePath为图片在扩展根目录下的相对位置。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chrome.browserAction.setIcon(&#123;<span class="attr">path</span>: &#123;<span class="string">'19'</span>: <span class="string">'images/icon19_new.png'</span>&#125;&#125;);</div><div class="line">chrome.browserAction.setIcon(&#123;<span class="attr">path</span>: &#123;<span class="string">'38'</span>: <span class="string">'images/icon38_new.png'</span>&#125;&#125;);</div></pre></td></tr></table></figure>
+<p>当鼠标移入扩展图标上时，显示的文字也是可以动态切换的，Chrome扩展提供了一个接口</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chrome.browserAction.setTitle(&#123;<span class="attr">title</span>: <span class="string">'This is a new title'</span>&#125;);</div></pre></td></tr></table></figure>
+<p>同时，修改badge也是被允许的。badge是一种为用户提供有限信息的方式，不过只能存入4个字节长度的内容。所以，一般应用于状态等信息的显示。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chrome.browserAction.setBadgeBackgroundColor(&#123;<span class="attr">color</span>: <span class="string">'#0000FF'</span>&#125;);</div><div class="line">chrome.browserAction.setBadgeText(&#123;<span class="attr">text</span>: <span class="string">'Dog'</span>&#125;);</div></pre></td></tr></table></figure>
+<h3 id="右键菜单"><a href="#右键菜单" class="headerlink" title="右键菜单"></a>右键菜单</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">"permissions": [</div><div class="line">  "contextMenus"</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>添加右键菜单也是比较简单的，加入上述代码同时确保icons中声明了16像素的图标。</p>
+<p>Chrome提供了三种方法操作右键菜单，分别是create、update和remove，对应于创建、更新和移除操作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">chrome.contextMenus.create(&#123;</div><div class="line">  <span class="attr">type</span>: <span class="string">'normal'</span>,</div><div class="line">  <span class="attr">title</span>: <span class="string">'Menu A'</span>,</div><div class="line">  <span class="attr">id</span>: <span class="string">'a'</span></div><div class="line">&#125;);</div><div class="line">chrome.contextMenus.create(&#123;</div><div class="line">  <span class="attr">type</span>: <span class="string">'radio'</span>,</div><div class="line">  <span class="attr">title</span>: <span class="string">'Menu B'</span>,</div><div class="line">  <span class="attr">id</span>: <span class="string">'b'</span>,</div><div class="line">  <span class="attr">checked</span>: <span class="literal">true</span></div><div class="line">&#125;);</div><div class="line">chrome.contextMenus.create(&#123;</div><div class="line">  <span class="attr">type</span>: <span class="string">'checkbox'</span>,</div><div class="line">  <span class="attr">title</span>: <span class="string">'Menu C'</span>,</div><div class="line">  <span class="attr">id</span>: <span class="string">'c'</span>,</div><div class="line">  <span class="attr">checked</span>: <span class="literal">true</span></div><div class="line">&#125;);</div><div class="line">chrome.contextMenus.create(&#123;</div><div class="line">  <span class="attr">type</span>: <span class="string">'normal'</span>,</div><div class="line">  <span class="attr">title</span>: <span class="string">'Menu D'</span>,</div><div class="line">  <span class="attr">id</span>: <span class="string">'d'</span>,</div><div class="line">  <span class="attr">parentId</span>: <span class="string">'a'</span></div><div class="line">&#125;);</div><div class="line"><span class="string">`</span></div></pre></td></tr></table></figure>
+<h3 id="桌面提醒"><a href="#桌面提醒" class="headerlink" title="桌面提醒"></a>桌面提醒</h3><p>利用webkitNotifications，不过大多数浏览器都不支持该属性，即使是chrome也要最新的浏览器版本才支持。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (!webkitNotifications.createNotification) &#123;</div><div class="line">  alert(<span class="string">'您的浏览器不支持Notifications'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述代码是用来测试浏览器是否支持该API。</p>
+<p>说了这么多，也只是大概了解一下Chrome扩展。想要更多的提高，大量的实践经验是必不可少的。还是那句话，<span style="color:#f60;">No pain no gain</span></p>
+<p>这里有一个最简单的 <a href="https://github.com/Wellaiyo/Clock" target="_blank" rel="external">Demo</a></p>
+<blockquote>
+<p>参考文档：<a href="http://www.ituring.com.cn/article/60223" target="_blank" rel="external">Chrome扩展及应用开发</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+            <a href="/tags/Chrome/" rel="tag">#Chrome</a>
+          
+            <a href="/tags/lwl/" rel="tag">#lwl</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/09/浅谈视口单位/" rel="next" title="浅谈Viewport单位">
+                <i class="fa fa-chevron-left"></i> 浅谈Viewport单位
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/11/JS函数节流策略/" rel="prev" title="JS函数节流策略">
+                JS函数节流策略 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/09/如何编写一个Chrome扩展/"
+           data-title="如何编写一个Chrome扩展" data-url="http://x-front-team.github.io/2016/10/09/如何编写一个Chrome扩展/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#操作用户正在浏览的页面"><span class="nav-number">1.</span> <span class="nav-text">操作用户正在浏览的页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨域请求"><span class="nav-number">2.</span> <span class="nav-text">跨域请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后台监听"><span class="nav-number">3.</span> <span class="nav-text">后台监听</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据存储"><span class="nav-number">4.</span> <span class="nav-text">数据存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启选项"><span class="nav-number">5.</span> <span class="nav-text">开启选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#右键菜单"><span class="nav-number">6.</span> <span class="nav-text">右键菜单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桌面提醒"><span class="nav-number">7.</span> <span class="nav-text">桌面提醒</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
