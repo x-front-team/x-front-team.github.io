@@ -5,10 +5,10 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -63,9 +63,9 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Hexo, NexT" />
@@ -77,7 +77,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
 
 
 
@@ -97,30 +97,41 @@
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    root: '/',
     scheme: 'Muse',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
+      userId: '0',
       author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
   };
 </script>
 
 
 
-
   <link rel="canonical" href="http://x-front-team.github.io/tags/"/>
+
+
+
+
 
   <title>
   
 
   
-    标签 | 爱客仕-前端团队博客园
+    tags | 爱客仕-前端团队博客园
   
 </title>
 </head>
@@ -194,16 +205,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
@@ -231,6 +232,8 @@
   
 </nav>
 
+
+
  </div>
     </header>
 
@@ -241,14 +244,22 @@
             
 
   <div id="posts" class="posts-expand">
+  <header class="post-header">
+
+	<h2 class="post-title" itemprop="name headline">tags</h2>
+
+
+
+</header>
+
     
     
       <div class="tag-cloud">
         <div class="tag-cloud-title">
-            目前共计 62 个标签
+            目前共计 71 个标签
         </div>
         <div class="tag-cloud-tags">
-          <a href="/tags/Chrome/" style="font-size: 12px; color: #ccc">Chrome</a> <a href="/tags/JavaScript/" style="font-size: 12px; color: #ccc">JavaScript</a> <a href="/tags/Jokcy/" style="font-size: 12px; color: #ccc">Jokcy</a> <a href="/tags/babytutu/" style="font-size: 16.5px; color: #9d9d9d">babytutu</a> <a href="/tags/baseline/" style="font-size: 12px; color: #ccc">baseline</a> <a href="/tags/cfy/" style="font-size: 12px; color: #ccc">cfy</a> <a href="/tags/chh/" style="font-size: 12px; color: #ccc">chh</a> <a href="/tags/clone/" style="font-size: 12px; color: #ccc">clone</a> <a href="/tags/commonjs/" style="font-size: 12px; color: #ccc">commonjs</a> <a href="/tags/csd/" style="font-size: 30px; color: #111">csd</a> <a href="/tags/css/" style="font-size: 16.5px; color: #9d9d9d">css</a> <a href="/tags/es6/" style="font-size: 12px; color: #ccc">es6</a> <a href="/tags/ggf/" style="font-size: 12px; color: #ccc">ggf</a> <a href="/tags/git/" style="font-size: 12px; color: #ccc">git</a> <a href="/tags/hb/" style="font-size: 16.5px; color: #9d9d9d">hb</a> <a href="/tags/html/" style="font-size: 12px; color: #ccc">html</a> <a href="/tags/indeterminate/" style="font-size: 12px; color: #ccc">indeterminate</a> <a href="/tags/inline-boxes/" style="font-size: 12px; color: #ccc">inline boxes</a> <a href="/tags/javascript/" style="font-size: 21px; color: #6f6f6f">javascript</a> <a href="/tags/js/" style="font-size: 12px; color: #ccc">js</a> <a href="/tags/jyn/" style="font-size: 16.5px; color: #9d9d9d">jyn</a> <a href="/tags/line-box/" style="font-size: 12px; color: #ccc">line box</a> <a href="/tags/line-height/" style="font-size: 12px; color: #ccc">line-height</a> <a href="/tags/lwl/" style="font-size: 12px; color: #ccc">lwl</a> <a href="/tags/mac/" style="font-size: 12px; color: #ccc">mac</a> <a href="/tags/module-system/" style="font-size: 12px; color: #ccc">module system</a> <a href="/tags/nodejs/" style="font-size: 21px; color: #6f6f6f">nodejs</a> <a href="/tags/npm/" style="font-size: 12px; color: #ccc">npm</a> <a href="/tags/qsy/" style="font-size: 12px; color: #ccc">qsy</a> <a href="/tags/surge/" style="font-size: 12px; color: #ccc">surge</a> <a href="/tags/tb/" style="font-size: 16.5px; color: #9d9d9d">tb</a> <a href="/tags/translate/" style="font-size: 12px; color: #ccc">translate</a> <a href="/tags/vertical-align/" style="font-size: 12px; color: #ccc">vertical-align</a> <a href="/tags/vh/" style="font-size: 12px; color: #ccc">vh</a> <a href="/tags/vm/" style="font-size: 12px; color: #ccc">vm</a> <a href="/tags/vue/" style="font-size: 16.5px; color: #9d9d9d">vue</a> <a href="/tags/vue-router/" style="font-size: 12px; color: #ccc">vue-router</a> <a href="/tags/vue-validator/" style="font-size: 12px; color: #ccc">vue-validator</a> <a href="/tags/vue2/" style="font-size: 12px; color: #ccc">vue2</a> <a href="/tags/webpack/" style="font-size: 12px; color: #ccc">webpack</a> <a href="/tags/wj/" style="font-size: 25.5px; color: #404040">wj</a> <a href="/tags/xhy/" style="font-size: 12px; color: #ccc">xhy</a> <a href="/tags/ych/" style="font-size: 12px; color: #ccc">ych</a> <a href="/tags/yk/" style="font-size: 12px; color: #ccc">yk</a> <a href="/tags/yzw/" style="font-size: 12px; color: #ccc">yzw</a> <a href="/tags/zdliu/" style="font-size: 12px; color: #ccc">zdliu</a> <a href="/tags/zl/" style="font-size: 12px; color: #ccc">zl</a> <a href="/tags/zym/" style="font-size: 12px; color: #ccc">zym</a> <a href="/tags/作用域/" style="font-size: 12px; color: #ccc">作用域</a> <a href="/tags/函数节流/" style="font-size: 12px; color: #ccc">函数节流</a> <a href="/tags/响应式/" style="font-size: 12px; color: #ccc">响应式</a> <a href="/tags/堆栈/" style="font-size: 12px; color: #ccc">堆栈</a> <a href="/tags/定位/" style="font-size: 12px; color: #ccc">定位</a> <a href="/tags/正则/" style="font-size: 12px; color: #ccc">正则</a> <a href="/tags/浏览器渲染/" style="font-size: 12px; color: #ccc">浏览器渲染</a> <a href="/tags/源码解析/" style="font-size: 12px; color: #ccc">源码解析</a> <a href="/tags/知乎/" style="font-size: 12px; color: #ccc">知乎</a> <a href="/tags/移动端/" style="font-size: 12px; color: #ccc">移动端</a> <a href="/tags/网页安全/" style="font-size: 12px; color: #ccc">网页安全</a> <a href="/tags/脚本/" style="font-size: 12px; color: #ccc">脚本</a> <a href="/tags/表格布局/" style="font-size: 12px; color: #ccc">表格布局</a> <a href="/tags/重排/" style="font-size: 12px; color: #ccc">重排</a>
+          <a href="/tags/Chrome/" style="font-size: 12px; color: #ccc">Chrome</a> <a href="/tags/JavaScript/" style="font-size: 12px; color: #ccc">JavaScript</a> <a href="/tags/Jokcy/" style="font-size: 12px; color: #ccc">Jokcy</a> <a href="/tags/babytutu/" style="font-size: 21px; color: #6f6f6f">babytutu</a> <a href="/tags/baseline/" style="font-size: 12px; color: #ccc">baseline</a> <a href="/tags/cfy/" style="font-size: 12px; color: #ccc">cfy</a> <a href="/tags/chh/" style="font-size: 12px; color: #ccc">chh</a> <a href="/tags/clone/" style="font-size: 12px; color: #ccc">clone</a> <a href="/tags/commonjs/" style="font-size: 12px; color: #ccc">commonjs</a> <a href="/tags/csd/" style="font-size: 30px; color: #111">csd</a> <a href="/tags/css/" style="font-size: 16.5px; color: #9d9d9d">css</a> <a href="/tags/csv/" style="font-size: 12px; color: #ccc">csv</a> <a href="/tags/es6/" style="font-size: 12px; color: #ccc">es6</a> <a href="/tags/ggf/" style="font-size: 12px; color: #ccc">ggf</a> <a href="/tags/git/" style="font-size: 12px; color: #ccc">git</a> <a href="/tags/git-subtree/" style="font-size: 12px; color: #ccc">git subtree</a> <a href="/tags/hb/" style="font-size: 16.5px; color: #9d9d9d">hb</a> <a href="/tags/html/" style="font-size: 12px; color: #ccc">html</a> <a href="/tags/indeterminate/" style="font-size: 12px; color: #ccc">indeterminate</a> <a href="/tags/inline-boxes/" style="font-size: 12px; color: #ccc">inline boxes</a> <a href="/tags/javascript/" style="font-size: 21px; color: #6f6f6f">javascript</a> <a href="/tags/js/" style="font-size: 12px; color: #ccc">js</a> <a href="/tags/json/" style="font-size: 12px; color: #ccc">json</a> <a href="/tags/jyn/" style="font-size: 16.5px; color: #9d9d9d">jyn</a> <a href="/tags/line-box/" style="font-size: 12px; color: #ccc">line box</a> <a href="/tags/line-height/" style="font-size: 12px; color: #ccc">line-height</a> <a href="/tags/lwl/" style="font-size: 12px; color: #ccc">lwl</a> <a href="/tags/mac/" style="font-size: 12px; color: #ccc">mac</a> <a href="/tags/module-system/" style="font-size: 12px; color: #ccc">module system</a> <a href="/tags/nodejs/" style="font-size: 21px; color: #6f6f6f">nodejs</a> <a href="/tags/npm/" style="font-size: 12px; color: #ccc">npm</a> <a href="/tags/qsy/" style="font-size: 12px; color: #ccc">qsy</a> <a href="/tags/sjn/" style="font-size: 12px; color: #ccc">sjn</a> <a href="/tags/surge/" style="font-size: 12px; color: #ccc">surge</a> <a href="/tags/tb/" style="font-size: 16.5px; color: #9d9d9d">tb</a> <a href="/tags/translate/" style="font-size: 12px; color: #ccc">translate</a> <a href="/tags/vertical-align/" style="font-size: 12px; color: #ccc">vertical-align</a> <a href="/tags/vh/" style="font-size: 12px; color: #ccc">vh</a> <a href="/tags/vm/" style="font-size: 12px; color: #ccc">vm</a> <a href="/tags/vue/" style="font-size: 16.5px; color: #9d9d9d">vue</a> <a href="/tags/vue-router/" style="font-size: 12px; color: #ccc">vue-router</a> <a href="/tags/vue-validator/" style="font-size: 12px; color: #ccc">vue-validator</a> <a href="/tags/vue2/" style="font-size: 12px; color: #ccc">vue2</a> <a href="/tags/webpack/" style="font-size: 12px; color: #ccc">webpack</a> <a href="/tags/wj/" style="font-size: 25.5px; color: #404040">wj</a> <a href="/tags/xhy/" style="font-size: 12px; color: #ccc">xhy</a> <a href="/tags/ych/" style="font-size: 12px; color: #ccc">ych</a> <a href="/tags/yhj/" style="font-size: 12px; color: #ccc">yhj</a> <a href="/tags/yk/" style="font-size: 12px; color: #ccc">yk</a> <a href="/tags/yzw/" style="font-size: 12px; color: #ccc">yzw</a> <a href="/tags/zdliu/" style="font-size: 12px; color: #ccc">zdliu</a> <a href="/tags/zl/" style="font-size: 12px; color: #ccc">zl</a> <a href="/tags/zym/" style="font-size: 12px; color: #ccc">zym</a> <a href="/tags/作用域/" style="font-size: 12px; color: #ccc">作用域</a> <a href="/tags/函数节流/" style="font-size: 12px; color: #ccc">函数节流</a> <a href="/tags/响应式/" style="font-size: 12px; color: #ccc">响应式</a> <a href="/tags/堆栈/" style="font-size: 12px; color: #ccc">堆栈</a> <a href="/tags/定位/" style="font-size: 12px; color: #ccc">定位</a> <a href="/tags/微信/" style="font-size: 12px; color: #ccc">微信</a> <a href="/tags/正则/" style="font-size: 12px; color: #ccc">正则</a> <a href="/tags/浏览器渲染/" style="font-size: 12px; color: #ccc">浏览器渲染</a> <a href="/tags/源码解析/" style="font-size: 12px; color: #ccc">源码解析</a> <a href="/tags/知乎/" style="font-size: 12px; color: #ccc">知乎</a> <a href="/tags/移动端/" style="font-size: 12px; color: #ccc">移动端</a> <a href="/tags/网页安全/" style="font-size: 12px; color: #ccc">网页安全</a> <a href="/tags/脚本/" style="font-size: 12px; color: #ccc">脚本</a> <a href="/tags/表格布局/" style="font-size: 12px; color: #ccc">表格布局</a> <a href="/tags/调试/" style="font-size: 12px; color: #ccc">调试</a> <a href="/tags/重排/" style="font-size: 12px; color: #ccc">重排</a>
         </div>
       </div>
     
@@ -280,7 +291,7 @@
 
       
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/xkeshi.png"
@@ -291,7 +302,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -301,7 +312,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">71</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -320,6 +331,9 @@
 
         
         
+
+        
+
 
       </section>
 
@@ -345,6 +359,7 @@
   <span class="author" itemprop="copyrightHolder">x-front-team</span>
 </div>
 
+
 <div class="powered-by">
   由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
@@ -355,6 +370,7 @@
     NexT.Muse
   </a>
 </div>
+
 
         
 
@@ -388,42 +404,42 @@
 
 
   
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-  
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
 
 
 
@@ -448,7 +464,8 @@
 
   
     
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
     <script src="/js/src/hook-duoshuo.js"></script>
   
 
@@ -457,6 +474,8 @@
 
 
 
+
+
   
   
 
@@ -465,6 +484,9 @@
   
 
   
+
+  
+
 
 </body>
 </html>

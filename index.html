@@ -5,10 +5,10 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -63,9 +63,9 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Hexo, NexT" />
@@ -77,7 +77,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
 
 
 
@@ -96,24 +96,35 @@
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    root: '/',
     scheme: 'Muse',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
+      userId: '0',
       author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
   };
 </script>
 
 
 
-
   <link rel="canonical" href="http://x-front-team.github.io/"/>
+
+
+
+
 
   <title> 爱客仕-前端团队博客园 </title>
 </head>
@@ -189,16 +200,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
@@ -226,6 +227,8 @@
   
 </nav>
 
+
+
  </div>
     </header>
 
@@ -239,6 +242,134 @@
       
 
   
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/11/20/谈谈微信WEB调试/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/20/谈谈微信WEB调试/" itemprop="url">
+                  谈谈微信WEB调试
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-20T21:14:16+08:00">
+                2016-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/11/20/谈谈微信WEB调试/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/20/谈谈微信WEB调试/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>现如今，国内移动端WEB开发，几乎都离不开微信(阿里系产品除外)，然而在微信里，WEB存在于WebView，不像原生Safari可以通过Mac Safari那样断点调试。<br>更要命的是，微信SDK的调试，必须基于域名，这给调试带来很大的麻烦。</p>
+<p>距离上一次讨论移动端WEB调试(<a href="http://cloudstone.xin/2015/06/21/%E4%BB%8B%E7%BB%8D%E4%B8%A4%E7%A7%8D%E7%A7%BB%E5%8A%A8%E8%AE%BE%E5%A4%87%E8%B0%83%E8%AF%95%E6%96%B9%E6%A1%88/">介绍两种移动设备调试方案</a>)，已经过去了近一年半时间。这一年半时间里WEB前端又是一阵风起云涌，微信调试又有哪些新玩法呢？</p>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/20/谈谈微信WEB调试/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
   
@@ -246,6 +377,561 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/11/15/git-subtree子项目简述/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/15/git-subtree子项目简述/" itemprop="url">
+                  git-subtree子项目简述
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-15T10:00:56+08:00">
+                2016-11-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/11/15/git-subtree子项目简述/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/15/git-subtree子项目简述/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="git-subtree"><a href="#git-subtree" class="headerlink" title="git subtree"></a>git subtree</h1><p>什么是git subtree呢<br>先看结论</p>
+<blockquote>
+<p>经由 Git Subtree 来维护的子项目代码，对于父项目来说是透明的，所有的开发人员看到的就是一个普通的目录，原来怎么做现在依旧那么做，只需要维护这个 Subtree 的人在合适的时候去做同步代码的操作。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/15/git-subtree子项目简述/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/11/05/表格数据转为json文件/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/05/表格数据转为json文件/" itemprop="url">
+                  表格数据转为json文件
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-05T17:06:18+08:00">
+                2016-11-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/11/05/表格数据转为json文件/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/表格数据转为json文件/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="前言：懒人技术进步都从万恶的需求开始"><a href="#前言：懒人技术进步都从万恶的需求开始" class="headerlink" title="前言：懒人技术进步都从万恶的需求开始"></a>前言：懒人技术进步都从万恶的需求开始</h3><p>开发需求——有一批来自不同店铺的商品，要用于活动页面展示，然而后台并没有设置不同店铺商品集合的功能。。。后端可以通过3个参数来定位商品，那好吧，让万(ku)能(bi)的前端来把这些参数整合起来，哪个开发团队没遇到过那么些个临时紧急需求呢？<br>好了，现在我们有1个excel表格，把参数都列出来了</p>
+<table>
+<thead>
+<tr>
+<th>PARMA</th>
+<th>PARMB</th>
+<th>PARMC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a01</td>
+<td>b01</td>
+<td>c01</td>
+</tr>
+<tr>
+<td>a02</td>
+<td>b02</td>
+<td>c02</td>
+</tr>
+<tr>
+<td>a03</td>
+<td>b03</td>
+<td>c03</td>
+</tr>
+</tbody>
+</table>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/05/表格数据转为json文件/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/31/实现简单的数据绑定/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/31/实现简单的数据绑定/" itemprop="url">
+                  实现简单的数据绑定
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-31T20:40:59+08:00">
+                2016-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/31/实现简单的数据绑定/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/实现简单的数据绑定/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>近年来前端框架日新月异，react、angular、vue无疑是当中最火的三者<br>他们都不约而同的提供了双向绑定数据的解决办法</p>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/31/实现简单的数据绑定/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/31/闲话css居中/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/31/闲话css居中/" itemprop="url">
+                  闲话css居中
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-31T19:05:36+08:00">
+                2016-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/31/闲话css居中/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/闲话css居中/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近捧读了我们团队诸位童鞋写的博客，一些概念还在云里雾里，个人愚见，临渊羡鱼，不如退而结网。夯实基础方能登堂入室习得上乘武功嘛～在日常开发过程中，经常遇到需要需要让元素居中展示，在此总结几种常用的写法，实际情况灵活使用，不对之处还望不吝赐教。（为了方便说明，请忽略文中的css命名规则与重复属性，实际项目中不可取）</p>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/31/闲话css居中/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/31/Mac-Surge-2-初体验/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -267,13 +953,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-31T15:25:11+08:00" content="2016-10-31">
-              2016-10-31
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-31T15:25:11+08:00">
+                2016-10-31
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -281,9 +973,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/10/31/Mac-Surge-2-初体验/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/Mac-Surge-2-初体验/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/Mac-Surge-2-初体验/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -295,6 +987,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -315,11 +1010,13 @@
 <p>早就听闻Surge的大名，由于其高昂的价格，一直将其拒之门外。直到看到池大大这篇文章 <a href="http://www.weixinduba.com/n/369435">Surge for Mac 快捷如风</a>,我动心了。于是第二天在公司里众筹买了Mega License，当天也是各种忙，到了周末在家一顿鼓捣。</p>
 <p>Google了一晚上，找到的文章，大部分讲的是Surge for iOS或者Surge for mac 1.x，我看的莫名其妙。其中几篇提供了配置文件模板，但大都讲的不清不楚。<br>当天晚上我是一头雾水，困觉去了。真是应了其中一篇文章所说，Surge的使用，确实需要门槛。</p>
 <p>第二天不死心，继续折腾，回顾了所有看过的文章，并结合我当前的Surge版本的面貌，终于成功折腾出了一个能科学上网的ss配置。随后就一发不可收，哇擦咧，此乃神器也！</p>
+          <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/31/Mac-Surge-2-初体验/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
@@ -331,6 +1028,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -349,13 +1047,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/31/Scrolling/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -377,13 +1088,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-31T13:45:53+08:00" content="2016-10-31">
-              2016-10-31
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-31T13:45:53+08:00">
+                2016-10-31
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -391,9 +1108,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/10/31/Scrolling/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/Scrolling/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/Scrolling/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -405,6 +1122,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -418,11 +1138,13 @@
       
         
           <p>视差滚动(Parallax Scrolling)是指让多层背景以不同的速度移动，形成立体的运动效果，带来非常出色的视觉体验。作为今年网页设计的热点趋势，越来越多的网站应用了这项技术。</p>
+          <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/31/Scrolling/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
@@ -434,6 +1156,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -452,13 +1175,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/31/浅谈vue父子组件间相互通信/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -480,13 +1216,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-31T09:39:55+08:00" content="2016-10-31">
-              2016-10-31
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-31T09:39:55+08:00">
+                2016-10-31
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -494,9 +1236,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/10/31/浅谈vue父子组件间相互通信/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/浅谈vue父子组件间相互通信/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/浅谈vue父子组件间相互通信/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -508,6 +1250,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -527,11 +1272,13 @@
 <li>使用 $dispatch() 派发事件，事件沿着父链冒泡；</li>
 <li>使用 $broadcast() 广播事件，事件向下传导给所有的后代。</li>
 </ul>
+          <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/31/浅谈vue父子组件间相互通信/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
@@ -543,6 +1290,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -561,13 +1309,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/28/indeterminate/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -589,13 +1350,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-28T14:08:12+08:00" content="2016-10-28">
-              2016-10-28
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-28T14:08:12+08:00">
+                2016-10-28
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -603,9 +1370,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/10/28/indeterminate/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/28/indeterminate/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/28/indeterminate/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -617,6 +1384,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -630,11 +1400,13 @@
       
         
           <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>我们常说凡事皆有两面性，其实也就是说凡事都具有不确定性，今天我们就来说说前端开发中的这种不确定性。</p>
+          <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/28/indeterminate/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
@@ -646,6 +1418,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -664,13 +1437,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/28/浅谈浏览器的渲染原理/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -692,13 +1478,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-28T14:01:45+08:00" content="2016-10-28">
-              2016-10-28
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-28T14:01:45+08:00">
+                2016-10-28
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -706,9 +1498,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/10/28/浅谈浏览器的渲染原理/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/28/浅谈浏览器的渲染原理/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/28/浅谈浏览器的渲染原理/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -720,6 +1512,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -733,11 +1528,13 @@
       
         
           <p>为什么要了解浏览器渲染页面和加载页面的机制?<br> 1.了解浏览器如何进行加载，我们可以在引用外部样式文件，外部js时，将他们放到合适的位置，使浏览器以最快的速度将文件加载完毕。<br> 2.了解浏览器如何进行解析，我们可以在构建DOM结构，组织css选择器时，选择最优的写法，提高浏览器的解析速率。<br> 3.了解浏览器如何进行渲染，明白渲染的过程，我们在设置元素属性，编写js文件时，可以减少”重绘“”重新布局“的消耗。</p>
+          <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/28/浅谈浏览器的渲染原理/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
@@ -750,536 +1547,6 @@
       
     </div>
 
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/28/vue-router的简单流程/" itemprop="url">
-                  vue-router的简单流程
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-28T10:43:03+08:00" content="2016-10-28">
-              2016-10-28
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/28/vue-router的简单流程/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/28/vue-router的简单流程/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>因为路由权限问题，简单的看了一下vue-router（v0.7.13）。整理了一下router的一个简单过程</p>
-<blockquote>
-<p><code>beforeEach</code> -&gt; <code>canReuse</code> -&gt; <code>canDeactivate</code> -&gt; <code>canActivate</code> -&gt; <code>deactivate</code> -&gt; <code>afterEach</code> -&gt; <code>activate</code></p>
-</blockquote>
-<p>其中<code>canDeactivate</code> | <code>canActivate</code> | <code>deactivate</code> | <code>activate</code>这几个钩子涉及组件复用的问题，所以有可能不会被调用，但是当<code>canReuse</code>返回false时，就一定会被调用了</p>
-<blockquote>
-<p>注：canDeactivate，deactivate与canActivate，activate分别作用于<code>要销毁</code>和<code>要生成</code>的组件。<br>如：a/b -&gt; a/c，这里b组件要被销毁，c组件要被生成。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/28/vue-router的简单流程/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/26/vue-validator验证/" itemprop="url">
-                  vue-validator验证
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-26T19:08:16+08:00" content="2016-10-26">
-              2016-10-26
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/26/vue-validator验证/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/26/vue-validator验证/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>输入验证在前端开发中必不可少，在vue的开发过程中，vue-validator作为目前项目中在用的一个验证插件，其用法还是比较简单直观的，<a href="https://github.com/vuejs/vue-validator">vue-validator</a> API也对验证的使用做了较为详细的讲解，但是仍然有一些隐藏的点是平时注意不到的，特别是随着需求的不断变更，前端的验证也要灵活变化。</p>
-<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>一个最简单的表单验证大概是这样的：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">validator</span> <span class="attr">name</span>=<span class="string">"validation"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">v-validate:name</span>=<span class="string">"['required']"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"$validation.name.required"</span>&gt;</span>不可为空<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">validator</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>验证器名称是由validator元素的name属性加$前缀组成，上例中验证器名称为$validation,在每次input标签的value值发生改变时触发验证，并将验证的结果保存在验证器中。$validation验证器的各个字段的属性及验证结果，如下图所示：</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/26/vue-validator验证/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/25/浅谈虚拟DOM之词法分析器（一）/" itemprop="url">
-                  浅谈虚拟DOM之词法分析器（一）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-25T15:03:44+08:00" content="2016-10-25">
-              2016-10-25
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/25/浅谈虚拟DOM之词法分析器（一）/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/25/浅谈虚拟DOM之词法分析器（一）/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="开篇词"><a href="#开篇词" class="headerlink" title="开篇词"></a>开篇词</h2><p>最近这两年，如果作为一个前端程序员，要是还没听说过虚拟DOM，那基本就可以说是不合格的，但一般前端主要还是在交互，动画，数据通讯上面做一些事情，很少会涉及到编译方面的东西，虚拟DOM一听就挺虚的，就好像飘在那儿，似乎知道怎么回事，又说不出个所以然来，要是说自己实现一个，那简直可以说是无头无绪，一个偶然的机会，让我必需要面对这个问题，索性就研究了一下，并把我的感想和思路在这里分享给大家</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/25/浅谈虚拟DOM之词法分析器（一）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/25/vue2/" itemprop="url">
-                  vue2来了，vue2+vuex2+vue-router2
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-25T14:04:08+08:00" content="2016-10-25">
-              2016-10-25
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/25/vue2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/25/vue2/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="一切从vue-cli开始"><a href="#一切从vue-cli开始" class="headerlink" title="一切从vue-cli开始"></a>一切从<a href="https://github.com/vuejs/vue-cli">vue-cli</a>开始</h3><p>知乎上1个问题，学v1还是v2，引用一个回复</p>
-<blockquote>
-<p>凡事为啥一定要纠结呢？这世上除了二选一，非黑即白以外，其实往往会有第三个选择。<br>当然是可以一起学的呀！<br>真正做东西用 Vue 1.x，做的时候你才会遇到远比框架本身更多的问题，然后顺着报错信息到网上找答案，这时候才是展现生态力量的时候。<br>而与此同时，看看 Vue 2.x 的源码，就当学习 ES6 语法、API 设计、项目构建等等，不要忘了框架作为一个「项目」本身也是有很多值得学习的地方。</p>
-</blockquote>
-<p>马上装起来，必须先全局安装vue-cli</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install -g vue-cli</div><div class="line">vue init webpack my-project</div></pre></td></tr></table></figure>
-<p>ps:默认安装vue2，要回顾vue1的，可以用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vue init webpack-simple<span class="comment">#1.0 mynewproject</span></div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/25/vue2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/24/移动端适配方案/" itemprop="url">
-                  移动端适配方案
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-24T19:41:29+08:00" content="2016-10-24">
-              2016-10-24
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/24/移动端适配方案/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/24/移动端适配方案/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>要想做好移动端开发，首先要解决的是适配问题。现在的手机分辨率多达几十种，具体的的可以查看<a href="http://www.umindex.com/devices/ios_resolutions">友盟+统计</a>或者<br><a href="http://viewportsizes.com">http://viewportsizes.com</a>。当然这里统计的都是物理像素，我们所用到的逻辑像素远没这么大。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/24/移动端适配方案/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
 
     <footer class="post-footer">
       
@@ -1329,7 +1596,7 @@
 
       
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/xkeshi.png"
@@ -1340,7 +1607,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1350,7 +1617,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">71</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1369,6 +1636,9 @@
 
         
         
+
+        
+
 
       </section>
 
@@ -1394,6 +1664,7 @@
   <span class="author" itemprop="copyrightHolder">x-front-team</span>
 </div>
 
+
 <div class="powered-by">
   由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
@@ -1404,6 +1675,7 @@
     NexT.Muse
   </a>
 </div>
+
 
         
 
@@ -1437,42 +1709,42 @@
 
 
   
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-  
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
 
 
 
@@ -1497,7 +1769,8 @@
 
   
     
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
     <script src="/js/src/hook-duoshuo.js"></script>
   
 
@@ -1506,6 +1779,8 @@
 
 
 
+
+
   
   
 
@@ -1514,6 +1789,9 @@
   
 
   
+
+  
+
 
 </body>
 </html>

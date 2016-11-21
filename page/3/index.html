@@ -5,10 +5,10 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -63,9 +63,9 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Hexo, NexT" />
@@ -77,7 +77,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.0.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
 
 
 
@@ -96,24 +96,35 @@
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    root: '/',
     scheme: 'Muse',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
+      userId: '0',
       author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
   };
 </script>
 
 
 
-
   <link rel="canonical" href="http://x-front-team.github.io/page/3/"/>
+
+
+
+
 
   <title> 爱客仕-前端团队博客园 </title>
 </head>
@@ -189,16 +200,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
@@ -226,6 +227,8 @@
   
 </nav>
 
+
+
  </div>
     </header>
 
@@ -239,6 +242,142 @@
       
 
   
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/12/表格布局那些事/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/12/表格布局那些事/" itemprop="url">
+                  表格布局那些事
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-12T17:58:15+08:00">
+                2016-10-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/12/表格布局那些事/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/12/表格布局那些事/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>国庆期间，看了一本讲表格布局的书，发现一些干货，在此做一下记录，查漏补缺。对于表格，我们的态度通常是不屑一顾，偶尔也会冒出一些疑问，比如：</p>
+<ul>
+<li><p>为什么有的时候给单元格设置了border却无效？</p>
+</li>
+<li><p>为什么设置了某个单元格宽度，但是列宽并没有增加？</p>
+</li>
+<li><p>单元格的vertcial-align到底是什么鬼…</p>
+</li>
+</ul>
+<p>下面就来解答这些问题^^</p>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/12/表格布局那些事/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
   
@@ -246,6 +385,549 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/11/JS函数节流策略/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/11/JS函数节流策略/" itemprop="url">
+                  JS函数节流策略
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-11T17:02:42+08:00">
+                2016-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/11/JS函数节流策略/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/11/JS函数节流策略/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="函数节流策略"><a href="#函数节流策略" class="headerlink" title="函数节流策略"></a>函数节流策略</h2><p>这里以underscore的 throttle 和 debounce 两种函数节流策略先举个例子</p>
+<p>想象每天上班大厦底下的电梯。把电梯完成一次运送，类比为一次函数的执行和响应。假设电梯有两种运行策略 throttle 和 debounce ，超时设定为15秒，不考虑容量限制。</p>
+<ul>
+<li>throttle 策略的电梯。保证如果电梯第一个人进来后，15秒后准时运送一次，不等待。如果没有人，则待机。</li>
+<li>debounce 策略的电梯。如果电梯里有人进来，等待15秒。如果有人进来，15秒等待重新计时，直到15秒超时，开始运送。</li>
+</ul>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/11/JS函数节流策略/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/09/如何编写一个Chrome扩展/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/09/如何编写一个Chrome扩展/" itemprop="url">
+                  如何编写一个Chrome扩展
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-09T15:58:00+08:00">
+                2016-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/09/如何编写一个Chrome扩展/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/09/如何编写一个Chrome扩展/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Chrome的V8引擎出来以后，javascript再也不仅仅只是一个简单的web脚本语言了，最为突出的一个特点便是我们所熟悉的Nodejs，基于V8引擎进行解析。还有一个很有意思的玩法，就是开发Chrome扩展小程序。</p>
+<p>Chrome扩展程序的界面是基于html来编写的，也就是我们正常开发网页是一样的，这对于前端工程师来说，实在有点轻松。</p>
+<p>所以，基础的文件结构是：</p>
+<ul>
+<li>manifest.json</li>
+<li>popup.html</li>
+<li>images/</li>
+<li>js/</li>
+</ul>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/09/如何编写一个Chrome扩展/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/09/浅谈视口单位/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/09/浅谈视口单位/" itemprop="url">
+                  浅谈Viewport单位
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-09T14:24:18+08:00">
+                2016-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/09/浅谈视口单位/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/09/浅谈视口单位/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="响应式布局常用方法"><a href="#响应式布局常用方法" class="headerlink" title="响应式布局常用方法"></a>响应式布局常用方法</h4><p>在响应式布局中，为了使不同的显示设备拥有更合理的显示效果，比如内容字体大小，我们经常用的是Media query，百分比以及文字大小单位em，rem</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">p</span>&gt;</span>测试字体大小  测试字体大小<span class="tag">&lt;/<span class="name">P</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">h1</span>&gt;</span>h1字体<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span>文本内容<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="css"></div><div class="line">  <span class="comment">/* 先设置根元素字体大小 */</span></div><div class="line">  <span class="selector-tag">body</span> &#123;</div><div class="line">	<span class="attribute">font-size</span>: <span class="number">12px</span></div><div class="line">	@media screen and (min-width: <span class="number">360px</span>) &#123;</div><div class="line">	  font-size: <span class="number">16px</span></div><div class="line">	&#125;</div><div class="line">	@<span class="keyword">media</span> screen and (min-width: <span class="number">400px</span>) &#123;</div><div class="line">	  <span class="selector-tag">font-size</span>: 18<span class="selector-tag">px</span></div><div class="line">	&#125;</div><div class="line">	@<span class="keyword">media</span> screen and (min-width: <span class="number">440px</span>) &#123;</div><div class="line">	  <span class="selector-tag">font-size</span>: 20<span class="selector-tag">px</span></div><div class="line">	&#125; </div><div class="line">	@<span class="keyword">media</span> screen and (min-width: <span class="number">480px</span>) &#123;</div><div class="line">	  <span class="selector-tag">font-size</span>: 22<span class="selector-tag">px</span></div><div class="line">	&#125;</div><div class="line">	@<span class="keyword">media</span> screen and (min-width: <span class="number">640px</span>) &#123;</div><div class="line">	  <span class="selector-tag">font-size</span>: 28<span class="selector-tag">px</span></div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">  <span class="selector-tag">p</span> &#123;</div><div class="line">    <span class="attribute">font-size</span>: <span class="number">1rem</span></div><div class="line">  &#125;</div><div class="line">  <span class="selector-tag">h1</span> &#123;</div><div class="line">    <span class="attribute">font-size</span>: <span class="number">1.25rem</span></div><div class="line">  &#125;</div><div class="line">  <span class="selector-class">.content</span> &#123;</div><div class="line">	<span class="attribute">font-size</span>: .<span class="number">85rem</span></div><div class="line">  &#125;</div><div class="line"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>有时候为了更好地适用所有的设备排版效果，需要添加多个<code>@media</code>，而视口单位的应用可以让媒体查询声明字体大小更方便</p>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/09/浅谈视口单位/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/09/vertical-align-解析（一）/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/09/vertical-align-解析（一）/" itemprop="url">
+                  vertical-align 解析（一）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-09T09:40:56+08:00">
+                2016-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/09/vertical-align-解析（一）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/09/vertical-align-解析（一）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>对于这个 CSS 属性很多人可能是既熟悉又陌生，好像用法简单，但又好像经常会不起效果，或者出现不想要的效果，我们今天先从简单开始聊一聊它。</p>
+<p>先从 <a href="https://www.w3.org">W3 官网</a> 找了找这个属性的定义和解释（有些英文水平不够翻译或不准确，有兴趣的可以自行去查阅英文原文，后续也会慢慢尝试翻译的更准确并改之）。</p>
+<h2 id="vertical-align"><a href="#vertical-align" class="headerlink" title="vertical-align"></a>vertical-align</h2><h5 id="值-baseline-sub-super-top-text-top-middle-bottom-text-bottom-inherit"><a href="#值-baseline-sub-super-top-text-top-middle-bottom-text-bottom-inherit" class="headerlink" title="值:      baseline | sub | super | top | text-top | middle | bottom | text-bottom |  |  | inherit"></a>值:      baseline | sub | super | top | text-top | middle | bottom | text-bottom | <percentage> | <length> | inherit</h5><h5 id="默认值-baseline"><a href="#默认值-baseline" class="headerlink" title="默认值:      baseline"></a>默认值:      baseline</h5><h5 id="应用于-inline-level-and-‘table-cell’-elements"><a href="#应用于-inline-level-and-‘table-cell’-elements" class="headerlink" title="应用于:      inline-level and ‘table-cell’ elements"></a>应用于:      inline-level and ‘table-cell’ elements</h5><h5 id="是否可继承-NO"><a href="#是否可继承-NO" class="headerlink" title="是否可继承:      NO"></a>是否可继承:      NO</h5><h5 id="百分比-基于自身的-‘line-height’"><a href="#百分比-基于自身的-‘line-height’" class="headerlink" title="百分比:      基于自身的 ‘line-height’"></a>百分比:      基于自身的 ‘line-height’</h5><p><em>对于 table 来说，以上值有着不同的含义，这个以后另开一篇再说，这里所表述的含义只是针对于行内元素。</em><br><em>在以下的定义里，对于行内非替换元素，用于对齐的 box 是那个 height 等于 line-height 的 box；<br>对于其他元素，用于对齐的 box 是 margin box。</em><br>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/09/vertical-align-解析（一）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/07/模块系统之-CommonJS-vs-ES6/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -267,13 +949,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-07T19:52:56+08:00" content="2016-10-07">
-              2016-10-07
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-07T19:52:56+08:00">
+                2016-10-07
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -281,9 +969,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/10/07/模块系统之-CommonJS-vs-ES6/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/07/模块系统之-CommonJS-vs-ES6/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/07/模块系统之-CommonJS-vs-ES6/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -295,6 +983,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -312,11 +1003,13 @@
 <h2 id="导入模块"><a href="#导入模块" class="headerlink" title="导入模块"></a>导入模块</h2><p>CommonJS:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">'koa'</span>)</div><div class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</div></pre></td></tr></table></figure></p>
 <p>ES6:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> Koa <span class="keyword">from</span> <span class="string">'koa'</span></div><div class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</div></pre></td></tr></table></figure></p>
 <p>看起来似乎ES6更加『正统』,还霸占了两个关键字呢(/得意).</p>
+          <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/07/模块系统之-CommonJS-vs-ES6/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
@@ -328,6 +1021,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -346,13 +1040,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/30/性能之作用域/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -374,13 +1081,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-30T00:55:54+08:00" content="2016-09-30">
-              2016-09-30
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-30T00:55:54+08:00">
+                2016-09-30
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -388,9 +1101,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/09/30/性能之作用域/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/30/性能之作用域/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/30/性能之作用域/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -402,6 +1115,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -423,11 +1139,13 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">end</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(a)</div><div class="line">&#125;</div><div class="line">show()</div><div class="line">end()</div></pre></td></tr></table></figure>
 <p>上面这个错误的end() 方法，只有在使用end方法的时候才去执行编译，所以如果不使用end方法，那js不会报错。</p>
 <p>这就是动态语言的一些基本概念，如果有兴趣可以参考java做对比分析。</p>
+          <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/09/30/性能之作用域/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
@@ -439,6 +1157,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -457,13 +1176,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/28/饶舌的深浅拷贝/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -485,13 +1217,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-28T09:04:18+08:00" content="2016-09-28">
-              2016-09-28
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-28T09:04:18+08:00">
+                2016-09-28
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -499,9 +1237,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/09/28/饶舌的深浅拷贝/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/28/饶舌的深浅拷贝/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/28/饶舌的深浅拷贝/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -513,6 +1251,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -536,11 +1277,13 @@
 <li><p><code>JSON.parse(JSON.stringify(sourceObject))</code><br>常规json的深拷贝取巧方法，效率666</p>
 </li>
 </ul>
+          <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/09/28/饶舌的深浅拷贝/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
@@ -552,6 +1295,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -570,13 +1314,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/26/nodejs-2016-09-26-Operating-system-and-command-line-integration/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -598,13 +1355,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-26T10:18:07+08:00" content="2016-09-26">
-              2016-09-26
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-26T10:18:07+08:00">
+                2016-09-26
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -612,9 +1375,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/09/26/nodejs-2016-09-26-Operating-system-and-command-line-integration/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/nodejs-2016-09-26-Operating-system-and-command-line-integration/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/nodejs-2016-09-26-Operating-system-and-command-line-integration/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -626,6 +1389,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -674,6 +1440,7 @@
       
     </div>
 
+
     <footer class="post-footer">
       
 
@@ -691,13 +1458,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/26/nodejs-2016-09-26-Standard-IO/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -719,13 +1499,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-26T08:18:07+08:00" content="2016-09-26">
-              2016-09-26
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-26T08:18:07+08:00">
+                2016-09-26
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -733,9 +1519,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/09/26/nodejs-2016-09-26-Standard-IO/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/nodejs-2016-09-26-Standard-IO/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/nodejs-2016-09-26-Standard-IO/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -747,6 +1533,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -788,545 +1577,6 @@
       
     </div>
 
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/26/nodejs-2016-09-26-Modules/" itemprop="url">
-                  Nodejs查漏补缺-Modules
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-26T08:18:07+08:00" content="2016-09-26">
-              2016-09-26
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/26/nodejs-2016-09-26-Modules/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/nodejs-2016-09-26-Modules/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>在这里记录下nodejs各种小细节</p>
-</blockquote>
-<h1 id="ch1-Modules"><a href="#ch1-Modules" class="headerlink" title="ch1  Modules"></a>ch1  Modules</h1><p>作为一个新世纪的前端，npm早已经是我们生活中必不可少的工具了<br>那么，这其中有多少奇怪的事情呢</p>
-<h2 id="1-全局安装不等于全局require"><a href="#1-全局安装不等于全局require" class="headerlink" title="1. 全局安装不等于全局require"></a>1. 全局安装不等于全局require</h2><p>初学nodejs的时，听闻<code>npm i xxx</code>之后，便可以在项目中直接require使用了<br>又听闻有一个<code>npm i xxx -g</code>的全局安装命令，下意识以为这样安装之后在任何地方都可以<code>require</code><br>其实不然,这个<code>-g</code>的意义更多的在于将nodejs写的命令行工具装在全局<br>这样就可以直接在命令行使用，而不需要敲全路径了</p>
-<p>比如 <code>npm i gulp -g</code><br>然后直接在命令行敲 gulp,就能使用它</p>
-<blockquote>
-<blockquote>
-<p>如果想require全局的包，则需要设置 NODE_PATH 环境变量<br>指向nodejs全局安装路径的node_modules文件夹<br>window 目录: <code>%USERPROFILE%\AppData\Roaming\npm\node_modules</code></p>
-</blockquote>
-</blockquote>
-<h2 id="2-为什么要使用module-exports-xxx-而不是-exports-xxx"><a href="#2-为什么要使用module-exports-xxx-而不是-exports-xxx" class="headerlink" title="2. 为什么要使用module.exports = xxx,而不是 exports = xxx"></a>2. 为什么要使用<code>module.exports = xxx</code>,而不是 <code>exports = xxx</code></h2><p>我们可以使用如下语句导出一个模块<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">exports.foo1 = bar1</div><div class="line">exports.foo2 = bar2</div><div class="line"></div><div class="line"><span class="comment">// or:</span></div><div class="line"><span class="built_in">module</span>.exports = bar</div></pre></td></tr></table></figure></p>
-<p>而不能使用<code>exports = bar</code><br>因为nodejs将你的模块文件包裹成<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">exports, require, module, __filename, __dirname</span>) </span>&#123;</div><div class="line">   <span class="comment">//your module</span></div><div class="line">   <span class="comment">// ...</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>其中<code>exports</code>是<code>module.exports</code>的引用<br>当我们改变<code>exports</code>的属性时，修改的是<code>module.exports</code>内存地址的对象<br>而当我们直接给<code>exports</code>赋值时，仅仅只是将<code>exports</code>指向的内存地址改变<br>而不会修改 <code>module.exports</code>的指向</p>
-<h2 id="3-解除modules缓存"><a href="#3-解除modules缓存" class="headerlink" title="3. 解除modules缓存"></a>3. 解除modules缓存</h2><p>我们知道nodejs会自动缓存require的模块，以防止多次require重复加载文件浪费性能<br>那如果我们的场景需要清除缓存，该怎么做呢？<br>其实nodejs的模块都缓存在<code>require.cache</code>对象里面，模块的键都是其文件的绝对路径<br>而通过require.resolve(‘./module/name’)可以获取到模块绝对路径<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">delete</span> <span class="built_in">require</span>.cache[<span class="built_in">require</span>.resolve(<span class="string">'./module/name'</span>)]</div></pre></td></tr></table></figure></p>
-<p>就可以删除相对应模块的缓存</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/14/性能之浏览器的重绘与重排/" itemprop="url">
-                  性能之浏览器的重绘与重排
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-14T00:55:54+08:00" content="2016-09-14">
-              2016-09-14
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/14/性能之浏览器的重绘与重排/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/14/性能之浏览器的重绘与重排/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>入行几年，想起头几年。插件横飞，flash乱入。</p>
-<p>js就像一个寄生的物种，依附浏览器生存，随之而来的是谜之兼容。</p>
-<p>入行者得感谢<strong>网景</strong>，从业者得感谢<strong>谷歌</strong></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原先打算写一写关于以上的一些个人看法，又中途放弃，因为借助现在琳瑯满目的工具。以上存在的问题都不是问题。最后想了想前端本质还是为<strong>页面渲染响应服务</strong>，再多工具，只是为了服务自身，控制成本和质量，所以拎出性能这快，来说说自己想法。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/14/性能之浏览器的重绘与重排/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/04/translate动画定位之坑/" itemprop="url">
-                  vue + translate动画之坑
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-04T11:21:38+08:00" content="2016-09-04">
-              2016-09-04
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/04/translate动画定位之坑/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/04/translate动画定位之坑/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>先声明下,这里的坑并不是vue或浏览器的bug,只是我们在做translate动画时容易忽略的一个点.</p>
-</blockquote>
-<p>假设我们要实现这样的效果:<br><img src="/images/20160904/translate-demo.gif" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/04/translate动画定位之坑/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/03/使用git钩子自动部署服务/" itemprop="url">
-                  使用git钩子自动部署服务
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-03T21:58:45+08:00" content="2016-09-03">
-              2016-09-03
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/03/使用git钩子自动部署服务/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/03/使用git钩子自动部署服务/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>首先声明一下，我们公司的开发流程比较严(fan)谨(suo)，真实环境并没有像本文这样自动部署的做法。<br>我们要达到的效果是：我们本地开发好的代码，推送到服务器后，服务器自动部署最新版本的代码。</p>
-<p>这里介绍两种方式：</p>
-<ul>
-<li>裸仓库方式</li>
-<li>非裸仓库方式</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/03/使用git钩子自动部署服务/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/22/Vue-Class/" itemprop="url">
-                  Vue源码解析之 Vue Class
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-22T18:46:10+08:00" content="2016-08-22">
-              2016-08-22
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/22/Vue-Class/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/22/Vue-Class/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>这段时间折腾了一个vue的日期选择的组件，为了达成我一贯的<strong>使用舒服</strong>优先原则，我决定使用<code>directive</code>来实现，但是通过这个实现有一个难点就是我如何把时间选择的组件插入到dom中，所以问题来了，我是不是又要看Vue的源码？</p>
-<p>vue2.0即将到来，改了一大堆，Fragment没了，所以vue社区中为数不多的组件又有一批不能在2.0中使用，vue的官方插件也是毁得只剩vuex兼容，所以在我正在折腾我的组件的时候看到这个消息我是崩溃的。。。但没办法，还是得继续。希望2.0出来之后官方能完善一下文档，1.0中太多东西根本没在文档里提到，比如Fragment，比如Vue的util方法，这给第三方组件以及插件开发者带来了无数的玛法，你只能去看源码了，费时费力，刚研究透又来个大更新，我真的想哭/(ㄒoㄒ)/~~</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/22/Vue-Class/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
 
     <footer class="post-footer">
       
@@ -1376,7 +1626,7 @@
 
       
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/xkeshi.png"
@@ -1387,7 +1637,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1397,7 +1647,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">71</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1416,6 +1666,9 @@
 
         
         
+
+        
+
 
       </section>
 
@@ -1441,6 +1694,7 @@
   <span class="author" itemprop="copyrightHolder">x-front-team</span>
 </div>
 
+
 <div class="powered-by">
   由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
@@ -1451,6 +1705,7 @@
     NexT.Muse
   </a>
 </div>
+
 
         
 
@@ -1484,42 +1739,42 @@
 
 
   
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-  
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
 
 
 
@@ -1544,7 +1799,8 @@
 
   
     
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
     <script src="/js/src/hook-duoshuo.js"></script>
   
 
@@ -1553,6 +1809,8 @@
 
 
 
+
+
   
   
 
@@ -1561,6 +1819,9 @@
   
 
   
+
+  
+
 
 </body>
 </html>
