@@ -258,6 +258,275 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/18/温习csrf/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/18/温习csrf/" itemprop="url">
+                  温习csrf
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-18T10:00:56+08:00">
+                2016-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/18/温习csrf/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/18/温习csrf/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>什么是CSRF?<br>下面这个炸裂的图片就是</p>
+<p><img src="http://localhost:8080/home/index/csrf?from=1&amp;to=b" alt="csrf"></p>
+<p>是不是感觉很奇幻，就点进了一篇文章。怎么就被攻击了呢<br>大家可以打开开发者工具，会发现有个图片请求 crsf?from=1&amp;to=b，指向的服务器是localhost:8080<br>这就是一次crsf攻击，攻击的是服务器localhost，也就是我在本地开启的一个服务器<br>服务器上的日志清晰的打印出来了这次访问记录  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[2016-10-17 20:22:30] [HTTP] GET /home/index/csrf?from=1&amp;to=b 200 24ms</div></pre></td></tr></table></figure>
+<p>而且如果你之前访问过localhost:8080,那么这次访问还会把你在localhost:8080的cookie也带过去<br>这是一个很可怕的事情，因为这次请求完全在你不知情的请求下发生的<br>假设这个接口换成银行转账，或者知乎留言<br>在你刚刚访问完知乎之后，打开我这篇文章，你可能就被csrf了<br>你会在不知情的情况下被转账or被留言  </p>
+<blockquote>
+<p>在大部分正常的网站，这种操作不太可能是GET请求，上面仅仅为了举例</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/18/温习csrf/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/17/浅谈Promise原理及方法/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/17/浅谈Promise原理及方法/" itemprop="url">
+                  浅谈Promise原理及方法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-17T09:50:04+08:00">
+                2016-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/17/浅谈Promise原理及方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/17/浅谈Promise原理及方法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>之前分享的promise顺便整理出来写成博客，真是一举两得<br>我是真不太会说，何况是技术性的，临时上阵真的是硬着头皮，还是看我写的吧。<br>我是先接触到angular中的$q后才知道es6中有promise这个玩意，发现他完全解决了之前的回调再回调的噩梦，大赞！</p>
+<h2 id="Promise的引入"><a href="#Promise的引入" class="headerlink" title="Promise的引入"></a>Promise的引入</h2><p>先看一段原始代码,为了获取上一个函数的返回结果只能通过回调的方式，若一层层的就出现了下面的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">step1(<span class="function"><span class="keyword">function</span>(<span class="params">value1</span>)</span>&#123;</div><div class="line">  step2(<span class="function"><span class="keyword">function</span>(<span class="params">value2</span>)</span>&#123;</div><div class="line">    step3(<span class="function"><span class="keyword">function</span>(<span class="params">value3</span>)</span>&#123;</div><div class="line">    <span class="comment">// 如此层层嵌套</span></div><div class="line">    &#125;)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<ul>
+<li>代码不优雅，阅读吃力</li>
+<li>不利于维护</li>
+<li>还要担心某一层未获取到数据的问题</li>
+</ul>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/17/浅谈Promise原理及方法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/10/12/表格布局那些事/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1321,287 +1590,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/26/nodejs-2016-09-26-Operating-system-and-command-line-integration/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="x-front-team">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/xkeshi.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="爱客仕-前端团队博客园">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/26/nodejs-2016-09-26-Operating-system-and-command-line-integration/" itemprop="url">
-                  Nodejs查漏补缺-Operating system and command-line integration
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-26T10:18:07+08:00">
-                2016-09-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/09/26/nodejs-2016-09-26-Operating-system-and-command-line-integration/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/nodejs-2016-09-26-Operating-system-and-command-line-integration/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>在这里记录下nodejs各种小细节</p>
-</blockquote>
-<h1 id="ch3-Operating-system-and-command-line-integration"><a href="#ch3-Operating-system-and-command-line-integration" class="headerlink" title="ch3 Operating system and command-line integration"></a>ch3 Operating system and command-line integration</h1><h2 id="1-吐槽"><a href="#1-吐槽" class="headerlink" title="1. 吐槽"></a>1. 吐槽</h2><p>其实我们的nodejs并不是那么的跨平台<br>包括windows下的fs.filewatch触发两次，node-sass在windows下安装超级困难<br>某些包因为有node-gyp编译过程，导致在一个平台安装后在其他平台不能用<br>node-gyp是一个将c++代码编译成可供nodejs调用的二进制文件的node包<br>在linux下会使用gcc编译，windows下则是visual c++</p>
-<h2 id="2-一些与runtime-env有关的flag"><a href="#2-一些与runtime-env有关的flag" class="headerlink" title="2. 一些与runtime env有关的flag"></a>2. 一些与runtime env有关的flag</h2><ul>
-<li>process.arch:  三个值：’arm’, ‘ia32’, or ‘x64’，代表32位/64位/arm系统结构</li>
-<li>process.memoryUsage(): 内存使用</li>
-<li>process.argv： 程序运行时传入的命令行参数</li>
-<li>process.cwd()： 程序运行时的目录</li>
-<li>process.env： 程序运行时的环境变量</li>
-<li>process.nextTick(callback[, arg][, …])： 将callback回调丢进Node下一个tick执行</li>
-<li>process.pid： 程序运行时的进程id<br><a href="https://nodejs.org/dist/latest-v6.x/docs/api/process.html#process_process" target="_blank" rel="external">更多属性查看</a></li>
-</ul>
-<h2 id="3-结束程序"><a href="#3-结束程序" class="headerlink" title="3. 结束程序"></a>3. 结束程序</h2><p>一般来说我们的程序是用户终止or执行完毕之后自动结束<br>那我们想精确控制程序结束时机该怎么办呢<br>答案在 <code>process.exit(arg)</code> 这个函数上<br>其中arg - 0 : 正常退出，arg - 1 : 带有错误退出<br>arg由程序编写者指定<br><a href="http://tldp.org/LDP/abs/html/exitcodes.html" target="_blank" rel="external">more code meanings</a></p>
-<h2 id="4-进程间通信"><a href="#4-进程间通信" class="headerlink" title="4. 进程间通信"></a>4. 进程间通信</h2><p>如果对进程及进程间通信感到陌生，建议先google补充基础知识</p>
-<p>先看一个例子：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">process.stdin.resume(); <span class="comment">// 让程序监听 stdin标准输入，使其不会自动停止运行，直到用户按下 ctrl+c</span></div><div class="line">process.on(<span class="string">'SIGHUP'</span>, () =&gt; &#123; <span class="comment">//监听 SIGHUP事件</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Reloading configuration...'</span>);</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'PID:'</span>, process.pid);</div></pre></td></tr></table></figure></p>
-<p>nodejs对进程间的通信也描述成事件的形式<br>process本身也是一个EventEmitter对象<br>假设该程序的运行时的进程是：9999<br>在 unix like系统下，命令行运行<code>kill -HUP 9999</code>就可以向node进程发送SIGHUP事件<br>当然我们也可以写在代码里：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">process.kill(<span class="number">9999</span>, <span class="string">'SIGHUP'</span>)</div></pre></td></tr></table></figure></p>
-<p>不过windows下SIGHUP不能用代码而只能用cmd发送，也算是与我之前吐槽向呼应了把  </p>
-<blockquote>
-<p>tips: kill [sign] [pid] 并不是指这个进程将会被killed，而仅仅是发送signal给进程</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/26/nodejs-2016-09-26-Standard-IO/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="x-front-team">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/xkeshi.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="爱客仕-前端团队博客园">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/26/nodejs-2016-09-26-Standard-IO/" itemprop="url">
-                  Nodejs查漏补缺-Standard I/O
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-26T08:18:07+08:00">
-                2016-09-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/09/26/nodejs-2016-09-26-Standard-IO/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/nodejs-2016-09-26-Standard-IO/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>在这里记录下nodejs各种小细节</p>
-</blockquote>
-<h1 id="ch2-Standard-I-O"><a href="#ch2-Standard-I-O" class="headerlink" title="ch2  Standard I/O"></a>ch2  Standard I/O</h1><p>首先讲一下什么叫做<code>Standard I/O</code>——标准输入输出流  </p>
-<blockquote>
-<p>Standard streams<br> Standard streams come in three flavors: stdin, stdout, and stderr. In Unix terminals,<br> these are referred to with numbers.  0 is used for standard input,  1 is standard output,<br> and  2 is standard error.<br> The same applies to Windows: running a program from the command prompt and add-<br> ing  2&gt; errors-file.log will send the error messages to  errors-file.log , just<br> like Unix.</p>
-<p>标准流<br> 标准流有三种类型 stdin,stdout,stderr,在类unix终端中，被引用为数字<br> 0 - 标准输入<br> 1 - 标准输入<br> 2 - 标准错误<br> 这也同样被运用在windows中:在命令行运行一个程序并在最后加上 2&gt;err.log<br> 将会把错误信息发送至err.log文件下（当然unix like系统同样如此）</p>
-</blockquote>
-<p>那么这玩意有什么用呢?</p>
-<p>nodejs提供了三个对象<code>process.stdin</code>, <code>process.stdout</code>, <code>process.stderr</code><br>可以轻松的获取到标准输入输出</p>
-<p>example:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// std.js</span></div><div class="line"><span class="meta"></span></div><div class="line">'use strict'</div><div class="line"></div><div class="line">process.stdin.resume() <span class="comment">//告诉node开始接收标准输入</span></div><div class="line"></div><div class="line">process.stdin.setEncoding(<span class="string">'utf-8'</span>)</div><div class="line">process.stdin.on(<span class="string">'data'</span>, (data) =&gt; &#123;</div><div class="line">  process.stdout.write(data.toUpperCase()); <span class="comment">// 流的读取都是分段的</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
-<hr>
-<p>run with:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat file.txt | node std.js | grep FOO</div></pre></td></tr></table></figure></p>
-<p>利用unix管道，可以将流pipe进node程序，node程序将读入的文本转成大写，再pipe出去<br>流会被下一个程序接收，如果是最后一个，则会打印至控制台<br>或者可以使用<code>1&gt; log.txt</code>将标准输出 pipe进文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat file.txt | node std.js | grep FOO 1&gt; log.txt</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1647,7 +1635,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-count">39</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1657,7 +1645,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-count">77</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
