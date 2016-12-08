@@ -1,0 +1,709 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="zln,video,css3," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="先说我的需求，一进页面的时候播放视频动效，播放完毕后弹出相应的文字及按钮。听着好像一个很简单的需求，立马也有清晰的思路：用video标签在页面上引入视频，全屏全屏全屏播放！！给video加个完成事件，让隐藏的文本按钮显示，over ~~~
+一切听起来so easy，但做的第一步就发现了video的坑。video的宽高设置为页面的100%，页面一进来就自动播放, 结果ios上就自动弹出播放了，安卓上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="css3模拟视频以解决video弊端">
+<meta property="og:url" content="http://x-front-team.github.io/2016/11/29/css3模拟视频以解决video弊端/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="先说我的需求，一进页面的时候播放视频动效，播放完毕后弹出相应的文字及按钮。听着好像一个很简单的需求，立马也有清晰的思路：用video标签在页面上引入视频，全屏全屏全屏播放！！给video加个完成事件，让隐藏的文本按钮显示，over ~~~
+一切听起来so easy，但做的第一步就发现了video的坑。video的宽高设置为页面的100%，页面一进来就自动播放, 结果ios上就自动弹出播放了，安卓上">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161129/mono.gif">
+<meta property="og:updated_time" content="2016-12-08T01:28:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="css3模拟视频以解决video弊端">
+<meta name="twitter:description" content="先说我的需求，一进页面的时候播放视频动效，播放完毕后弹出相应的文字及按钮。听着好像一个很简单的需求，立马也有清晰的思路：用video标签在页面上引入视频，全屏全屏全屏播放！！给video加个完成事件，让隐藏的文本按钮显示，over ~~~
+一切听起来so easy，但做的第一步就发现了video的坑。video的宽高设置为页面的100%，页面一进来就自动播放, 结果ios上就自动弹出播放了，安卓上">
+<meta name="twitter:image" content="http://x-front-team.github.io/images/20161129/mono.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/11/29/css3模拟视频以解决video弊端/"/>
+
+
+
+
+
+  <title> css3模拟视频以解决video弊端 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/11/29/css3模拟视频以解决video弊端/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                css3模拟视频以解决video弊端
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-29T14:09:18+08:00">
+                2016-11-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/11/29/css3模拟视频以解决video弊端/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/29/css3模拟视频以解决video弊端/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>先说我的需求，一进页面的时候播放视频动效，播放完毕后弹出相应的文字及按钮。<br>听着好像一个很简单的需求，立马也有清晰的思路：用video标签在页面上引入视频，全屏全屏全屏播放！！给video加个完成事件，让隐藏的文本按钮显示，over ~~~</p>
+<p>一切听起来so easy，但做的第一步就发现了video的坑。video的宽高设置为页面的100%，页面一进来就自动播放, 结果ios上就自动弹出播放了，安卓上无法自动播放，且播放时弹出，播放完毕还有小广告，天了撸 ~~~ 求助百度、谷歌。。。。</p>
+<a id="more"></a>
+<h3 id="关于视频的弊端"><a href="#关于视频的弊端" class="headerlink" title="关于视频的弊端"></a>关于视频的弊端</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">autoplay</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"100%"</span> <span class="attr">x-webkit-airplay</span>=<span class="string">"true"</span> <span class="attr">webkit-playsinline</span>=<span class="string">""</span> <span class="attr">playsinline</span>=<span class="string">"true"</span> <span class="attr">preload</span>=<span class="string">"none"</span> <span class="attr">src</span>=<span class="string">""</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">video</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>google及参照其他网站的解决方案，发现在我的iphone 6 解决了弹出播放的问题，且微信及其他浏览器内正常</p>
+<p>可是！！！<br>其他型号的手机及安卓问题并没有解决</p>
+<p>总结一下video的坑：</p>
+<ul>
+<li>IOS上不同型号不同系统版本，暴露的问题都不一样。有些弹出播放，有些能嵌入在页面上播放（我希望是嵌在页面内播放）</li>
+<li>安卓机中无法自动播放，必须点击后弹出播放，且播放完成后会弹出广告</li>
+<li>播放完成后点击其他页面，再返回，操作几遍后视频变黑，但实际是在播放中，因为播放完成事件有执行。</li>
+<li>以上是微信上暴露的问题，其他浏览器下某些问题又是好的</li>
+</ul>
+<h3 id="解决方案一：gif替换视频"><a href="#解决方案一：gif替换视频" class="headerlink" title="解决方案一：gif替换视频"></a>解决方案一：gif替换视频</h3><p>视频实在是暴露太多问题，尤其是在微信上，而我们当前的需求是用户微信扫二维码展示页面，所以一直PASS视频，想其他的招</p>
+<p>想到的第一个解决方案是gif，但gif也有很多弊端</p>
+<ul>
+<li>无法获取gif完成的时间点，只能大致估算</li>
+<li>因为全屏关系，gif所占空间较大，最差的画质也差不多，且画质不清晰很影响视觉效果。</li>
+</ul>
+<h3 id="最终解决方案：css3动画模拟视频"><a href="#最终解决方案：css3动画模拟视频" class="headerlink" title="最终解决方案：css3动画模拟视频"></a>最终解决方案：css3动画模拟视频</h3><p>可参照张鑫旭的例子 <a href="http://www.zhangxinxu.com/study/201512/gif-stop-and-play-by-css3-animation.html" target="_blank" rel="external">http://www.zhangxinxu.com/study/201512/gif-stop-and-play-by-css3-animation.html</a></p>
+<p>直接按照他的案例其实很好做，只要UI提供一张长图就OK了，但有几个点需要注意</p>
+<ul>
+<li>微信对图片的大小是有限制的，不仅所占空间有限制，宽度和高度若太大也会使微信闪退</li>
+<li>因为我们是全屏展示，所以一张张图肯定是会让微信崩塌的，需要几张得，一张有几帧需要计算好</li>
+<li>部分内存比较小的手机，经过无数次的动画刷新（图片已经很大了，动画也会消耗内存），整个页面的所占的空间越来越大会使微信闪退</li>
+</ul>
+<p>经过我和UI的压力测试，发现宽度超过1W像素微信就闪退了。且图片得小于50张以下,而且为了能让100整除取10张图，每张图里有4帧</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"video"</span> <span class="attr">v-show</span>=<span class="string">"ios"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part01"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part02"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part03"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part04"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part05"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part06"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part07"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part08"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part09"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"part10"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>下面是对应的样式，因为是全屏播放且总共有40帧，所有整个宽度为4000%，由有10个div左浮动连接而成一张大图，每个div占总宽度的10%; 用transform: translateX让他从0移动到最后</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">.video &#123;</div><div class="line">    width 4000%</div><div class="line">    height 100%</div><div class="line">    animation: play steps(40) 2s infinite both</div><div class="line">    animation-iteration-count: 1</div><div class="line">    @keyframes play &#123;</div><div class="line">      0% &#123;</div><div class="line">        transform translateX(0%)</div><div class="line">      &#125;</div><div class="line">      100% &#123;</div><div class="line">        transform translateX(-100%)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    div &#123;</div><div class="line">      width 10%</div><div class="line">      height 100%</div><div class="line">      float left</div><div class="line">      &amp;.part01 &#123;</div><div class="line">        background url("~assets/images/part-1.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">      &amp;.part02 &#123;</div><div class="line">        background url("~assets/images/part-2.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">      &amp;.part03 &#123;</div><div class="line">        background url("~assets/images/part-3.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">      &amp;.part04 &#123;</div><div class="line">        background url("~assets/images/part-4.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">      &amp;.part05 &#123;</div><div class="line">        background url("~assets/images/part-5.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">      &amp;.part06 &#123;</div><div class="line">        background url("~assets/images/part-6.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">      &amp;.part07 &#123;</div><div class="line">        background url("~assets/images/part-7.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">      &amp;.part08 &#123;</div><div class="line">        background url("~assets/images/part-8.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">      &amp;.part09 &#123;</div><div class="line">        background url("~assets/images/part-9.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">      &amp;.part10 &#123;</div><div class="line">        background url("~assets/images/part-10.jpg") no-repeat 0 -40px</div><div class="line">        background-size 100% auto</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>因为图片实在是太多也太大必须得让图片加载完成后再加载动画，这里只判断了ios（安卓不做动画，直接放死图）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.ios) &#123;</div><div class="line">    <span class="keyword">let</span> count = <span class="number">10</span></div><div class="line">    <span class="keyword">let</span> imgsrc = [part01, part02, part03, part04, part05, part06, part07, part08, part09, part10]</div><div class="line">    imgsrc.forEach(<span class="function">(<span class="params">src, index</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">let</span> img = <span class="keyword">new</span> <span class="built_in">window</span>.Image()</div><div class="line">      img.src = src</div><div class="line">      img.onload = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span> (index + <span class="number">1</span> &gt;= count) &#123;</div><div class="line">          <span class="keyword">this</span>.playVideo = <span class="literal">true</span></div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;)</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p><img src="/images/20161129/mono.gif" alt=""><br>上面的gif还是我自己PS做的。效果与我做的css3动效一样。</p>
+<blockquote>
+<p>为什么安卓不播放动效呢，是因为安卓机上css3始终有卡顿所以产品觉得直接PASS了</p>
+</blockquote>
+<p>另外要说一点animation若你只想播放一次时，它播放完毕后会返回为初始状态，这一点很蛋疼，此项目我在底部放了一张底图，播放完毕后展示底图。底图的另外个好处时安卓不播放动画也就直接显示底图了，不需多加div。</p>
+<p>之后我会分享如何解决animation的一些弊端</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/zln/" rel="tag"># zln</a>
+          
+            <a href="/tags/video/" rel="tag"># video</a>
+          
+            <a href="/tags/css3/" rel="tag"># css3</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/29/http学习笔记(上)/" rel="next" title="http学习笔记(上)">
+                <i class="fa fa-chevron-left"></i> http学习笔记(上)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/30/一个surge引发的血案-AppleScript从入门到放弃/" rel="prev" title="一个surge引发的血案--AppleScript从入门到放弃">
+                一个surge引发的血案--AppleScript从入门到放弃 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/29/css3模拟视频以解决video弊端/"
+           data-title="css3模拟视频以解决video弊端" data-url="http://x-front-team.github.io/2016/11/29/css3模拟视频以解决video弊端/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">82</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于视频的弊端"><span class="nav-number">1.</span> <span class="nav-text">关于视频的弊端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案一：gif替换视频"><span class="nav-number">2.</span> <span class="nav-text">解决方案一：gif替换视频</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最终解决方案：css3动画模拟视频"><span class="nav-number">3.</span> <span class="nav-text">最终解决方案：css3动画模拟视频</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

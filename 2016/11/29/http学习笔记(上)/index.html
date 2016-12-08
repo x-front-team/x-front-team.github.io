@@ -1,0 +1,836 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="jyn," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="很早之前看了这本日系技术书《图解http》，觉得有所收获。稍微整理了下相关的知识点，这里是第一部分，关于请求方法与常用状态码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="http学习笔记(上)">
+<meta property="og:url" content="http://x-front-team.github.io/2016/11/29/http学习笔记(上)/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="很早之前看了这本日系技术书《图解http》，觉得有所收获。稍微整理了下相关的知识点，这里是第一部分，关于请求方法与常用状态码。">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817134732.png">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817134752.png">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817154734.png">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817160319.png">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817163645.png">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817165634.png">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817162903.png">
+<meta property="og:updated_time" content="2016-12-07T05:40:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="http学习笔记(上)">
+<meta name="twitter:description" content="很早之前看了这本日系技术书《图解http》，觉得有所收获。稍微整理了下相关的知识点，这里是第一部分，关于请求方法与常用状态码。">
+<meta name="twitter:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817134732.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/11/29/http学习笔记(上)/"/>
+
+
+
+
+
+  <title> http学习笔记(上) | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/11/29/http学习笔记(上)/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                http学习笔记(上)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-29T06:31:31+08:00">
+                2016-11-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/11/29/http学习笔记(上)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/29/http学习笔记(上)/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>很早之前看了这本日系技术书《图解http》，觉得有所收获。稍微整理了下相关的知识点，这里是第一部分，关于请求方法与常用状态码。</p>
+<a id="more"></a>
+<h3 id="http请求报文与响应报文"><a href="#http请求报文与响应报文" class="headerlink" title="http请求报文与响应报文"></a>http请求报文与响应报文</h3><p>请求报文和响应报文都由报文头部、空行和报文主体三部分组成。</p>
+<p>其中请求报文头部分为请求行和头部字段。请求行中包含请求的方法、请求地址和请求所使用的协议。</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817134732.png" alt="请求头"></p>
+<p>响应报文头部分为状态行和头部字段。状态行中包含协议版本、状态码和原因短语。</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817134752.png" alt="响应头"></p>
+<p>其实头部字段还可以细分为通用头部字段、请求/响应头部字段、实体头部字段和其他（非标准内定义的头部字段）。当然这些细分都不是重点。</p>
+<h3 id="http请求方式"><a href="#http请求方式" class="headerlink" title="http请求方式"></a>http请求方式</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+<th>支持的协议版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>获取资源</td>
+<td>1.0/1.1</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>传输实体类型</td>
+<td>1.0/1.1</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>传输文件</td>
+<td>1.0/1.1</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>获得报文头部</td>
+<td>1.0/1.1</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>删除文件</td>
+<td>1.0/1.1</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>询问支持的方法</td>
+<td>1.1</td>
+</tr>
+<tr>
+<td>TRACE</td>
+<td>追踪路径</td>
+<td>1.1</td>
+</tr>
+<tr>
+<td>CONNECT</td>
+<td>要求用隧道协议连接代理</td>
+<td>1.1</td>
+</tr>
+<tr>
+<td>Link</td>
+<td>建立和资源之间的联系</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>UNLINK</td>
+<td>断开连接关系</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<h4 id="幂等、副作用与请求参数"><a href="#幂等、副作用与请求参数" class="headerlink" title="幂等、副作用与请求参数"></a>幂等、副作用与请求参数</h4><p>相较于http1.0,http1.1新增了一些方法，也废除了一些方法。我们比较常用的依旧是http1.0中就有的这4种方法：get,post,put,del。</p>
+<p>关于get,post,put,del的区别，我们可以从三个方面考虑：</p>
+<ul>
+<li>幂等（通常这点是最重要的）</li>
+</ul>
+<p>所谓幂等就是请求提交1次与请求提交n次，相应资源的状态没有区别。put、delete、get都是幂等，而post为非幂等，比如新增数据的请求发送多次会创建多个相同的数据。</p>
+<ul>
+<li>副作用</li>
+</ul>
+<p>我曾经把副作用和幂等混为一谈，其实它们是很不一样的。副作用关注的是这个请求发送前与发送后，响应资源的状态有没有发生改变。put,delete,post分别为更新、删除和提交，状态发生了变化，它们是有副作用的，而get不变，没有副作用。</p>
+<ul>
+<li>请求参数<br>请求时传递参数有两种方式，url中的Query String和请求体。<del>但get和delete并不支持请求体，而post和put是支持的。</del>post和put是支持的，对于get和delete，尽管标准中没有规定它是否支持，一些服务器在实现的时候可能不支持传请求体。(4.3.1 get,4.3.2 head也有类似的描述)</li>
+</ul>
+<blockquote>
+<p>A payload within a DELETE request message has no defined semantics;sending a payload body on a DELETE request might cause some existing implementations to reject the request. <a href="https://tools.ietf.org/html/rfc7231#section-4.3.1" target="_blank" rel="external">RFC 7231</a></p>
+</blockquote>
+<p><a href="http://stackoverflow.com/questions/299628/is-an-entity-body-allowed-for-an-http-delete-request" target="_blank" rel="external">stackoverflow上关于delete请求是否允许传请求体的讨论</a></p>
+<h4 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h4><ul>
+<li><p>head：它经常用来检测资源（是否过期、是否存在），head不返回报文主体，相较于get而言会更快。我们也可以利用head获取服务器时间，因为响应返回的时候响应头中带有Date字段。</p>
+</li>
+<li><p>trace:它的应用场景比如：在路由排错时，结合Max-Forwards使用。</p>
+</li>
+</ul>
+<h3 id="http状态码"><a href="#http状态码" class="headerlink" title="http状态码"></a>http状态码</h3><p>我们可以把http状态码分为以下五个类别：</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1XX</td>
+<td>请求正在处理</td>
+</tr>
+<tr>
+<td>2XX</td>
+<td>请求成功</td>
+</tr>
+<tr>
+<td>3XX</td>
+<td>重定向</td>
+</tr>
+<tr>
+<td>4XX</td>
+<td>客户端错误</td>
+</tr>
+<tr>
+<td>5XX</td>
+<td>服务端错误</td>
+</tr>
+</tbody>
+</table>
+<h4 id="常用状态码"><a href="#常用状态码" class="headerlink" title="常用状态码"></a>常用状态码</h4><p>一、1XX</p>
+<p>1、101 Switching Protocols，表示服务器将遵从客户的请求切换协议。场景，比如websocket协议。</p>
+<p>二、2XX</p>
+<p>1、200 OK 请求正常返回</p>
+<p>这个最常见，不多解释了。</p>
+<p>2、204 No Content ，这个状态表示服务器已经成功处理请求，但是返回的响应报文中不含有实体主体，也不允许返回实体主体。<br>场景，比如上传一个已经存在的资源,服务器返回204。</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817154734.png" alt="上传已经存在的图片"></p>
+<p>3、206 Partial Content 返回部分内容。客户端只请求了资源的部分内容。</p>
+<p>场景，在未禁用缓存的情况下，前一个资源还未请求完就终止，此时再次请求该资源。如果服务器支持按范围请求（Accept-Ranges:bytes）的话。</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817160319.png" alt="返回部分内容"></p>
+<p>三、3XX</p>
+<p>3XX基本上都与重定向有关，比如301 Moved Permanently永久重定向，302 Found临时重定向，303 See Other 临时重定向，307 Temporary Redirect临时重定向。<br>重定向状态码总是结合着响应头的Location字段使用。</p>
+<p>而304 Not Modifield 这个状态比较奇葩，它是属于缓存相关（下篇文章会讲304与那些缓存相关字段）。</p>
+<p>可能很多小伙伴都会对302,303,307这三个临时重定向的状态码感到一脸懵逼。我们可以看下<a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html" target="_blank" rel="external">RFC2616</a>中的这段话：</p>
+<blockquote>
+<p>Note: RFC 1945 and RFC 2068 specify that the client is not allowed to change the method on the redirected request. However, most existing user agent implementations treat 302 as if it were a 303 response, performing a GET on the Location field-value regardless of the original request method. The status codes 303 and 307 have been added for servers that wish to make unambiguously clear which kind of reaction is expected of the client.</p>
+</blockquote>
+<p>大致意思是尽管标准禁止重定向时修改method，大多数现有浏览器在实现的时候，还是会将302当成303处理（在规范中，客户端发出post请求后，如果收到302状态码，是不允许自动发送重复的post请求的，因为post非幂等，但很多浏览器在这种情况下将post改成了get，获取location字段信息，重新发起请求），规范后来为此专门引入了303和307。303明确表示客户端应该用get方式去获取资源，而307不会从post变成get(307其实就是1.0中的302)。</p>
+<blockquote>
+<p>Note: For historical reasons, a user agent MAY change the request method from POST to GET for the subsequent request.If this behavior is undesired, the 307 (Temporary Redirect) status code can be used instead. <a href="https://tools.ietf.org/html/rfc7231#section-6.4.2" target="_blank" rel="external">RFC7231 6.4.2与6.4.3</a></p>
+</blockquote>
+<p>所以说，303和307是标准发现浏览器的302实现不合规范后，从302中细分出来的，然而令人尴尬的是，尽管标准已经出来了，303和307依旧比较冷门，即便使用也依旧没有遵循规范。我们比较常见的还是301和302吧。<br>301是搜索引擎在抓取新的内容后也会把url地址替换成新的。302重定向搜索引擎会抓取新的内容而保留旧的网址，这可能会被搜索引擎认为是在作弊，也有可能被一些站长用来做网址劫持。对用户而言，我们感受不到区别。</p>
+<p>example1:301</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817163645.png" alt="301状态码"></p>
+<p>example2:302</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817165634.png" alt="302状态码"></p>
+<p>example3:307</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20160817162903.png" alt="307状态码"></p>
+<p>（303的例子我没找到）</p>
+<p>四、4XX</p>
+<p>1、400 Bad Request ，表示请求报文中存在语法错误</p>
+<p>2、401 Unauthorized，该状态码表情请求需要通过http认证，比如身份认证过期或未登录。</p>
+<p>3、403 Forbidden 请求的资源访问被服务器拒绝</p>
+<p>4、404 Not Found 资源不存在</p>
+<p>5、405 Method Not Allowed，方法未允许，这个在联调时可能会遇到。</p>
+<p>5、408 Request Timeout，请求超时</p>
+<p>6、410 Gone，请求资源已删除。它与404的区别是410知道文件已经被删除，404是未知原因无法找到。</p>
+<p>五、5XX</p>
+<p>1、500 Internal Server Error,服务端在执行请求时报错</p>
+<p>2、502 Bad Gateway，网关错误</p>
+<p>3、503 Service Unavailable,负载过高，服务器无法响应。这种通常过段时间就会正常。</p>
+<p>4、504 Gateway Time-out，网关超时</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jyn/" rel="tag"># jyn</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/28/浅谈浏览器历史记录/" rel="next" title="浅谈浏览器历史记录">
+                <i class="fa fa-chevron-left"></i> 浅谈浏览器历史记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/29/css3模拟视频以解决video弊端/" rel="prev" title="css3模拟视频以解决video弊端">
+                css3模拟视频以解决video弊端 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/29/http学习笔记(上)/"
+           data-title="http学习笔记(上)" data-url="http://x-front-team.github.io/2016/11/29/http学习笔记(上)/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">82</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#http请求报文与响应报文"><span class="nav-number">1.</span> <span class="nav-text">http请求报文与响应报文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http请求方式"><span class="nav-number">2.</span> <span class="nav-text">http请求方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#幂等、副作用与请求参数"><span class="nav-number">2.1.</span> <span class="nav-text">幂等、副作用与请求参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他方法"><span class="nav-number">2.2.</span> <span class="nav-text">其他方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http状态码"><span class="nav-number">3.</span> <span class="nav-text">http状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用状态码"><span class="nav-number">3.1.</span> <span class="nav-text">常用状态码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

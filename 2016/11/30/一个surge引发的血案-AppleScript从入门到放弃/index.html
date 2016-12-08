@@ -1,0 +1,1032 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ggf,surge,mac,appleScript,全键盘," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="WARNING本文章比较血腥暴力，请 windows 用户自觉在 mac 用户陪同下观看
+前言话说 surge 真是个神器啊，我之前就觉得它是个番羽土啬软件，没有想到是
+
+它是个如此强大的番羽土啬软件，功能超级全面
+正是作者据说，它确实是款网络调试工具，同样强大的可怕
+
+在用surge之前，
+
+番羽土啬用小飞机（中规中矩吧，surge的自动切换速度最快的节点太强大），
+网络调试用charles（界">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个surge引发的血案--AppleScript从入门到放弃">
+<meta property="og:url" content="http://x-front-team.github.io/2016/11/30/一个surge引发的血案-AppleScript从入门到放弃/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="WARNING本文章比较血腥暴力，请 windows 用户自觉在 mac 用户陪同下观看
+前言话说 surge 真是个神器啊，我之前就觉得它是个番羽土啬软件，没有想到是
+
+它是个如此强大的番羽土啬软件，功能超级全面
+正是作者据说，它确实是款网络调试工具，同样强大的可怕
+
+在用surge之前，
+
+番羽土啬用小飞机（中规中矩吧，surge的自动切换速度最快的节点太强大），
+网络调试用charles（界">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/1.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/2.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/3.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/4.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/5.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/6.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/7.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/8.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/9.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/10.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/11.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/12.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/13.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/14.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20161103/15.png">
+<meta property="og:updated_time" content="2016-12-07T08:56:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个surge引发的血案--AppleScript从入门到放弃">
+<meta name="twitter:description" content="WARNING本文章比较血腥暴力，请 windows 用户自觉在 mac 用户陪同下观看
+前言话说 surge 真是个神器啊，我之前就觉得它是个番羽土啬软件，没有想到是
+
+它是个如此强大的番羽土啬软件，功能超级全面
+正是作者据说，它确实是款网络调试工具，同样强大的可怕
+
+在用surge之前，
+
+番羽土啬用小飞机（中规中矩吧，surge的自动切换速度最快的节点太强大），
+网络调试用charles（界">
+<meta name="twitter:image" content="http://x-front-team.github.io/images/20161103/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2016/11/30/一个surge引发的血案-AppleScript从入门到放弃/"/>
+
+
+
+
+
+  <title> 一个surge引发的血案--AppleScript从入门到放弃 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/11/30/一个surge引发的血案-AppleScript从入门到放弃/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                一个surge引发的血案--AppleScript从入门到放弃
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-30T17:00:16+08:00">
+                2016-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/11/30/一个surge引发的血案-AppleScript从入门到放弃/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/30/一个surge引发的血案-AppleScript从入门到放弃/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="WARNING"><a href="#WARNING" class="headerlink" title="WARNING"></a><span style="color: red">WARNING</span></h1><p>本文章比较血腥暴力，请 windows 用户自觉在 mac 用户陪同下观看</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>话说 surge 真是个神器啊，我之前就觉得它是个番羽土啬软件，没有想到是</p>
+<ol>
+<li>它是个如此强大的番羽土啬软件，功能超级全面</li>
+<li>正是作者据说，它确实是款网络调试工具，同样强大的可怕</li>
+</ol>
+<p>在用surge之前，</p>
+<ol>
+<li>番羽土啬用小飞机（中规中矩吧，surge的自动切换速度最快的节点太强大），</li>
+<li>网络调试用charles（界面不喜欢，感觉挺笨重的，map时不能全程用快捷键），</li>
+<li>终端还得配置proxychain 4（小飞机不支持终端番羽土啬，得自己配置）。</li>
+</ol>
+<p>用surge之后，</p>
+<p>整个世界都清净了,</p>
+<p>3个需求，1个应用全解决。</p>
+<p><br></p>
+<a id="more"></a>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p><br></p>
+<h3 id="第一章-引子"><a href="#第一章-引子" class="headerlink" title="第一章 引子"></a>第一章 引子</h3><p><br></p>
+<p>surge怎么用，我就不献丑了，毕竟珠玉在前。</p>
+<p>我就直接说说我用得不爽的地方吧。</p>
+<p>现在呢，我用surge作为网络代理使用，把某手机端项目的本地代码代理到线上。</p>
+<p>这个项目代号为 <code>X项目</code> 吧</p>
+<p>为什么要代理到线上呢，因为X项目是跑在微信里的，如果直接跑本地，很多功能不能用。</p>
+<p>比如说：</p>
+<ol>
+<li>微信分享</li>
+<li>微信定位</li>
+<li>游客模式</li>
+</ol>
+<p>神马的</p>
+<p>所以呢，代理到线上那是必须的。</p>
+<p>然后呢，我们算一笔帐。</p>
+<p>我们的X项目有3个环境</p>
+<ul>
+<li>测试</li>
+<li>预发</li>
+<li>线上</li>
+</ul>
+<p>包含四个子项目，</p>
+<ul>
+<li>anonym01 (9901)</li>
+<li>anonym02 (9902)</li>
+<li>anonym03 (9903)</li>
+<li>anonym04 (9904)</li>
+</ul>
+<p>3个环境，4个子项目，有多少种排列组合的方式？</p>
+<p>这简直是一道惨绝人寰的高中数学题啊。</p>
+<p>解：</p>
+<pre><code>证明过程略
+
+假设我常用 6 种组合
+
+假设成立，答案是 常用6种
+</code></pre><p>Surge 切换代理需要用手点icon，那么假设有6个配置文件，每个配置文件都要用到，每天去点它，切换配置，真的好累。</p>
+<p>给现在的配置文件上个图, 用手在触摸板上点，真得很麻烦，我需要全键盘的解决方案</p>
+<p><img src="/images/20161103/1.png" alt=""></p>
+<p><br></p>
+<h3 id="第二章-看似光明的前景"><a href="#第二章-看似光明的前景" class="headerlink" title="第二章 看似光明的前景"></a>第二章 看似光明的前景</h3><p><br></p>
+<p>明确了我不爽的地方，那么我要做的事情也变得清晰了：</p>
+<p>通过各种方法，如</p>
+<ul>
+<li>alfred</li>
+<li>appleScript</li>
+<li>shell</li>
+</ul>
+<p>来一键切换配置文件，免我手点之忧。</p>
+<p><br></p>
+<h4 id="第一站-百度谷歌"><a href="#第一站-百度谷歌" class="headerlink" title="第一站 百度谷歌"></a>第一站 百度谷歌</h4><p><br></p>
+<p>下了三个插件，全都不能用，这就是这场血案的开端。</p>
+<p><img src="/images/20161103/2.png" alt=""></p>
+<p>不过我发现它们都有一句相同的代码，做为结尾</p>
+<p><code>tell application surge to reload</code></p>
+<p>这是明显的 appleScript 语法，让 surge 重新加载，而且这句话之前的代码都有效，唯独到这里无效。</p>
+<p>那么显然是这句话有问题，为了实现功能，就得改一下这话。</p>
+<p>或者实现这句话的功能。</p>
+<p>考虑再三之后，踏上了自学 appleScript 的不归路。</p>
+<p><br></p>
+<h4 id="第二站-appleScript-语法学习"><a href="#第二站-appleScript-语法学习" class="headerlink" title="第二站 appleScript 语法学习"></a>第二站 appleScript 语法学习</h4><p><br></p>
+<p>别看 appleScript 名字跟 javaScript 很像，实际上它们的思想也很像。</p>
+<p>javaScript 是通过自己的语法来操纵 DOM， appleScript 其实也差不多。</p>
+<p>只不过这里的DOM变成了 application 的各项功能，比如说：刷新，退出，最小化，最大化这些东西。</p>
+<p>以后我就用 DOM 来指代这些操作，便于理解。</p>
+<p>我的目的是实现功能，所以更专注 DOM 这一块，语法就粗略地看了一下，有需要时再去查。</p>
+<p>语法的话， 可以看下这本书 《appleScript for absolute starters》，非常的浅显易懂。</p>
+<p>主要讲的是，数据结构，基本上跟 js 也没多大差别，还有些常用的 api，及一些常用的 dom 操作。</p>
+<p>比如说 </p>
+<pre><code>tell application &quot;Finder&quot;
+    beep
+end tell 
+</code></pre><p>就是让<code>Finder</code>程序发出 ‘滴’ 的一声(此处有歧义，只是做为举例）。</p>
+<p>因为<code>beep</code>是个系统级别的操作，是系统发出的’滴’，而不是 “Finder”。</p>
+<p>接下来，我们就看看 appleScript 怎么进行DOM操作，来实现我们需要的功能。</p>
+<p><br></p>
+<h4 id="第三站-‘DOM‘-操作"><a href="#第三站-‘DOM‘-操作" class="headerlink" title="第三站 ‘DOM‘ 操作"></a>第三站 ‘DOM‘ 操作</h4><p><br></p>
+<p>根据我粗浅的总结，appleScript 一共有三种形式的DOM操作，每种形式都有自己的优势和不足，所以都会有应用的场景。</p>
+<p>而且三种形式都很简单，简单到很有趣的地步。</p>
+<p>好，接下来，我们就来看看这些有趣的操作。</p>
+<p>不过在开始前，请先打开 mac 里的 Script Eidtor 程序，这是开发 appleScript 的不二选择。</p>
+<p>打开 Script Editor 可以通过</p>
+<ul>
+<li>Alfred 搜索打开，</li>
+<li>Spotlight 搜索打开，</li>
+<li>launchPad 搜索打开。</li>
+</ul>
+<p>我不会说它的路径在哪，因为这毫无意义。</p>
+<p>接下来进入第三章，专门讲一下 DOM 操作</p>
+<p><br></p>
+<h3 id="第三章-实践起来"><a href="#第三章-实践起来" class="headerlink" title="第三章 实践起来"></a>第三章 实践起来</h3><p><br></p>
+<h4 id="一-数据字典"><a href="#一-数据字典" class="headerlink" title="一 数据字典"></a>一 数据字典</h4><p><br></p>
+<p>DOM 操作的第一种方法就是 数据字典。</p>
+<p>没有数据字典时，写 appleScript 就是盲人摸象，有了数据字典，世界一片光明。</p>
+<p>接下来看看数据字典的神奇功能</p>
+<p>首先，打开 script Editor，新建一个文件。</p>
+<p>然后在 菜单 &gt; 文件 &gt; 打开字典</p>
+<p>会弹出一个窗口<br><img src="/images/20161103/3.png" alt=""></p>
+<p>作为实践，我们选择 Finder 程序吧。</p>
+<p>这毕竟是 Mac 自带应用，支持会好一点。</p>
+<p>我们可以看到， 这里有许多条目，大概有数百个吧。<br><img src="/images/20161103/4.png" alt=""></p>
+<p>其实，这些就是 Finder 支持的 DOM 操作。也就是说 Finder 支持数百个 appleScript 的操作。</p>
+<p>可以说是非常强大了。</p>
+<p>如果对此没有什么概念，可以拿咱们今天的主角兼大反派 Surge 来对比下。</p>
+<p>以同样的方式打开 Surge<br><img src="/images/20161103/5.png" alt=""></p>
+<p>数量大大减少， 如果你仔细看看这些条目的名字，你就会发现这些名字非常的通俗，常见，因为它们全是系统自带的操作或属性，是每个程序都有的。</p>
+<p>也就是说 Surge 对数据字典的支持为 0。</p>
+<p>作者压根没有为 Surge 写数据字典</p>
+<p>这是个不幸的消息，也为之后的种种不幸埋下了伏笔。</p>
+<p>先不管 surge 不支持数据字典，既然我们看到这了，那就来操作一下吧。</p>
+<p>图中有个 ‘quit’ 大家都看到了， 它是什么意思也是很明确的了， 那么我们写一句来试试看。<br>在 script Editor 的页面中这么写：</p>
+<pre><code>tell application &quot;Finder&quot;
+    quit
+end tell
+</code></pre><p>如果你担心写错，可以这样：</p>
+<p>在 script Editor 页面中右键一下，选中最下面一个 ‘tell block’, 会弹出一些子菜单，点击一个吧<br><img src="/images/20161103/6.png" alt=""></p>
+<p>代码就帮你写好了，然后我们加一个 quit 就行了。</p>
+<p>写完之后，通过 command + r 来执行。</p>
+<p>然后惊喜的发现 Finder 真的被退出了。</p>
+<p>我之所以这么惊讶，是因为 Finder 是不能通过 command + q 退出的，我本以为 quit 命令也不能让它退出，这个结果，有些出乎我的意料。</p>
+<p>这个示例非常简单，不过通过数据字典，配合 appleScript 的语法，可以写出非常丰富的功能。比如：</p>
+<pre><code>tell application &quot;Finder&quot;
+   empty the trash
+   beep
+end tell
+</code></pre><p>这句代码是干吗的，也不用解释了吧。是不是超级简单。</p>
+<p>更多复杂的功能咱就不写了，毕竟我自己我不会写啊。</p>
+<p>总之，数据字典提供了原材料，script Editor 提供了锤子，能不能造出轮子，还要看自己。</p>
+<p><br></p>
+<h4 id="menu-bar-1"><a href="#menu-bar-1" class="headerlink" title="menu bar 1"></a>menu bar 1</h4><p><br></p>
+<p>刚才，我们也看到了，Surge 只支持系统自带的数据字典。 <code>tell application &quot;Surge&quot; to reload</code> 显然是无法工作的。</p>
+<p>至此，我们明白了，Alfred的插件为何无法工作。</p>
+<p>为了实现需要的功能，我们只好换个方法了。 接下来就要讲到方法二，菜单栏点击。</p>
+<p>mac 的菜单栏应该不用介绍了， 基本每个程序打开后，都会在屏幕左上角显示它的菜单栏。</p>
+<p>（请注意<code>基本</code>这两个字,又埋下了一个伏笔）</p>
+<p>菜单栏的字菜单又会有非常多的操作， 我们来看一眼，继续以 Finder 为例。<br><img src="/images/20161103/7.png" alt=""></p>
+<p>好多操作，应该可以满足我们的需求了。</p>
+<p>appleScript 提供了点击这些菜单的方法。</p>
+<p>让我们来试试,  为了方便看效果，我们以 Script Editor 做为目标程序。</p>
+<p>不停的按 command + r ，就会看到效果切换。</p>
+<pre><code>tell application &quot;System Events&quot;
+    tell process &quot;Script Editor&quot;
+        tell menu bar 1
+            tell menu bar item &quot;View&quot;
+                tell menu &quot;View&quot;
+                    click menu item &quot;Show Tab Bar&quot;
+                end tell
+            end tell
+        end tell
+    end tell
+end tell
+</code></pre><p>把代码拷进去， 用 command + r 运行一下， 是不是发现，标签栏的显示会切换一下，再按一下，又切换一下。</p>
+<p>试着读一下这些代码，非常的易懂。</p>
+<p>这句代码，就相当于手动去点 菜单 &gt; View &gt; Show Tab Bar</p>
+<p>感觉好省力。</p>
+<p>这里的代码有几个需要注意的地方。</p>
+<ol>
+<li>通过 <code>&quot;System Events&quot;</code> 来执行这些操作，可能是出于权限和接口统一方面的考虑。</li>
+<li><code>tell menu bar 1</code> 这里的menu bar 1 就是左上角的菜单栏，有1就有2，2我们过会讲。</li>
+<li><code>tell menu bar item &quot;View&quot;</code> 之后 还要 <code>tell menu &quot;View&quot;</code>, 有点冗余，不过就得这么写</li>
+</ol>
+<p>Ok， 这样我们就实现了模拟点击菜单栏，来完成操作。 再来一个通用的函数来包装一下，也可以参考下写法。</p>
+<pre><code>on do_submenu(app_name, menu_name, menu_item, submenu_item)
+   try
+       -- bring the target application to the front
+       tell application app_name
+           activate
+       end tell
+       tell application &quot;System Events&quot;
+           tell process app_name
+               tell menu bar 1
+                   tell menu bar item menu_name
+                       tell menu menu_name
+                           tell menu item menu_item
+                               tell menu menu_item
+                                   click menu item submenu_item
+                               end tell
+                           end tell
+                       end tell
+                   end tell
+               end tell
+           end tell
+       end tell
+       return true
+   on error error_message
+       return false
+   end try
+end do_submenu
+</code></pre><p>看起来很乱是吧，没关系，原理其实跟之前的代码一样，一句句捋下来会觉得很清楚。</p>
+<p>好了，再回到本文的主角兼反派 Surge 身上，</p>
+<p>我们希望它能 reload 一下，能做到吗？</p>
+<p>做为主角兼反派，如果这么容易就被干掉了，那观众岂不是很不尽兴。</p>
+<p>所以我们的大反派依旧屹~立~不~倒~。</p>
+<p>导演，它戏份怎么这么重，是不是潜规则了？</p>
+<p>它是怎么做到的呢？ 很简单:</p>
+<p>Surge 没有 menu bar 1。</p>
+<p>还能不能快乐的玩耍了！！！！</p>
+<p><br></p>
+<h4 id="menu-bar-2"><a href="#menu-bar-2" class="headerlink" title="menu bar 2"></a>menu bar 2</h4><p><br></p>
+<p>这样都不行，只能祭出最后一招了，就是刚才提到的 menu bar 2。</p>
+<p>大家都知道， mac 的菜单栏分成两个部分，左边的是常见的菜单栏，会有各种操作项。</p>
+<p>右边的更像是状态栏吧，各种 icon 都会放在这里，如图：</p>
+<p><img src="/images/20161103/8.png" alt=""></p>
+<p>所谓的 menu bar 2 就是右边的菜单栏，这里同样是可以操作的。</p>
+<p>比如，我要通过脚本来点击这个 quit 按钮，也是可以实现的。</p>
+<p><img src="/images/20161103/9.png" alt=""></p>
+<p>不过要手写实在是有点麻烦，千头万绪地，拎不清，这里我们可以借助一个工具，这个工具教我们怎么写。</p>
+<p>UI Browser 请自行搜索下载。</p>
+<p><img src="/images/20161103/10.png" alt=""></p>
+<p>这次我们不能用 Finder 或者 Script Editor 做实验了， 因为它们没有 menu bar 2。不过 Surge 是有的。</p>
+<p>下载 UI Browser 并打开， 点击左下角的 Switch to Screen Reader。</p>
+<p>然后找一个 menu bar 2 的程序点一点，这里我用 Flux 做实验 。</p>
+<p>(为什么不用Surge呢， 这里又埋下了伏笔)</p>
+<p>如图：</p>
+<p><img src="/images/20161103/11.png" alt=""></p>
+<p>留意下，ELEMENT 和 ELEMENT PARH 下的内容，基本上把 menu的层级结构都展示出来了。</p>
+<p>我们把这些层级结构套一下，DOM操作的方法，就可以实现相应的功能了。</p>
+<p>尝试一下。在 Script Editor 中运行以下代码。</p>
+<pre><code>tell application &quot;Flux&quot;
+    tell application &quot;System Events&quot;
+        tell process &quot;Flux&quot;
+            tell menu bar 1
+                tell menu bar item 1
+                    click
+                    click menu item &quot;Quit f.lux&quot; of menu 1
+                end tell
+            end tell
+        end tell
+    end tell
+end tell
+</code></pre><p>这个脚本就会点击 flux 程序的退出按钮。</p>
+<p>可以看到这边的写法，跟 menu bar 1 的写法非常类似，各种菜单项，都是根据 UI Browser 读取来写的，非常方便。</p>
+<p>不过也有些要注意的地方。</p>
+<ol>
+<li>这里写的 menu bar 1, 而不是menu bar 2，这应该是因为 flux 没有menu bar 1，所以就把2改成了1，结果以 UI Browser为准。</li>
+<li>这里出现了两次<code>click</code>。因为 menu bar 2 是显式的模拟点击，是在GUI级别的，所以要先点一次把下拉菜单展示出来。</li>
+<li>这种写法会有些卡顿，应该是 OS X 的bug。网上有不卡顿的写法，上代码。</li>
+</ol>
+<pre><code>ignoring application responses
+tell application &quot;System Events&quot; to tell process &quot;Flux&quot;
+    click menu bar item 1 of menu bar 2
+end tell
+end ignoring
+do shell script &quot;killall System\\ Events&quot;
+delay 0.1
+tell application &quot;System Events&quot; to tell process &quot;Flux&quot;
+tell menu bar item 1 of menu bar 2
+    click menu item &quot;Disable for an hour&quot; of menu 1
+end tell
+end tell
+</code></pre><p>网上的代码，都比较高效吧，把多个操作合在一行写。</p>
+<p>我呢，为了方便理解，一行一行分得很清，看起来比较冗余。</p>
+<p><br></p>
+<h3 id="第四章-绝境"><a href="#第四章-绝境" class="headerlink" title="第四章 绝境"></a>第四章 绝境</h3><p><br></p>
+<p>3种appleScript的DOM操作都写完了，虽然方法1，方法2 Surge 都不支持，但是方法三，应该支持吧。</p>
+<p>毕竟Surge是有menu bar 2 的，有图为证。</p>
+<p><img src="/images/20161103/12.png" alt=""></p>
+<p>UI Browser 也可以做证。</p>
+<p><img src="/images/20161103/13.png" alt=""></p>
+<p>这下大Boss终于要被降服了，我只要模拟点击下 <code>Reload Configuration</code> 就大功告成了。</p>
+<p>正所谓帅不过3秒。</p>
+<p>现实给了我狠狠的一把掌： Surge 不支持这种写法。</p>
+<p>方法三也失败了。</p>
+<p>为什么呢，其实我也不知道为什么，毕竟对这个不熟。</p>
+<p>不过我有个小小的猜测。</p>
+<p>当我们把焦点聚焦到 menu bar 2 时，我们可以用左右方向键控制选中。</p>
+<p>但是你会发现</p>
+<ul>
+<li>QQ</li>
+<li>微信</li>
+<li>Siri</li>
+</ul>
+<p>是不能用方向键选中的，Surge 也不行。</p>
+<p>可能就是因为这个原因，导致appleScript不能<code>click</code></p>
+<p>So，失败了，失败了。踩了无数个坑，还是搞不定一个 Surge，也是无奈啊。</p>
+<p><br></p>
+<h3 id="第五章-逢生"><a href="#第五章-逢生" class="headerlink" title="第五章 逢生"></a>第五章 逢生</h3><p><br></p>
+<p>可是我不甘心就这么放弃啊，三天的努力，解决不了一个一丢丢的小问题。这种结果无法接受啊。</p>
+<p>走火入魔的我，只好祭出究极大招，被封印的禁术：按键精灵。</p>
+<p>这也是受到 menu bar 2 方法启发的。</p>
+<p>mac 下有一款软件，和 windows 下的按键精灵倒是有点相似。</p>
+<p>受益于 OS X 统一，完善的接口，该软件的能力远超 按键精灵。</p>
+<p>这款软件就是 “keyboard maestro”</p>
+<p>直译过来就是 “键盘大师”， 好low的名字。</p>
+<p>尽管这是款非常强大的软件，但是迫于无奈，我是把它当按键精灵用了</p>
+<p>做了这样一个操作，如图</p>
+<p><img src="/images/20161103/14.png" alt=""></p>
+<p>简单的说一下，</p>
+<p>就是鼠标移到了surge图标那里，点一下</p>
+<p>再移到切换配置菜单上，弹出子菜单</p>
+<p>再移到子菜单的各种配置上</p>
+<p>然后我通过方向键控制，选择一下。</p>
+<p>因为我是通过GUI进行操作的，所以Surge会自动刷新。</p>
+<p>最终我还是实现了我的需求。</p>
+<p>按下快捷键，半秒后打开下图中的界面</p>
+<p>之后就可以用键盘选择配置文件了。</p>
+<p><img src="/images/20161103/15.png" alt=""></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>新版 Surge 对reload的机制做了修改。</p>
+<p>当配置文件变化时，会自动reload。</p>
+<p>讲道理，开头讲到的 Alfred 插件可以用了，因为不用<code>tell application &quot;Surge&quot; to reload</code>了</p>
+<p>心累， 暂时不想尝试了。</p>
+<p>不过最起码，咱学到了些东西。</p>
+<p>令人崩溃的， ‘appleScript从入门到放弃’ 终于结束了。</p>
+<p>大家再见。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ggf/" rel="tag"># ggf</a>
+          
+            <a href="/tags/surge/" rel="tag"># surge</a>
+          
+            <a href="/tags/mac/" rel="tag"># mac</a>
+          
+            <a href="/tags/appleScript/" rel="tag"># appleScript</a>
+          
+            <a href="/tags/全键盘/" rel="tag"># 全键盘</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/29/css3模拟视频以解决video弊端/" rel="next" title="css3模拟视频以解决video弊端">
+                <i class="fa fa-chevron-left"></i> css3模拟视频以解决video弊端
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/30/一个surge引发的血案-AppleScript从入门到放弃/"
+           data-title="一个surge引发的血案--AppleScript从入门到放弃" data-url="http://x-front-team.github.io/2016/11/30/一个surge引发的血案-AppleScript从入门到放弃/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">82</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#WARNING"><span class="nav-number">1.</span> <span class="nav-text">WARNING</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文"><span class="nav-number">3.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一章-引子"><span class="nav-number">3.0.1.</span> <span class="nav-text">第一章 引子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二章-看似光明的前景"><span class="nav-number">3.0.2.</span> <span class="nav-text">第二章 看似光明的前景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一站-百度谷歌"><span class="nav-number">3.0.2.1.</span> <span class="nav-text">第一站 百度谷歌</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二站-appleScript-语法学习"><span class="nav-number">3.0.2.2.</span> <span class="nav-text">第二站 appleScript 语法学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三站-‘DOM‘-操作"><span class="nav-number">3.0.2.3.</span> <span class="nav-text">第三站 ‘DOM‘ 操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三章-实践起来"><span class="nav-number">3.0.3.</span> <span class="nav-text">第三章 实践起来</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一-数据字典"><span class="nav-number">3.0.3.1.</span> <span class="nav-text">一 数据字典</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#menu-bar-1"><span class="nav-number">3.0.3.2.</span> <span class="nav-text">menu bar 1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#menu-bar-2"><span class="nav-number">3.0.3.3.</span> <span class="nav-text">menu bar 2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四章-绝境"><span class="nav-number">3.0.4.</span> <span class="nav-text">第四章 绝境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第五章-逢生"><span class="nav-number">3.0.5.</span> <span class="nav-text">第五章 逢生</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">3.1.</span> <span class="nav-text">后记</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
