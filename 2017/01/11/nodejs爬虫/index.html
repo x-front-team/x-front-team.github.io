@@ -1,0 +1,773 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="sjn,node," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="什么是爬虫？wiki是这么解释的：
+
+是一种“自动化浏览网络”的程序，或者说是一种网络机器人。它们被广泛用于互联网搜索引擎或其他类似网站，以获取或更新这些网站的内容和检索方式。它们可以自动采集所有其能够访问到的页面内容，以供搜索引擎做进一步处理（分检整理下载的页面），而使得用户能更快的检索到他们需要的信息。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nodejs爬虫">
+<meta property="og:url" content="http://x-front-team.github.io/2017/01/11/nodejs爬虫/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="什么是爬虫？wiki是这么解释的：
+
+是一种“自动化浏览网络”的程序，或者说是一种网络机器人。它们被广泛用于互联网搜索引擎或其他类似网站，以获取或更新这些网站的内容和检索方式。它们可以自动采集所有其能够访问到的页面内容，以供搜索引擎做进一步处理（分检整理下载的页面），而使得用户能更快的检索到他们需要的信息。">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170111/outcome2.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170111/outcome3.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170111/outcome4.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170111/outcome5-1.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170111/outcome5-2.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170111/outcome6-1.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170111/outcome6-2.png">
+<meta property="og:updated_time" content="2017-01-19T01:52:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nodejs爬虫">
+<meta name="twitter:description" content="什么是爬虫？wiki是这么解释的：
+
+是一种“自动化浏览网络”的程序，或者说是一种网络机器人。它们被广泛用于互联网搜索引擎或其他类似网站，以获取或更新这些网站的内容和检索方式。它们可以自动采集所有其能够访问到的页面内容，以供搜索引擎做进一步处理（分检整理下载的页面），而使得用户能更快的检索到他们需要的信息。">
+<meta name="twitter:image" content="http://x-front-team.github.io/images/20170111/outcome2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2017/01/11/nodejs爬虫/"/>
+
+
+
+
+
+  <title> nodejs爬虫 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2017/01/11/nodejs爬虫/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                nodejs爬虫
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-11T20:15:16+08:00">
+                2017-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/01/11/nodejs爬虫/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/11/nodejs爬虫/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是爬虫？"><a href="#什么是爬虫？" class="headerlink" title="什么是爬虫？"></a>什么是爬虫？</h2><p>wiki是这么解释的：</p>
+<blockquote>
+<p>是一种“自动化浏览网络”的程序，或者说是一种网络机器人。它们被广泛用于互联网搜索引擎或其他类似网站，以获取或更新这些网站的内容和检索方式。它们可以自动采集所有其能够访问到的页面内容，以供搜索引擎做进一步处理（分检整理下载的页面），而使得用户能更快的检索到他们需要的信息。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="robots协议"><a href="#robots协议" class="headerlink" title="robots协议"></a>robots协议</h2><hr>
+<p>robots.txt是一种存放于网站根目录下的ASCII编码的文本文件，它通常告诉网络搜索引擎的漫游器（又称网络爬虫），此网站中的哪些内容是不应被搜索引擎的漫游器获取的，哪些是可以被漫游器获取的。</p>
+<p><code>Robots.txt协议并不是一个规范，而只是约定俗成的，所以并不能保证网站的隐私。</code></p>
+<p>说白了，这并不是一项需要强制遵守的规定，这只是一个<em>君子之间的协议</em>，防君子不防小人，但是不遵守这个协议可能导致不正当竞争，各位看官可以自行搜索下～</p>
+<p>现简单列举下robots.txt中的一些配置规则，有个大致的印象，也有助于对爬虫逻辑的理解</p>
+<ul>
+<li>允许所有机器人：User-agent: *</li>
+<li>仅允许特定的机器人：User-agent: name_spider</li>
+<li>拦截所有机器人：Disallow: /</li>
+<li>禁止机器人访问特定的目录：Disallow: /images/</li>
+<li>…</li>
+</ul>
+<h2 id="反爬虫-Anti-Spider"><a href="#反爬虫-Anti-Spider" class="headerlink" title="反爬虫(Anti-Spider)"></a>反爬虫(Anti-Spider)</h2><hr>
+<p>一般网站从三个方面反爬虫：</p>
+<ul>
+<li>用户请求的Headers</li>
+<li>用户行为</li>
+<li>网站目录和数据加载方式</li>
+<li>…<blockquote>
+<p>前两种比较容易遇到，大多数网站都从这些角度来反爬虫。第三种一些应用ajax的网站会采用，这样增大了爬取的难度。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="通过Headers反爬虫"><a href="#通过Headers反爬虫" class="headerlink" title="通过Headers反爬虫"></a>通过Headers反爬虫</h3><p>很多网站通过检测Headers的：</p>
+<ul>
+<li>User-Agent</li>
+<li>Referer</li>
+</ul>
+<p><code>反反爬虫策略：在爬虫中添加Headers，将浏览器的User-Agent复制到爬虫的Headers中；或者将Referer值修改为目标网站域名。</code>  </p>
+<h3 id="基于用户行为反爬虫"><a href="#基于用户行为反爬虫" class="headerlink" title="基于用户行为反爬虫"></a>基于用户行为反爬虫</h3><ul>
+<li>通过检测用户行为：<ul>
+<li>同一IP短时间内多次访问同一页面</li>
+<li>同一账户短时间内多次进行相同操作</li>
+</ul>
+</li>
+</ul>
+<p><code>反反爬虫策略：1、专门写一个爬虫，爬取网上公开的代理ip，每请求几次更换一个ip；2、每次请求后随机间隔几秒再进行下一次请求</code> </p>
+<h3 id="动态页面的反爬虫"><a href="#动态页面的反爬虫" class="headerlink" title="动态页面的反爬虫"></a>动态页面的反爬虫</h3><p>上述的几种情况大多都是出现在静态页面，还有一部分网站，我们需要爬取的数据是通过ajax请求得到，或者通过JavaScript生成的</p>
+<p><code>反反爬虫策略：找到ajax请求，也能分析出具体的参数和响应的具体含义，响应的json进行分析得到需要的数据。</code></p>
+<h2 id="需要预备的知识"><a href="#需要预备的知识" class="headerlink" title="需要预备的知识"></a>需要预备的知识</h2><hr>
+<ul>
+<li>Javascript 及 JQuery</li>
+<li>简单的nodejs基础</li>
+<li>http 网络抓包 和 URL 基础<br><code>对于前端工程师来讲真的是福利啊</code></li>
+</ul>
+<h2 id="需要安装的依赖库"><a href="#需要安装的依赖库" class="headerlink" title="需要安装的依赖库"></a>需要安装的依赖库</h2><hr>
+<ul>
+<li>superagent</li>
+<li>cheerio </li>
+<li>eventproxy </li>
+<li>async</li>
+</ul>
+<h3 id="superagent"><a href="#superagent" class="headerlink" title="superagent"></a>superagent</h3><hr>
+<p>superagent 是个轻量的的 http 方面的库，是 nodejs 里一个非常方便的客户端请求代理模块，方便我们进行 get、post 等网络请求<br>[slide]</p>
+<h3 id="cheerio"><a href="#cheerio" class="headerlink" title="cheerio"></a>cheerio</h3><hr>
+<p>可以理解成一个 Nodejs 版的 jQuery，用来从网页中以 css selector 获取数据，使用方式跟 jquery 一毛一样的。</p>
+<h3 id="eventproxy"><a href="#eventproxy" class="headerlink" title="eventproxy"></a>eventproxy</h3><hr>
+<p>eventproxy 模块是控制并发用的，它来帮你管理到底这些异步操作是否完成，有时我们需要同时发送 N 个 http 请求，然后利用得到的数据进行后期的处理工作, 请求完成之后，它会自动调用你提供的处理函数，并将抓取到的数据当参数传过来，方便处理。</p>
+<h3 id="async"><a href="#async" class="headerlink" title="async"></a>async</h3><hr>
+<p>async是一个流程控制工具包，提供了直接而强大的异步功能：mapLimit(arr, limit, iterator, callback)</p>
+<p>还有强大的同步功能：<br>mapSeries(arr, iterator, callback)</p>
+<h2 id="爬虫实践"><a href="#爬虫实践" class="headerlink" title="爬虫实践"></a>爬虫实践</h2><p>光说不练假把式，那么咱就开始吧～</p>
+<p>先定义依赖库和全局变量～</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// node自带的模块</span></div><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</div><div class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</div><div class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</div><div class="line"><span class="comment">// npm安装的依赖库</span></div><div class="line"><span class="keyword">const</span> superagent = <span class="built_in">require</span>(<span class="string">'superagent'</span>);</div><div class="line"><span class="keyword">const</span> cheerio = <span class="built_in">require</span>(<span class="string">'cheerio'</span>);</div><div class="line"><span class="keyword">const</span> eventproxy = <span class="built_in">require</span>(<span class="string">'eventproxy'</span>);</div><div class="line"><span class="keyword">const</span> <span class="keyword">async</span> = <span class="built_in">require</span>(<span class="string">'async'</span>);</div><div class="line"><span class="keyword">const</span> mkdir = <span class="built_in">require</span>(<span class="string">'mkdirp'</span>)</div><div class="line"><span class="comment">// 设置爬虫目标URL</span></div><div class="line"><span class="keyword">var</span> targetUrl = <span class="string">'https://cnodejs.org/'</span>;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//-------- 1 ----------</span></div><div class="line"><span class="comment">// 最简单的爬虫</span></div><div class="line">superagent.get(targetUrl)</div><div class="line">	.end(<span class="function"><span class="keyword">function</span>(<span class="params">err, res</span>)</span>&#123;</div><div class="line">	  	<span class="built_in">console</span>.log(res);</div><div class="line">	&#125;)</div></pre></td></tr></table></figure>
+<p>三行代码～但这的确是一个爬虫程序，将页面信息输出到terminal～</p>
+<p>因为要获取页面上的资源，而且要应用cheerio（node版的jQuery）来选择页面上指定class或者id中的内容，所以我们要先分析自己想获取页面的结构，打开google chrome的元素选择器，比如说现在我们只想获取cnode上每个词条点击的url。</p>
+<p>将1中的程序加入cheerio获取urls：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// -------- 2 ----------</span></div><div class="line"><span class="comment">// 加入cheerio获取页面指定内容</span></div><div class="line"></div><div class="line">superagent.get(targetUrl)</div><div class="line">	.end(<span class="function"><span class="keyword">function</span>(<span class="params">err, res</span>)</span>&#123;</div><div class="line">		<span class="keyword">var</span> $ = cheerio.load(res.text);</div><div class="line">		$(<span class="string">'#topic_list .topic_title'</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params">index, element</span>)</span>&#123;</div><div class="line">		<span class="keyword">var</span> href = $(element).attr(<span class="string">'href'</span>);</div><div class="line">		<span class="built_in">console</span>.log(href);</div><div class="line">		&#125;)</div><div class="line">	&#125;)</div></pre></td></tr></table></figure>
+<p>输出：<img src="/images/20170111/outcome2.png" alt=""></p>
+<p>这都是相对路径呀，肿么办？别急，有url模块：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ---------- 3 -------------</span></div><div class="line"><span class="keyword">var</span> href = url.resolve(targetUrl, $(element).attr(<span class="string">'href'</span>));</div></pre></td></tr></table></figure>
+<p>然后继续在执行程序输出：<img src="/images/20170111/outcome3.png" alt=""></p>
+<p>获取urls只是第一步，现在我们要获取把urls所指向的页面中的内容获取过来，比如说，我们要获取二级页面中的标题和第一个评论，然后打印出来。</p>
+<p>这里我们要加入eventproxy模块来优雅地控制指定次数异步之后执行回调函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ---------- 4 -------------</span></div><div class="line"><span class="comment">// 加入eventproxy来控制计数后回调</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> topicUrls = [];	</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getTopicUrls</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="comment">// ----3----中的代码片段</span></div><div class="line">&#125;;</div><div class="line">getTopicUrls()</div><div class="line"><span class="keyword">var</span> ep = <span class="keyword">new</span> eventproxy();</div><div class="line"><span class="comment">// eventproxy 模块要先定义回调函数</span></div><div class="line">ep.after(<span class="string">'crawled'</span>, topicUrls.length, <span class="function"><span class="keyword">function</span>(<span class="params">topics</span>) </span>&#123;</div><div class="line">	topics = topics.map(<span class="function"><span class="keyword">function</span>(<span class="params">topicPair</span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> topicUrl = topicPair[<span class="number">0</span>];</div><div class="line">		<span class="keyword">var</span> topicHtml = topicPair[<span class="number">1</span>];</div><div class="line">		<span class="keyword">var</span> $ = cheerio.load(topicHtml);</div><div class="line">		<span class="keyword">return</span> (&#123;</div><div class="line">			<span class="attr">title</span>: $(<span class="string">'.topic_full_title'</span>).text(),</div><div class="line">			<span class="attr">href</span>: topicUrl,</div><div class="line">			<span class="attr">comment1</span>: $(<span class="string">'.reply_content .markdown-text'</span>).eq(<span class="number">0</span>).text().trim()</div><div class="line">		&#125;);</div><div class="line">	&#125;);</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'outcome'</span>);</div><div class="line">	<span class="built_in">console</span>.log(topics);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">topicUrls.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">topicUrl</span>) </span>&#123;</div><div class="line">	superagent.get(topicUrl)</div><div class="line">		.end(<span class="function"><span class="keyword">function</span>(<span class="params">err, res</span>)</span>&#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="string">'fetch－－'</span> + topicUrl + <span class="string">'－－successfully'</span>);</div><div class="line">      		<span class="comment">// eventproxy 告诉after函数，执行了一次异步，等到次数满足条件，就可以执行回调了</span></div><div class="line">			ep.emit(<span class="string">'crawled'</span>, [topicUrl, res.text]);</div><div class="line">		&#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>输出：<img src="/images/20170111/outcome4.png" alt=""></p>
+<p>咦～这里outcome为空？什么鬼？我们又检查了下代码。shit!没有控制异步，导致执行topicUrls.forEach()的时候，topicUrls为空，当然是吗都没有，我们加入神器promise来改良下吧～</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//---------- 5 -----------</span></div><div class="line"><span class="comment">// 加入promise控制</span></div><div class="line"><span class="keyword">var</span> topicUrls = [];	</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getTopicUrls</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>)</span>&#123;</div><div class="line">		... <span class="comment">// 参照----4----中的代码</span></div><div class="line">	&#125;);</div><div class="line">&#125;;</div><div class="line">getTopicUrls().then(<span class="function"><span class="keyword">function</span>(<span class="params">topicUrls</span>)</span>&#123;</div><div class="line">	... <span class="comment">// 参照----4----中的代码</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>输出：<img src="/images/20170111/outcome5-1.png" alt=""></p>
+<p>惊喜来了，页面上出现了我们希望出现的标题、url、和评论，但是有一点不符合预期，仔细观察输出日志，会有很多空的对象字符串：<img src="/images/20170111/outcome5-2.png" alt=""></p>
+<p>难道是页面不可访问？</p>
+<p>我们复制这个没有输出的页面url到浏览器回车就回发现，页面其实是可以被访问的，因为在浏览器我们只是一次请求，而在爬虫程序中，因为node的高并发特性，我们在同一时间进行非常多次请求，如果超过服务器的负载，那么服务器就会崩溃，所以服务器一般都会有反爬虫的方法，而我们恰巧就遇到了这种情况，如何证明？我们直接输出urls所指向的所有页面（tips：因为terminal输出太多，可以使用linux命令|less来控制输出日志的分页翻页）</p>
+<p>仔细观察输出，不久就会发现以下日志：</p>
+<p>页面都是503，也就是服务器拒绝了我们的访问。</p>
+<p>我们来改良下我们的程序，async登场，来控制程序的并发，并且设置延迟：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ---------- 6 -----------</span></div><div class="line"><span class="comment">// 设置延迟，并发控制为5</span></div><div class="line"><span class="comment">// 打印出文章标题和第一条评论</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> topicUrls = [];	</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getTopicUrls</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>)</span>&#123;</div><div class="line">		superagent.get(targetUrl)</div><div class="line">			.end(<span class="function"><span class="keyword">function</span>(<span class="params">err, res</span>)</span>&#123;</div><div class="line">				<span class="keyword">if</span> (err) &#123;</div><div class="line">					<span class="keyword">return</span> <span class="built_in">console</span>.log(<span class="string">'error:'</span>, err)</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">var</span> $ = cheerio.load(res.text);</div><div class="line">				$(<span class="string">'#topic_list .topic_title'</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params">index, element</span>)</span>&#123;</div><div class="line">					<span class="keyword">var</span> href = url.resolve(targetUrl, $(element).attr(<span class="string">'href'</span>));</div><div class="line">					topicUrls.push(href);</div><div class="line">					resolve(topicUrls);</div><div class="line">				&#125;)</div><div class="line">			&#125;);</div><div class="line">	&#125;);</div><div class="line">&#125;;</div><div class="line">getTopicUrls().then(<span class="function"><span class="keyword">function</span>(<span class="params">topicUrls</span>)</span>&#123;</div><div class="line">	<span class="keyword">var</span> ep = <span class="keyword">new</span> eventproxy();</div><div class="line">	ep.after(<span class="string">'crawled'</span>, topicUrls.length, <span class="function"><span class="keyword">function</span>(<span class="params">topics</span>) </span>&#123;</div><div class="line">		topics = topics.map(<span class="function"><span class="keyword">function</span>(<span class="params">topicPair</span>) </span>&#123;</div><div class="line">			<span class="keyword">var</span> topicUrl = topicPair[<span class="number">0</span>];</div><div class="line">			<span class="keyword">var</span> topicHtml = topicPair[<span class="number">1</span>];</div><div class="line">			<span class="keyword">var</span> $ = cheerio.load(topicHtml);</div><div class="line">			<span class="keyword">return</span> (&#123;</div><div class="line">				<span class="attr">title</span>: $(<span class="string">'.topic_full_title'</span>).text(),</div><div class="line">				<span class="attr">href</span>: topicUrl,</div><div class="line">				<span class="attr">comment1</span>: $(<span class="string">'.reply_content .markdown-text'</span>).eq(<span class="number">0</span>).text().trim()</div><div class="line">			&#125;);</div><div class="line">		&#125;);</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">'------------------------ outcomes -------------------------'</span>);</div><div class="line">		<span class="built_in">console</span>.log(topics);</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">'本次爬虫结果总共'</span> + topics.length + <span class="string">'条'</span>)</div><div class="line">	&#125;);</div><div class="line">	<span class="keyword">var</span> curCount = <span class="number">0</span>;</div><div class="line">	<span class="comment">// 设置延时</span></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">concurrentGet</span>(<span class="params">url, callback</span>) </span>&#123;</div><div class="line">    	<span class="keyword">var</span> delay = <span class="built_in">parseInt</span>((<span class="built_in">Math</span>.random() * <span class="number">30000000</span>) % <span class="number">1000</span>, <span class="number">10</span>);</div><div class="line">	    curCount++;</div><div class="line">		setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		    <span class="built_in">console</span>.log(<span class="string">'现在的并发数是'</span>, curCount, <span class="string">'，正在抓取的是'</span>, url, <span class="string">'，耗时'</span> + delay + <span class="string">'毫秒'</span>);  </div><div class="line">	    	superagent.get(url)</div><div class="line">				.end(<span class="function"><span class="keyword">function</span>(<span class="params">err, res</span>)</span>&#123;</div><div class="line">					<span class="built_in">console</span>.log(<span class="string">'fetch－－'</span> + url + <span class="string">'－－successfully'</span>);</div><div class="line">					ep.emit(<span class="string">'crawled'</span>, [url, res.text]);</div><div class="line">				&#125;);</div><div class="line">		    curCount--;</div><div class="line">		    callback(<span class="literal">null</span>,url +<span class="string">'Call back content'</span>);</div><div class="line">		&#125;, delay);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">	<span class="comment">// 使用async控制异步抓取 	</span></div><div class="line">	<span class="comment">// mapLimit(arr, limit, iterator, [callback])</span></div><div class="line">	<span class="comment">// 异步回调</span></div><div class="line">	<span class="keyword">async</span>.mapLimit(topicUrls, <span class="number">5</span> ,<span class="function"><span class="keyword">function</span> (<span class="params">topicUrl, callback</span>) </span>&#123;</div><div class="line">		    concurrentGet(topicUrl, callback);</div><div class="line">	    &#125;);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>再看下输出日志:<img src="/images/20170111/outcome6-1.png" alt=""></p>
+<p><img src="/images/20170111/outcome6-2.png" alt=""></p>
+<p>强迫症患者觉得很舒服有木有～</p>
+<p>等等～还有一个重点没讲呢！对于诸多程序猿宅男来讲（此处省略万字），有了上面的基础，实现图片爬虫和储存也是很简单的额，比如说下载刚才讲的例子中的二级页面中的作者头像，分析页面的步骤就不多加描述了，直接上代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> dir = <span class="string">'./images'</span></div><div class="line"><span class="comment">// 创建目录图片存储</span></div><div class="line">mkdir(dir, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</div><div class="line">	<span class="keyword">if</span>(err) &#123;</div><div class="line">	    <span class="built_in">console</span>.log(err);</div><div class="line">	&#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">//---------- 7 -----------</span></div><div class="line"><span class="comment">// 设置延迟，并发控制为5</span></div><div class="line"><span class="comment">// 下载头像</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> topicUrls = [];	</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getTopicUrls</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>)</span>&#123;</div><div class="line">		...<span class="comment">// 参照---6---</span></div><div class="line">	&#125;);</div><div class="line">&#125;;</div><div class="line">getTopicUrls().then(<span class="function"><span class="keyword">function</span>(<span class="params">topicUrls</span>)</span>&#123;</div><div class="line">	<span class="keyword">var</span> ep = <span class="keyword">new</span> eventproxy();</div><div class="line">	ep.after(<span class="string">'crawled'</span>, topicUrls.length, <span class="function"><span class="keyword">function</span>(<span class="params">topics</span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> imgUrls = []</div><div class="line">		topics = topics.map(<span class="function"><span class="keyword">function</span>(<span class="params">topicPair</span>) </span>&#123;</div><div class="line">			...<span class="comment">// 参照---6---</span></div><div class="line">			imgUrls.push($(<span class="string">'.user_avatar img'</span>).attr(<span class="string">'src'</span>));</div><div class="line">		&#125;);</div><div class="line">      	<span class="comment">// 下载图片的使用异步可能会导致没下载完然后图片破损了，这边使用async.mapSeries串行执行</span></div><div class="line">		<span class="keyword">async</span>.mapSeries(imgUrls, <span class="function"><span class="keyword">function</span> (<span class="params">imgUrl, callback</span>) </span>&#123;</div><div class="line">			<span class="comment">// 创建文件流</span></div><div class="line">			<span class="keyword">const</span> stream = fs.createWriteStream(dir + <span class="string">'/'</span> + path.basename(imgUrl) + <span class="string">'.jpg'</span>);</div><div class="line">			<span class="keyword">const</span> res = superagent.get(imgUrl);</div><div class="line">			<span class="comment">// res.type('jpg')</span></div><div class="line">			res.pipe(stream);</div><div class="line">			<span class="built_in">console</span>.log(imgUrl, <span class="string">'－－保存完成'</span>);</div><div class="line">		    callback(<span class="literal">null</span>, <span class="string">'Call back content'</span>);</div><div class="line">	    &#125;);</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">'------------------------ outcomes -------------------------'</span>);</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">'本次爬虫结果总共'</span> + topics.length + <span class="string">'条'</span>);</div><div class="line">	&#125;);</div><div class="line">	<span class="keyword">var</span> curCount = <span class="number">0</span>;</div><div class="line">	<span class="comment">// 并发数量</span></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">concurrentGet</span>(<span class="params">url, callback</span>) </span>&#123;</div><div class="line">    	...<span class="comment">// 参照---6---</span></div><div class="line">    &#125;</div><div class="line">	<span class="comment">// 使用async控制异步抓取 </span></div><div class="line">	<span class="keyword">async</span>.mapLimit(topicUrls, <span class="number">5</span> ,<span class="function"><span class="keyword">function</span> (<span class="params">topicUrl, callback</span>) </span>&#123;</div><div class="line">		    concurrentGet(topicUrl, callback);</div><div class="line">	    &#125;);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>执行程序，然后你就会发现images文件夹下面多了很多图片了….嘿嘿嘿～</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sjn/" rel="tag"># sjn</a>
+          
+            <a href="/tags/node/" rel="tag"># node</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/24/网络协议（上）/" rel="next" title="网络协议（上）">
+                <i class="fa fa-chevron-left"></i> 网络协议（上）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/11/nodejs爬虫/"
+           data-title="nodejs爬虫" data-url="http://x-front-team.github.io/2017/01/11/nodejs爬虫/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">51</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是爬虫？"><span class="nav-number">1.</span> <span class="nav-text">什么是爬虫？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#robots协议"><span class="nav-number">2.</span> <span class="nav-text">robots协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反爬虫-Anti-Spider"><span class="nav-number">3.</span> <span class="nav-text">反爬虫(Anti-Spider)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过Headers反爬虫"><span class="nav-number">3.1.</span> <span class="nav-text">通过Headers反爬虫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于用户行为反爬虫"><span class="nav-number">3.2.</span> <span class="nav-text">基于用户行为反爬虫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态页面的反爬虫"><span class="nav-number">3.3.</span> <span class="nav-text">动态页面的反爬虫</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需要预备的知识"><span class="nav-number">4.</span> <span class="nav-text">需要预备的知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需要安装的依赖库"><span class="nav-number">5.</span> <span class="nav-text">需要安装的依赖库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#superagent"><span class="nav-number">5.1.</span> <span class="nav-text">superagent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cheerio"><span class="nav-number">5.2.</span> <span class="nav-text">cheerio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eventproxy"><span class="nav-number">5.3.</span> <span class="nav-text">eventproxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#async"><span class="nav-number">5.4.</span> <span class="nav-text">async</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爬虫实践"><span class="nav-number">6.</span> <span class="nav-text">爬虫实践</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
