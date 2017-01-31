@@ -84,19 +84,16 @@
 
 
 
-<meta name="description" content="首先要承认，百度前端团队出品的ueditor可能是所有开源富文本编辑中，功能最全的一款编辑器。虽然2016年百度公司整体的业界口碑有所下滑，但是攻城狮的开源精神始终是值得称赞的。核心源码并没有细看，但从整个库的使用方式来看，模块化方案似乎做的并不是很好，后来百度的echarts这方面就做的好一些，另外它的版本号规范不符合semver规范，不过它本身也不支持npm包的使用方式。
-说起我与uedito">
+<meta name="description" content="首先要承认，百度前端团队出品的ueditor可能是所有开源富文本编辑中，功能最全的一款编辑器。虽然2016年百度公司整体的业界口碑有所下滑，但是攻城狮的开源精神始终是值得称赞的。核心源码并没有细看，但从整个库的使用方式来看，模块化方案似乎做的并不是很好，后来百度的echarts这方面就做的好一些，另外它的版本号规范不符合semver规范，不过它本身也不支持npm包的使用方式。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ueditor之一波好多折">
 <meta property="og:url" content="http://x-front-team.github.io/2017/01/31/ueditor之一波N折/index.html">
 <meta property="og:site_name" content="爱客仕-前端团队博客园">
-<meta property="og:description" content="首先要承认，百度前端团队出品的ueditor可能是所有开源富文本编辑中，功能最全的一款编辑器。虽然2016年百度公司整体的业界口碑有所下滑，但是攻城狮的开源精神始终是值得称赞的。核心源码并没有细看，但从整个库的使用方式来看，模块化方案似乎做的并不是很好，后来百度的echarts这方面就做的好一些，另外它的版本号规范不符合semver规范，不过它本身也不支持npm包的使用方式。
-说起我与uedito">
-<meta property="og:updated_time" content="2017-01-31T15:50:32.000Z">
+<meta property="og:description" content="首先要承认，百度前端团队出品的ueditor可能是所有开源富文本编辑中，功能最全的一款编辑器。虽然2016年百度公司整体的业界口碑有所下滑，但是攻城狮的开源精神始终是值得称赞的。核心源码并没有细看，但从整个库的使用方式来看，模块化方案似乎做的并不是很好，后来百度的echarts这方面就做的好一些，另外它的版本号规范不符合semver规范，不过它本身也不支持npm包的使用方式。">
+<meta property="og:updated_time" content="2017-01-31T15:57:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ueditor之一波好多折">
-<meta name="twitter:description" content="首先要承认，百度前端团队出品的ueditor可能是所有开源富文本编辑中，功能最全的一款编辑器。虽然2016年百度公司整体的业界口碑有所下滑，但是攻城狮的开源精神始终是值得称赞的。核心源码并没有细看，但从整个库的使用方式来看，模块化方案似乎做的并不是很好，后来百度的echarts这方面就做的好一些，另外它的版本号规范不符合semver规范，不过它本身也不支持npm包的使用方式。
-说起我与uedito">
+<meta name="twitter:description" content="首先要承认，百度前端团队出品的ueditor可能是所有开源富文本编辑中，功能最全的一款编辑器。虽然2016年百度公司整体的业界口碑有所下滑，但是攻城狮的开源精神始终是值得称赞的。核心源码并没有细看，但从整个库的使用方式来看，模块化方案似乎做的并不是很好，后来百度的echarts这方面就做的好一些，另外它的版本号规范不符合semver规范，不过它本身也不支持npm包的使用方式。">
 
 
 
@@ -341,6 +338,7 @@
 
       
         <p>首先要承认，百度前端团队出品的<a href="http://ueditor.baidu.com/" target="_blank" rel="external">ueditor</a>可能是所有开源富文本编辑中，功能最全的一款编辑器。虽然2016年百度公司整体的业界口碑有所下滑，但是攻城狮的开源精神始终是值得称赞的。核心源码并没有细看，但从整个库的使用方式来看，模块化方案似乎做的并不是很好，后来百度的<a href="http://echarts.baidu.com/" target="_blank" rel="external">echarts</a>这方面就做的好一些，另外它的版本号规范不符合semver规范，不过它本身也不支持npm包的使用方式。</p>
+<a id="more"></a>
 <p>说起我与ueditor的历史，最早要追溯到2013年年中的样子，那时我刚刚从后端转为全职前端，这款编辑器还是产品经理推荐的，当时ueditor用的什么版本大约是1.2左右吧。总之，几经波折终于成功用在项目中并发布上线了，感觉好开森~</p>
 <p>然后再次接触ueditor已经是2016年了，在我来到当前东家时，ueditor已经在线上使用了，版本是1.3.6。那是一个老项目，纯jquery时代，没有CSS预处理器，没有模块化加载器，你懂的~由于我并不负责那块，一开始并没有关注。后来2016年年中，这个老项目要用vue重构(前后端彻底分离)，ueditor当然也要用组件封装，于是去瞄了一下老项目里的ueditor配置。我惊讶的发现，它居然能够支持浏览器直传第三方存储(我们用的是又拍云)，当然这也需要第三方存储支持HTTP方式上传。重构当然要选择ueditor的最新版啦，此时已经是1.4.3，发现关键配置项变化巨大。下面开始『折』：</p>
 <h3 id="一折"><a href="#一折" class="headerlink" title="一折"></a>一折</h3><p>经过查阅官方的发布历史以及相关源码，发现从1.3.6到1.4.2，文件上传模块经过大规模重构，相应的用法也是几乎完全不同，更重要的是，1.4.3已经不支持直传第三方服务了！</p>
