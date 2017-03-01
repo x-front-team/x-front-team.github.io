@@ -1,0 +1,712 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="js,xcy,设计模式," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="写在正文前这是js写设计模式的开篇。
+行，无耻的做了标题党。被骗进来的只能说，少年你的内心还不够强大 [/手动笑哭]
+为什么要取这么黄暴的名字？因为我认为要是前人都站在巨人的肩膀上为世界提供了这么多代码，那我连巨人的蕾丝裙边都摸不到，只能在石榴裙下顶礼膜拜。
+所以按照👆的逻辑。在下根据自行理解的仿写的都算不上是设计模式，顶多算是‘射鸡模式’
+咳咳，不瞎逼逼了，那么。。。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="射鸡模式之责任链引发的家族关系错综复杂？">
+<meta property="og:url" content="http://x-front-team.github.io/2017/02/22/射鸡模式之责任链引发的家族关系错综复杂/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="写在正文前这是js写设计模式的开篇。
+行，无耻的做了标题党。被骗进来的只能说，少年你的内心还不够强大 [/手动笑哭]
+为什么要取这么黄暴的名字？因为我认为要是前人都站在巨人的肩膀上为世界提供了这么多代码，那我连巨人的蕾丝裙边都摸不到，只能在石榴裙下顶礼膜拜。
+所以按照👆的逻辑。在下根据自行理解的仿写的都算不上是设计模式，顶多算是‘射鸡模式’
+咳咳，不瞎逼逼了，那么。。。">
+<meta property="og:updated_time" content="2017-02-27T11:26:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="射鸡模式之责任链引发的家族关系错综复杂？">
+<meta name="twitter:description" content="写在正文前这是js写设计模式的开篇。
+行，无耻的做了标题党。被骗进来的只能说，少年你的内心还不够强大 [/手动笑哭]
+为什么要取这么黄暴的名字？因为我认为要是前人都站在巨人的肩膀上为世界提供了这么多代码，那我连巨人的蕾丝裙边都摸不到，只能在石榴裙下顶礼膜拜。
+所以按照👆的逻辑。在下根据自行理解的仿写的都算不上是设计模式，顶多算是‘射鸡模式’
+咳咳，不瞎逼逼了，那么。。。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2017/02/22/射鸡模式之责任链引发的家族关系错综复杂/"/>
+
+
+
+
+
+  <title> 射鸡模式之责任链引发的家族关系错综复杂？ | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2017/02/22/射鸡模式之责任链引发的家族关系错综复杂/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                射鸡模式之责任链引发的家族关系错综复杂？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-22T02:00:19+08:00">
+                2017-02-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/02/22/射鸡模式之责任链引发的家族关系错综复杂/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/22/射鸡模式之责任链引发的家族关系错综复杂/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="写在正文前"><a href="#写在正文前" class="headerlink" title="写在正文前"></a>写在正文前</h1><p>这是js写设计模式的开篇。</p>
+<p>行，无耻的做了标题党。被骗进来的只能说，<br>少年你的内心还不够强大 [/手动笑哭]</p>
+<p>为什么要取这么黄暴的名字？因为我认为要是前人都站在巨人的肩膀上为世界提供了这么多代码，那我连巨人的蕾丝裙边都摸不到，只能在石榴裙下顶礼膜拜。</p>
+<p>所以按照👆的逻辑。在下根据自行理解的仿写的都算不上是设计模式，顶多算是‘射鸡模式’</p>
+<p>咳咳，不瞎逼逼了，那么。。。</p>
+<a id="more"></a>
+<h1 id="正片开始"><a href="#正片开始" class="headerlink" title="正片开始"></a>正片开始</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (爸爸的爸爸叫什么 === <span class="string">'爷爷'</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (爷爷的爸爸叫什么 === <span class="string">'太爷爷'</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (爸爸的xxx) &#123;</div><div class="line">                <span class="keyword">if</span> (爸爸) &#123;</div><div class="line">                    <span class="keyword">if</span> () &#123;</div><div class="line">                        ...........</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                爷爷的爸爸叫太奶奶[大雾];</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            爸爸的爸爸叫奶奶[大雾];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<p>不知道小伙伴在业务需求里应该会不会出现那么多的 if 判断</p>
+<p>反正在下有时候会遇见这个问题</p>
+<p>两三层都还过得去，要是再多一点，虽然写的时候hold的住，但是也防不住产品经理</p>
+<p>“喂，那谁，把里面的xxx改一下”, </p>
+<p><i style="font-size: 24px">boom, shakalaka</i></p>
+<p>最好的办法就是每一层都解耦，上一层不用管下一层，只管传递参数</p>
+<p>“这不可能！”，在学校捧着《HTML CSS速成手册》，《Javascript30天入门》的我如是喊道。</p>
+<p>其实在<del>设计模式</del>射鸡模式里面, 其实是有相对应的策略——<i style="color: red">责任链</i></p>
+<p>好比把公交卡一个个传递下去，直到递到如果前面就是刷卡机 “滴，学生卡”</p>
+<p>不过在这之前我们需要做一丢丢小事情去处理</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Chain = <span class="function"><span class="keyword">function</span> (<span class="params">fn</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.fn = fn; <span class="comment">// 传入方法</span></div><div class="line">    <span class="keyword">this</span>.successor = <span class="literal">null</span>; <span class="comment">// 下一个链条的节点</span></div><div class="line">&#125;</div><div class="line">Chain.prototype.nextSuccessor = <span class="function"><span class="keyword">function</span> (<span class="params">successor</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.successor = successor;</div><div class="line">&#125;</div><div class="line">Chain.prototype.passRequest = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> ret = <span class="keyword">this</span>.fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// 如果返回值为'nextSuccessor'就调用下一个</span></div><div class="line">    <span class="keyword">if</span> (ret === <span class="string">'nextSuccessor'</span>) &#123;</div><div class="line">        <span class="keyword">this</span>.successor &amp;&amp; <span class="keyword">this</span>.successor.passRequest.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面做完了，可以开始认亲大会了<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fater = <span class="function"><span class="keyword">function</span> (<span class="params">relation</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (relation === <span class="string">'爷爷'</span>) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'爷爷'</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'nextSuccessor'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> grandpa = <span class="function"><span class="keyword">function</span> (<span class="params">relation</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (relation === <span class="string">'太爷爷'</span>) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'太爷爷'</span>)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'nextSuccessor'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> grandfater = <span class="function"><span class="keyword">function</span> (<span class="params">relation</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (relation === <span class="string">'太太爷爷'</span>) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'太太爷爷'</span>)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'没有这个人!'</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> chain_fater = <span class="keyword">new</span> Chain(father)</div><div class="line"><span class="keyword">var</span> chain_grandpa = <span class="keyword">new</span> Chain(grandpa)</div><div class="line"><span class="keyword">var</span> chain_grandfater = <span class="keyword">new</span> Chain(grandfater)</div><div class="line"></div><div class="line">chain_father.setNextSuccessor(chain_grandpa)</div><div class="line">chain_grandpa.setNextSuccessor(chain_grandfater)</div><div class="line">chain_fater.passRequest(<span class="string">'太爷爷'</span>) <span class="comment">// console: 太爷爷</span></div><div class="line">chain_fater.passRequest(<span class="string">'奶奶'</span>) <span class="comment">// console: 没有这个人</span></div><div class="line"></div><div class="line"><span class="comment">// 如果中间不要爷爷了，那就只要...</span></div><div class="line">chain_fater.setNextSuccessor(chain_grandfater)</div></pre></td></tr></table></figure></p>
+<p>有个名人曾经说过：</p>
+<blockquote>
+<pre><code>es6 is very convenient for my life, it gives me free
+                                            ——Gentleman.Fangbee
+
+es6给了我编码极大便利，有了让我继续码下去的勇气
+                                            ——真特么.方便
+</code></pre></blockquote>
+<p>说的很有道理，在es6的浪潮里，我们如何能做到独善其身？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 箭头函数无法做构造器</span></div><div class="line"><span class="keyword">const</span> Chain = <span class="function"><span class="keyword">function</span> (<span class="params">fn</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.fn = fn</div><div class="line">    <span class="keyword">this</span>.successor = <span class="literal">null</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">Chain.prototype.setNextSuccessor = <span class="function"><span class="keyword">function</span> (<span class="params">successor</span>) </span>&#123;</div><div class="line">    <span class="comment">// 因为箭头函数this的关系，像上面那样使用this获取到的不指向构造器,</span></div><div class="line">    <span class="comment">// 故最后还是选用function去实现</span></div><div class="line">    <span class="comment">// 而是最近的一个作用域,相关资料自行谷歌/百度</span></div><div class="line">    </div><div class="line">    <span class="keyword">this</span>.successor = successor</div><div class="line">    <span class="keyword">return</span> <span class="comment">// 不这样写公司的eslint通不过ORZ</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">Chain.prototype.passRequest = <span class="function"><span class="keyword">function</span> (<span class="params">...args</span>) </span>&#123;</div><div class="line">    <span class="keyword">const</span> ret = <span class="keyword">this</span>.fn(...args) <span class="comment">//再次感谢es6</span></div><div class="line">    </div><div class="line">    <span class="comment">// 如果返回值为'nextSuccessor'就调用下一个</span></div><div class="line">    <span class="keyword">if</span> (ret === <span class="string">'nextSuccessor'</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.successor) &#123; <span class="comment">// 拆成这样写依旧是eslint背锅</span></div><div class="line">            <span class="keyword">this</span>.successor.passRequest(...args)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> ret</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="写在末尾"><a href="#写在末尾" class="headerlink" title="写在末尾"></a>写在末尾</h1><p>插科打诨的方式逼逼完了一通自己对设计模式的简单理解。其实我们<br>代码里时常不自觉的情况下就用到设计模式，只是我们自己都不知道<br>这叫xxx设计模式。</p>
+<p>确实是很方便的玩意儿。以后有什么好用的再做推荐。</p>
+<p>上面那一坨大家可以自行实现，如果有什么改良或者更好的实现方式<br>，可以交流出来供大家学习。</p>
+<p>荆轲刺秦王</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/xcy/" rel="tag"># xcy</a>
+          
+            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/19/CSS中的BFC/" rel="next" title="css中的BFC">
+                <i class="fa fa-chevron-left"></i> css中的BFC
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/23/与Koa的一次简单接触/" rel="prev" title="与Koa的一次简单接触">
+                与Koa的一次简单接触 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/22/射鸡模式之责任链引发的家族关系错综复杂/"
+           data-title="射鸡模式之责任链引发的家族关系错综复杂？" data-url="http://x-front-team.github.io/2017/02/22/射鸡模式之责任链引发的家族关系错综复杂/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">101</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#写在正文前"><span class="nav-number">1.</span> <span class="nav-text">写在正文前</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正片开始"><span class="nav-number">2.</span> <span class="nav-text">正片开始</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#写在末尾"><span class="nav-number">3.</span> <span class="nav-text">写在末尾</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
