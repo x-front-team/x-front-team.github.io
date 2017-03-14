@@ -1,0 +1,706 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="yhj,Electron," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="JavaScript近几年的发展快到令人难以想象，从compile once,run everywhere到code once,run everywhere，JavaScript正在逐渐成为使用最广泛的语言。而Electron，借用其官网的一句话则是:
+
+Build cross platform desktop apps with JavaScript, HTML, and CSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Electron开发一个桌面应用">
+<meta property="og:url" content="http://x-front-team.github.io/2017/02/28/使用Electron开发一个桌面应用/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="JavaScript近几年的发展快到令人难以想象，从compile once,run everywhere到code once,run everywhere，JavaScript正在逐渐成为使用最广泛的语言。而Electron，借用其官网的一句话则是:
+
+Build cross platform desktop apps with JavaScript, HTML, and CSS">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170228/electron.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170228/atom-icon-64.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170228/mongodb-compass-icon-64.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170228/postman-icon-64.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170228/slack-icon-64.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170228/visual-studio-code-icon-64.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170228/yeoman-icon-64.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170228/hello.png">
+<meta property="og:image" content="http://x-front-team.github.io/images/20170228/todo.png">
+<meta property="og:updated_time" content="2017-03-14T04:47:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Electron开发一个桌面应用">
+<meta name="twitter:description" content="JavaScript近几年的发展快到令人难以想象，从compile once,run everywhere到code once,run everywhere，JavaScript正在逐渐成为使用最广泛的语言。而Electron，借用其官网的一句话则是:
+
+Build cross platform desktop apps with JavaScript, HTML, and CSS">
+<meta name="twitter:image" content="http://x-front-team.github.io/images/20170228/electron.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2017/02/28/使用Electron开发一个桌面应用/"/>
+
+
+
+
+
+  <title> 使用Electron开发一个桌面应用 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2017/02/28/使用Electron开发一个桌面应用/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用Electron开发一个桌面应用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-28T21:10:01+08:00">
+                2017-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/02/28/使用Electron开发一个桌面应用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/28/使用Electron开发一个桌面应用/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>JavaScript近几年的发展快到令人难以想象，从compile once,run everywhere到code once,run everywhere，JavaScript正在逐渐成为使用最广泛的语言。而Electron，借用其<a href="http://electron.atom.io" target="_blank" rel="external">官网</a>的一句话则是:</p>
+<blockquote>
+<p>Build cross platform desktop apps with JavaScript, HTML, and CSS</p>
+</blockquote>
+<a id="more"></a>
+<p>Electron基于JavaScript，这是一个帮助开发者使用 Web 技术构建跨平台的桌面应用的工具，实际上 Electron 原本叫 Atom Shell，是专门为 Atom 设计的，后来才成为了一个独立的项目。Electron 将 Chromium 和 Node.js 结合到了一起：Chromium 提供了渲染页面和响应用户交互的能力，而 Node.js 提供了访问本地文件系统和网络的能力，也可以使用 NPM 上的几十万个第三方包。在此基础之上，Electron 还提供了 Mac、Windows、Linux 三个平台上的一些原生 API，例如全局快捷键、文件选择框、托盘图标和通知、剪贴板、菜单栏等等。</p>
+<p><img src="/images/20170228/electron.png"></p>
+<p>可能很多人甚至都没听说过，连Electron怎么发音都不知道(像我)，但是其实已经有很多基于Electron的成熟应用已经开发出来了，详见<a href="https://electron.atom.io/apps/。其中不乏有我们熟悉的" target="_blank" rel="external">https://electron.atom.io/apps/。其中不乏有我们熟悉的</a>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Atom</th>
+<th style="text-align:center">MongoDB</th>
+<th style="text-align:center">Postman</th>
+<th style="text-align:center">Slack</th>
+<th style="text-align:center">VS Code</th>
+<th style="text-align:center">Yeoman</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/images/20170228/atom-icon-64.png" alt=""></td>
+<td style="text-align:center"><img src="/images/20170228/mongodb-compass-icon-64.png" alt=""></td>
+<td style="text-align:center"><img src="/images/20170228/postman-icon-64.png" alt=""></td>
+<td style="text-align:center"><img src="/images/20170228/slack-icon-64.png" alt=""></td>
+<td style="text-align:center"><img src="/images/20170228/visual-studio-code-icon-64.png" alt=""></td>
+<td style="text-align:center"><img src="/images/20170228/yeoman-icon-64.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+<p>官方还为我们提供了一个很萌的api demo, <a href="https://electron-api-demos.githubapp.com/updates/electron-api-demos-mac.zip" target="_blank" rel="external">戳我下载</a>。今天我们就拿electron结合vue2.0来做一个todolist的桌面应用程序。</p>
+<p>首先把官方的Qucik Start clone下来，并执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/electron/electron-quick-start.git</div><div class="line"></div><div class="line">cd electron-quick-start</div><div class="line"></div><div class="line">npm install &amp;&amp; npm start</div></pre></td></tr></table></figure>
+<p>然后等待包安装完毕并且npm start之后我们就会看到熟悉的hello world界面：</p>
+<p><img src="/images/20170228/hello.png" alt=""></p>
+<p>我们要做的是不仅仅是这么一个欢迎界面，我们这里参考尤大的todolist<a href="https://cn.vuejs.org/v2/examples/todomvc.html" target="_blank" rel="external">源码</a>。我们把根目录的index.html的body清空，依次引入<a href="https://unpkg.com/vue@latest/dist/vue.js" target="_blank" rel="external">vue2.js</a> 跟相对应的样式<a href="https://unpkg.com/todomvc-app-css@2.0.6/index.css" target="_blank" rel="external">index.css</a>,剩下的跟我们平时开发其实一模一样,加入我们的todolist逻辑代码。</p>
+<p>完成之后我们在打开的Electron.app按下Command R(对，跟chrome一毛一样)刷新一下，就能看见我们熟悉的todolist应用了：</p>
+<p><img src="/images/20170228/todo.png" alt=""></p>
+<p>到这个我们已经基本完成了todolist的开发，接下来肯定是想把这个app打包分享给别人。Electron打包的方式主要有两种，一种是通过<a href="https://github.com/electron-userland/electron-packager" target="_blank" rel="external">electron-packager</a>直接打包成app/exe这种开箱即用的，还有一种是通过<a href="https://github.com/electron-userland/electron-builder" target="_blank" rel="external">electron-builder</a>打包成安装包。packager打包完直接就是一个桌面应用了，缺点是体积太大，我们这个应用通过packager的打包之后体积竟然达到了100+MB。但其实仔细一想也理所应当，因为 Electron 捆绑了整个 Chromium 和 Node.js。如果通过builder的方式打包成安装包，体积大约是40MB左右。接下来我们简单说说两种打包方式如何实现。</p>
+<p>我们先把两个打包器先安装好。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i electron-packager electron-builder --save-dev</div></pre></td></tr></table></figure>
+<p>先说说electron-packager，简单修改一下根目录下的package.json, 在script处添加pack命令</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"pack"</span>: <span class="string">"electron-packager . todolist --platform=darwin --arch=x64 --out=dist/ --overwrite --ignore=./node_modules/* --ignore=./dist"</span>,</div></pre></td></tr></table></figure>
+<p>大意就是告诉packager打包目录 输出名字 输出目录 要打包的类型(OSX/windows/linux, darwin代表OSX平台格式) 以及打包过程忽略哪些目录。还可以指定打包icon等等配置，详情请移步<a href="https://github.com/electron-userland/electron-packager" target="_blank" rel="external">官方README</a>…这里要特别注意ignore千万千万要加上输出目录否则会越打包越大，不要问我怎么知道的。我们这里只打包OSX平台，在根目录执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm run pack</div></pre></td></tr></table></figure>
+<p>稍等片刻打包完成之后 打包完的*.app就会出现在根目录我们指定的输出目录(上述结果输出为/dist/todolist-darwin-x64/todolist.app)</p>
+<p>再来试试electron-builder，还是要修改一下package.json, 添加一个build字段(像下面这样)：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">"build"</span>: &#123;</div><div class="line">  <span class="string">"appId"</span>: <span class="string">"your.id"</span>,</div><div class="line">  <span class="string">"mac"</span>: &#123;</div><div class="line">    <span class="string">"category"</span>: <span class="string">"your.app.category.type"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>保存，在命令行执行<code>build -m</code>。-m代表for mac,同理-w代表for windows、-l代表for linux,想要一次性打包三个平台的同学可以一次性加上三个参数<code>build -mwl</code>。这里同样可以配置各种参数甚至定制安装器的背景- -，详情请移步<a href="https://github.com/electron-userland/electron-builder" target="_blank" rel="external">官方README</a>。稍等片刻打包好的dmg格式安装包就会出现在dist/mac下(因为我们package.json的name是’electron-quick-start’，所以打包结果会出现在<code>/dist/mac/electron-quick-start-1.0.0.dmg</code>)</p>
+<p>到此，简单地通过Electron开发一个mac桌面端应用已经说完了。望各位大佬指教。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/yhj/" rel="tag"># yhj</a>
+          
+            <a href="/tags/Electron/" rel="tag"># Electron</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/23/与Koa的一次简单接触/" rel="next" title="与Koa的一次简单接触">
+                <i class="fa fa-chevron-left"></i> 与Koa的一次简单接触
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/01/js实现拖拽效果/" rel="prev" title="js实现拖拽效果">
+                js实现拖拽效果 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/28/使用Electron开发一个桌面应用/"
+           data-title="使用Electron开发一个桌面应用" data-url="http://x-front-team.github.io/2017/02/28/使用Electron开发一个桌面应用/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">59</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

@@ -1,0 +1,709 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="sjn,js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="js实现拖拽效果写在前面​    鼠标拖拽效果常见于用户自定义展示页面，比如qq空间，x宝店铺装修等，操作灵动，所见即所得；或者是一个简单modal移动效果，填写时候可以拖动，方便用户查看原网页的内容。正好周末抽时间可以实现下，动手做做笔记，方便日后翻阅。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js实现拖拽效果">
+<meta property="og:url" content="http://x-front-team.github.io/2017/03/01/js实现拖拽效果/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="js实现拖拽效果写在前面​    鼠标拖拽效果常见于用户自定义展示页面，比如qq空间，x宝店铺装修等，操作灵动，所见即所得；或者是一个简单modal移动效果，填写时候可以拖动，方便用户查看原网页的内容。正好周末抽时间可以实现下，动手做做笔记，方便日后翻阅。">
+<meta property="og:updated_time" content="2017-03-14T05:03:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js实现拖拽效果">
+<meta name="twitter:description" content="js实现拖拽效果写在前面​    鼠标拖拽效果常见于用户自定义展示页面，比如qq空间，x宝店铺装修等，操作灵动，所见即所得；或者是一个简单modal移动效果，填写时候可以拖动，方便用户查看原网页的内容。正好周末抽时间可以实现下，动手做做笔记，方便日后翻阅。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2017/03/01/js实现拖拽效果/"/>
+
+
+
+
+
+  <title> js实现拖拽效果 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2017/03/01/js实现拖拽效果/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                js实现拖拽效果
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-01T20:31:00+08:00">
+                2017-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/03/01/js实现拖拽效果/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/01/js实现拖拽效果/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="js实现拖拽效果"><a href="#js实现拖拽效果" class="headerlink" title="js实现拖拽效果"></a>js实现拖拽效果</h1><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>​    鼠标拖拽效果常见于用户自定义展示页面，比如qq空间，x宝店铺装修等，操作灵动，所见即所得；或者是一个简单modal移动效果，填写时候可以拖动，方便用户查看原网页的内容。正好周末抽时间可以实现下，动手做做笔记，方便日后翻阅。</p>
+<a id="more"></a>
+<h2 id="简单拖动"><a href="#简单拖动" class="headerlink" title="简单拖动"></a>简单拖动</h2><p>星星之火可以燎原，我们先从最简单的需求最起。</p>
+<p>主要分为三个步骤：</p>
+<ol>
+<li>鼠标按下，获取鼠标点击时在div中的相对位置。</li>
+<li>鼠标移动，元素的位置 = 就是鼠标的位置 - 刚才的差值。</li>
+<li>鼠标放开，给鼠标移动和鼠标放开赋值null，除非再次点击，否则不会有任何移动效果。</li>
+</ol>
+<p>映射成代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">dragCircle.onmousedown = function()&#123;</div><div class="line"></div><div class="line">    ...//鼠标按下</div><div class="line"></div><div class="line">    dragCircle.onmousemove = function()&#123;</div><div class="line"></div><div class="line">        ...//鼠标移动</div><div class="line"></div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    dragCircle.onmouseup = function()&#123;</div><div class="line"></div><div class="line">        ...//鼠标抬起</div><div class="line"></div><div class="line">    &#125;;</div><div class="line"></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<iframe height="265" scrolling="no" title="jBEdGX" src="//codepen.io/BenjaminShih/embed/jBEdGX/?height=265&theme-id=light&default-tab=js,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="http://codepen.io/BenjaminShih/pen/jBEdGX/" target="_blank" rel="external">jBEdGX</a> by junnan shi (<a href="http://codepen.io/BenjaminShih" target="_blank" rel="external">@BenjaminShih</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.<br></iframe>
+
+<p>其实这里会存在一个问题，当你大力超距离拖往窗口外部的时候，咱们的元素仿佛飞到了外太空。。没了！所以，这里要加上一个范围限制。</p>
+<h2 id="拖拽范围限制"><a href="#拖拽范围限制" class="headerlink" title="拖拽范围限制"></a>拖拽范围限制</h2><p>实现思路：</p>
+<ol>
+<li>设置一个统一管理left,right,top,bottom范围的变量range</li>
+<li>根据范围元素的位置，计算range各项值</li>
+<li>当移动元素left和top超出range范围限制的时候，设置为range对应的阈值</li>
+</ol>
+<p>源码和效果如下：</p>
+<iframe height="265" scrolling="no" title="拖拽限定范围" src="//codepen.io/BenjaminShih/embed/zZxbvo/?height=265&theme-id=light&default-tab=js,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="http://codepen.io/BenjaminShih/pen/zZxbvo/" target="_blank" rel="external">拖拽限定范围</a> by junnan shi (<a href="http://codepen.io/BenjaminShih" target="_blank" rel="external">@BenjaminShih</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.<br></iframe>
+
+<h1 id="磁性吸入效果"><a href="#磁性吸入效果" class="headerlink" title="磁性吸入效果"></a>磁性吸入效果</h1><p>在用户进行拖拽标签或者模块的时候，进行合理的摆放位置引导可以极大增强用户体验。</p>
+<p>这里的代码思路相对简单，判断需要引导的位置，位置参数存入一个变量对象，然后计算拖拽元素的和引导位置的距离，小于某个阈值可以直接定位。</p>
+<p>源码和效果如下：</p>
+<iframe height="265" scrolling="no" title="拖拽磁性吸入" src="//codepen.io/BenjaminShih/embed/gmaOjZ/?height=265&theme-id=light&default-tab=js,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="http://codepen.io/BenjaminShih/pen/gmaOjZ/" target="_blank" rel="external">拖拽磁性吸入</a> by junnan shi (<a href="http://codepen.io/BenjaminShih" target="_blank" rel="external">@BenjaminShih</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.<br></iframe>
+
+<h1 id="列表拖拽排序"><a href="#列表拖拽排序" class="headerlink" title="列表拖拽排序"></a>列表拖拽排序</h1><p>列表拖拽排序应该是项目中最常用的拖拽使用场景了，直观便捷是其一大亮点。</p>
+<p>实现思路：</p>
+<ol>
+<li>列表元素每个都绑定拖拽事件</li>
+<li>鼠标按下的时候，创建一个空白节点，在原节点位置上占位</li>
+<li>原节点绑定拖拽样式（absolute等）</li>
+<li>文档绑定鼠标移动事件，根据当前拖拽到的位置计算其重新排序后的位置</li>
+<li>将空白节点插入到该位置</li>
+<li>鼠标放开的时候，将被拖拽的元素插入到空白节点的位置</li>
+<li>删除空白节点</li>
+<li>移除事件绑定，清除相关</li>
+</ol>
+<p>效果和源码如下：</p>
+<iframe height="265" scrolling="no" title="列表拖拽排序" src="//codepen.io/BenjaminShih/embed/WpQQEB/?height=265&theme-id=light&default-tab=js,result&embed-version=2" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="http://codepen.io/BenjaminShih/pen/WpQQEB/" target="_blank" rel="external">列表拖拽排序</a> by junnan shi (<a href="http://codepen.io/BenjaminShih" target="_blank" rel="external">@BenjaminShih</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.<br></iframe>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sjn/" rel="tag"># sjn</a>
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/28/使用Electron开发一个桌面应用/" rel="next" title="使用Electron开发一个桌面应用">
+                <i class="fa fa-chevron-left"></i> 使用Electron开发一个桌面应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/03/ESLint/" rel="prev" title="ESLint">
+                ESLint <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/01/js实现拖拽效果/"
+           data-title="js实现拖拽效果" data-url="http://x-front-team.github.io/2017/03/01/js实现拖拽效果/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">59</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#js实现拖拽效果"><span class="nav-number">1.</span> <span class="nav-text">js实现拖拽效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单拖动"><span class="nav-number">1.2.</span> <span class="nav-text">简单拖动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拖拽范围限制"><span class="nav-number">1.3.</span> <span class="nav-text">拖拽范围限制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#磁性吸入效果"><span class="nav-number">2.</span> <span class="nav-text">磁性吸入效果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表拖拽排序"><span class="nav-number">3.</span> <span class="nav-text">列表拖拽排序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
