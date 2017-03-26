@@ -1,0 +1,669 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="jyn," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="自从知道了cheerio这个神器之后，就想能不能把hexo生成的html重新转为markdown，毕竟，我已经第三次把原文件弄丢了。。
+必备的npm包：
+
+cheerio
+to-markdown
+
+此外，还是需要一些正则替换。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo-html-to-markdown之探索">
+<meta property="og:url" content="http://x-front-team.github.io/2017/03/20/hexo-html-to-markdown之探索/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="自从知道了cheerio这个神器之后，就想能不能把hexo生成的html重新转为markdown，毕竟，我已经第三次把原文件弄丢了。。
+必备的npm包：
+
+cheerio
+to-markdown
+
+此外，还是需要一些正则替换。">
+<meta property="og:updated_time" content="2017-03-26T13:58:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hexo-html-to-markdown之探索">
+<meta name="twitter:description" content="自从知道了cheerio这个神器之后，就想能不能把hexo生成的html重新转为markdown，毕竟，我已经第三次把原文件弄丢了。。
+必备的npm包：
+
+cheerio
+to-markdown
+
+此外，还是需要一些正则替换。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2017/03/20/hexo-html-to-markdown之探索/"/>
+
+
+
+
+
+  <title> hexo-html-to-markdown之探索 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2017/03/20/hexo-html-to-markdown之探索/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                hexo-html-to-markdown之探索
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-20T23:36:51+08:00">
+                2017-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/03/20/hexo-html-to-markdown之探索/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/20/hexo-html-to-markdown之探索/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>自从知道了cheerio这个神器之后，就想能不能把hexo生成的html重新转为markdown，毕竟，我已经第三次把原文件弄丢了。。</p>
+<p>必备的npm包：</p>
+<ul>
+<li>cheerio</li>
+<li>to-markdown</li>
+</ul>
+<p>此外，还是需要一些正则替换。</p>
+<a id="more"></a>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</div><div class="line"><span class="keyword">var</span> path  = <span class="built_in">require</span>(<span class="string">'path'</span>)</div><div class="line"><span class="keyword">var</span> cheerio = <span class="built_in">require</span>(<span class="string">'cheerio'</span>)</div><div class="line"><span class="keyword">var</span> toMarkdown = <span class="built_in">require</span>(<span class="string">'to-markdown'</span>)</div><div class="line"></div><div class="line"><span class="keyword">var</span> filePath = path.resolve(<span class="string">'./post'</span>)</div><div class="line"></div><div class="line">fs.readdir(filePath, <span class="function"><span class="keyword">function</span>(<span class="params">err, files</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (err) &#123;</div><div class="line">        <span class="built_in">console</span>.log(err)</div><div class="line">    &#125;</div><div class="line">    files.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">fileName</span>) </span>&#123;</div><div class="line">        fs.stat(path.join(filePath, fileName), <span class="function"><span class="keyword">function</span>(<span class="params">err, stats</span>)</span>&#123;</div><div class="line">            <span class="keyword">if</span> (stats.isFile()) &#123;</div><div class="line">                writeFile(<span class="string">''</span>, fileName)</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">var</span> name = fileName</div><div class="line">                readFile(path.join(filePath, fileName), name)</div><div class="line">            &#125;</div><div class="line">        &#125;)</div><div class="line"></div><div class="line">    &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 读取目录</div><div class="line"> * @param readUrl</div><div class="line"> * @param name</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">readFile</span>(<span class="params">readUrl, name</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> name = name</div><div class="line">    fs.readdir(readUrl, <span class="function"><span class="keyword">function</span>(<span class="params">err, files</span>)</span>&#123;</div><div class="line">        <span class="keyword">if</span>(err)&#123;</div><div class="line">            <span class="built_in">console</span>.log(err)<span class="keyword">return</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        files.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">fileName</span>)</span>&#123;</div><div class="line">            fs.stat(path.join(readUrl, fileName), <span class="function"><span class="keyword">function</span>(<span class="params">err, stats</span>)</span>&#123;</div><div class="line">                <span class="keyword">if</span> (err) <span class="keyword">throw</span> err</div><div class="line">                <span class="comment">//是文件</span></div><div class="line">                <span class="keyword">if</span>(stats.isFile())&#123;</div><div class="line">                  writeFile(name, fileName)</div><div class="line">                <span class="comment">//是子目录</span></div><div class="line">                &#125;<span class="keyword">else</span> <span class="keyword">if</span>(stats.isDirectory())&#123;</div><div class="line">                    <span class="keyword">var</span> dirName = fileName</div><div class="line">                    readFile(path.join(readUrl, fileName), name + <span class="string">'/'</span> + dirName)</div><div class="line">                &#125;</div><div class="line">            &#125;)</div><div class="line">        &#125;)</div><div class="line">    &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 提取内容，写入文件</div><div class="line"> * @param name</div><div class="line"> * @param fileName</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeFile</span>(<span class="params">name, fileName</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (path.extname(fileName) !== <span class="string">'html'</span>) &#123;</div><div class="line">        <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> newUrl = path.join(name, fileName)</div><div class="line">    <span class="keyword">var</span> p = path.join(filePath, newUrl)</div><div class="line">    <span class="comment">// 转为markdown</span></div><div class="line">    <span class="keyword">var</span> html = toMarkdown(fs.readFileSync(p, <span class="string">'utf8'</span>).toString())</div><div class="line">    <span class="comment">// 解析html,decodeEntities为false表示关闭实体编码转换</span></div><div class="line">    <span class="keyword">var</span> $ = cheerio.load(html, &#123; <span class="attr">decodeEntities</span>: <span class="literal">false</span> &#125;)</div><div class="line">    <span class="comment">// 标题</span></div><div class="line">    <span class="keyword">var</span> title = $(<span class="string">'.post-title'</span>).text() || <span class="string">''</span></div><div class="line">    <span class="comment">// 发表日期</span></div><div class="line">    <span class="keyword">var</span> date = $(<span class="string">'.post-time time'</span>).attr(<span class="string">'content'</span>) || <span class="string">''</span></div><div class="line">    <span class="comment">// 头部内容</span></div><div class="line">    <span class="keyword">var</span> header = <span class="string">`title: <span class="subst">$&#123;title&#125;</span>\ndate: <span class="subst">$&#123;date&#125;</span>\ntags: \n---\n`</span></div><div class="line"></div><div class="line">    <span class="comment">// 主体内容</span></div><div class="line">    <span class="keyword">var</span> post = $(<span class="string">'.post-body'</span>).html() || <span class="string">''</span></div><div class="line">    <span class="comment">// 1 替换高亮代码中的行数</span></div><div class="line">    <span class="comment">// 2 提取带链接的标题内容</span></div><div class="line">    <span class="comment">// 提取高亮代码，用"```"包裹</span></div><div class="line">    <span class="keyword">var</span> docs = header +</div><div class="line">        post.replace(<span class="regexp">/&lt;td class="gutter"&gt;[\s\S]*?&lt;\/td&gt;/g</span>, <span class="string">''</span>)</div><div class="line">            .replace(<span class="regexp">/(#* )\[\]\(#([\s\S]*?) "([\s\S]*?)"\)\3/g</span>,<span class="string">'$1$2'</span>)</div><div class="line">            .replace(<span class="regexp">/&lt;figure[^&gt;]*?&gt;[\S\s]*?&lt;pre&gt;([\s\S]*?)&lt;\/pre&gt;[\s\S]*?&lt;\/figure&gt;/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">match, s1</span>) </span>&#123;</div><div class="line">                <span class="keyword">return</span> <span class="string">'```\n'</span> + cheerio.load(s1, &#123;<span class="attr">decodeEntities</span>: <span class="literal">false</span>&#125;).text() + <span class="string">"\n```"</span></div><div class="line">            &#125;)</div><div class="line">    <span class="comment">// 输出路径</span></div><div class="line">    <span class="keyword">var</span> outUrl = newUrl.replace(<span class="regexp">/\//g</span>, <span class="string">'-'</span>).replace(<span class="regexp">/\s/g</span>, <span class="string">''</span>).replace(<span class="regexp">/\-index.html/</span>, <span class="string">'.md'</span>)</div><div class="line">    <span class="comment">// 写入内容</span></div><div class="line">    fs.open(path.join(__dirname, outUrl), <span class="string">"w"</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err, fd</span>)</span>&#123;</div><div class="line">        <span class="keyword">var</span> buf = <span class="keyword">new</span> Buffer(docs)</div><div class="line">        fs.write(fd, buf, <span class="number">0</span>, buf.length, <span class="number">0</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, written, buffer</span>)</span>&#123;&#125;)</div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>待解决的问题：</p>
+<p>1、表格的支持(to-markdown对表格的处理是原样输出)</p>
+<p>2、代码片段缩进丢失</p>
+<p>3、行内代码片段如果是标签，如<code>&lt;object&gt;</code>,to-markdown在转换时会自动在内容末尾加上<code>&lt;/object&gt;</code></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jyn/" rel="tag"># jyn</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/04/其实，我是一个yarn员——演员的自我修养/" rel="next" title="其实，我是一个yarn员">
+                <i class="fa fa-chevron-left"></i> 其实，我是一个yarn员
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/21/Performance知多少/" rel="prev" title="performance知多少">
+                performance知多少 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/20/hexo-html-to-markdown之探索/"
+           data-title="hexo-html-to-markdown之探索" data-url="http://x-front-team.github.io/2017/03/20/hexo-html-to-markdown之探索/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

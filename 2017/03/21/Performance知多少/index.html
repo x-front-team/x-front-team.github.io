@@ -1,0 +1,711 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="jyn," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/xkeshi.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="window.performance是对页面性能检测非常有用的api，今天来介绍最常用几个功能。
+判断用户访问的页面的方式其中type的值，为0表示正常访问，比如点击，1表示刷新，2表示回退、前进
+123performance.navigation;// &amp;#123;type: 2, redirectCount: 0&amp;#125;
+统计当前文档的加载速度12345678910111213141516">
+<meta property="og:type" content="article">
+<meta property="og:title" content="performance知多少">
+<meta property="og:url" content="http://x-front-team.github.io/2017/03/21/Performance知多少/index.html">
+<meta property="og:site_name" content="爱客仕-前端团队博客园">
+<meta property="og:description" content="window.performance是对页面性能检测非常有用的api，今天来介绍最常用几个功能。
+判断用户访问的页面的方式其中type的值，为0表示正常访问，比如点击，1表示刷新，2表示回退、前进
+123performance.navigation;// &amp;#123;type: 2, redirectCount: 0&amp;#125;
+统计当前文档的加载速度12345678910111213141516">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/181710479895411.png">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/218902E5-F122-4760-A129-084D8A71C739.png">
+<meta property="og:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20170322-0%402x.png">
+<meta property="og:updated_time" content="2017-03-26T13:50:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="performance知多少">
+<meta name="twitter:description" content="window.performance是对页面性能检测非常有用的api，今天来介绍最常用几个功能。
+判断用户访问的页面的方式其中type的值，为0表示正常访问，比如点击，1表示刷新，2表示回退、前进
+123performance.navigation;// &amp;#123;type: 2, redirectCount: 0&amp;#125;
+统计当前文档的加载速度12345678910111213141516">
+<meta name="twitter:image" content="http://ysha-01.oss-cn-shanghai.aliyuncs.com/181710479895411.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://x-front-team.github.io/2017/03/21/Performance知多少/"/>
+
+
+
+
+
+  <title> performance知多少 | 爱客仕-前端团队博客园 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74090133-4', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">爱客仕-前端团队博客园</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一群爱折腾的骚年</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2017/03/21/Performance知多少/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                performance知多少
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-21T23:03:14+08:00">
+                2017-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/03/21/Performance知多少/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/21/Performance知多少/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>window.performance是对页面性能检测非常有用的api，今天来介绍最常用几个功能。</p>
+<h3 id="判断用户访问的页面的方式"><a href="#判断用户访问的页面的方式" class="headerlink" title="判断用户访问的页面的方式"></a>判断用户访问的页面的方式</h3><p>其中type的值，为0表示正常访问，比如点击，1表示刷新，2表示回退、前进</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">performance.navigation;</div><div class="line"></div><div class="line"><span class="comment">// &#123;type: 2, redirectCount: 0&#125;</span></div></pre></td></tr></table></figure>
+<h3 id="统计当前文档的加载速度"><a href="#统计当前文档的加载速度" class="headerlink" title="统计当前文档的加载速度"></a>统计当前文档的加载速度</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="built_in">JSON</span>.stringify(performance.timing)</div><div class="line"></div><div class="line">&#123;</div><div class="line"><span class="comment">//     "navigationStart": 1489591870951,</span></div><div class="line"><span class="comment">//     "unloadEventStart": 0,</span></div><div class="line"><span class="comment">//     "unloadEventEnd": 0,</span></div><div class="line"><span class="comment">//     "redirectStart": 0,</span></div><div class="line"><span class="comment">//     "redirectEnd": 0,</span></div><div class="line"><span class="comment">//     "fetchStart": 1489591871159,</span></div><div class="line"><span class="comment">//     "domainLookupStart": 1489591871159,</span></div><div class="line"><span class="comment">//     "domainLookupEnd": 1489591871159,</span></div><div class="line"><span class="comment">//     "connectStart": 1489591871159,</span></div><div class="line"><span class="comment">//     "connectEnd": 1489591871159,</span></div><div class="line"><span class="comment">//     "secureConnectionStart": 0,</span></div><div class="line"><span class="comment">//     "requestStart": 1489591871162,</span></div><div class="line"><span class="comment">//     "responseStart": 1489591871242,</span></div><div class="line"><span class="comment">//     "responseEnd": 1489591871396,</span></div><div class="line"><span class="comment">//     "domLoading": 1489591871246,</span></div><div class="line"><span class="comment">//     "domInteractive": 1489591871767,</span></div><div class="line"><span class="comment">//     "domContentLoadedEventStart": 1489591871767,</span></div><div class="line"><span class="comment">//     "domContentLoadedEventEnd": 1489591871776,</span></div><div class="line"><span class="comment">//     "domComplete": 1489591872519,</span></div><div class="line"><span class="comment">//     "loadEventStart": 1489591872519,</span></div><div class="line"><span class="comment">//     "loadEventEnd": 1489591872519</span></div><div class="line"><span class="comment">// &#125;</span></div></pre></td></tr></table></figure>
+<p> 关于各个字段释义及坑点可以参考<a href="http://www.cnblogs.com/_franky/archive/2011/11/07/2238980.html" target="_blank" rel="external">这篇文章</a> 以及 <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1139831" target="_blank" rel="external">坑点</a></p>
+<p> 可以使用它们来统计页面的一些性能指标，比如：</p>
+<ul>
+<li><p>DNS查询耗时 = domainLookupEnd - domainLookupStart</p>
+</li>
+<li><p>TCP链接耗时 = connectEnd - connectStart</p>
+</li>
+<li><p>request请求耗时 = responseEnd - responseStart (也有统计responseEnd - requestStart的)</p>
+</li>
+<li><p>解析dom树耗时 = domComplete - domInteractive（过早获取时,domComplete有时会是0）</p>
+</li>
+<li><p>白屏时间 = domloadng - fetchStart</p>
+</li>
+<li><p>domready时间 = domContentLoadedEventEnd - fetchStart</p>
+</li>
+<li><p>onload时间 = loadEventEnd - fetchStart (也有统计loadEventEnd - navigationStart注意：过早获取时,loadEventEnd有时会是0）</p>
+<p>(可能有些结果会是负数，呵呵呵呵)</p>
+<p>放一张时序图：</p>
+<p><img src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/181710479895411.png"></p>
+</li>
+</ul>
+<p>performance.timing返回的对象只定义了getter属性，如果需要改动某个属性的值，可以先调用performance.timing.toJson()</p>
+<h3 id="各个资源的请求时间统计"><a href="#各个资源的请求时间统计" class="headerlink" title="各个资源的请求时间统计"></a>各个资源的请求时间统计</h3><p><img width="60%" src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/218902E5-F122-4760-A129-084D8A71C739.png"></p>
+<h3 id="标记与测量"><a href="#标记与测量" class="headerlink" title="标记与测量"></a>标记与测量</h3><p>这个功能与console.time()、console.timeEnd()挺像。performance.mark()设置标记，performance.measure()测量两个标记之间的时间间隔，标记和测量的纪录都可以在performance.getEntries()中找到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">performance.mark(&apos;begin&apos;)</div><div class="line">// dosomething()</div><div class="line">performance.mark(&apos;end&apos;)</div><div class="line">PerformanceMeasure(&apos;begin-to-end&apos;,&apos;begin&apos;,&apos;end&apos;)</div></pre></td></tr></table></figure>
+<p><img width="60%" src="http://ysha-01.oss-cn-shanghai.aliyuncs.com/QQ20170322-0%402x.png"></p>
+<p>上图中的PerformanceMeasure 和 PerformanceMark 这两种纪录都有entryType和name属性，是可以通过getEntriesByType()与getEntriesByName()方法去获取的。不过这两个方法的兼容性并没有那么好。</p>
+<h3 id="相对时间戳"><a href="#相对时间戳" class="headerlink" title="相对时间戳"></a>相对时间戳</h3><p>performance.now()输出的是相对于navigationStart的时间，以微秒为单位，它更精确，而且不会受系统时间的影响。</p>
+<p>下面是new Date().getTime() 与 performance.now()的比较。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var t1 = performance.now();</div><div class="line">while(1) &#123;</div><div class="line"> if(performance.now() - t1 &gt;10000) &#123;</div><div class="line">   break;</div><div class="line"> &#125;</div><div class="line">&#125;</div><div class="line">console.log(performance.now() -t1)</div><div class="line">// VM130:7 10000.01000000001</div><div class="line"></div><div class="line"></div><div class="line">var t2 = new Date().getTime();</div><div class="line">while(1) &#123;</div><div class="line"> if(new Date().getTime() - t2 &gt;10000) &#123;</div><div class="line">   break;</div><div class="line"> &#125;</div><div class="line">&#125;</div><div class="line">console.log(new Date().getTime() -t2)</div><div class="line">// VM174:7 10001</div></pre></td></tr></table></figure>
+<p>最后，MDN (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/API/Performance</a>) 是最好的文档！！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jyn/" rel="tag"># jyn</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/20/hexo-html-to-markdown之探索/" rel="next" title="hexo-html-to-markdown之探索">
+                <i class="fa fa-chevron-left"></i> hexo-html-to-markdown之探索
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/25/Mac使用小技巧/" rel="prev" title="Mac使用小技巧">
+                Mac使用小技巧 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/21/Performance知多少/"
+           data-title="performance知多少" data-url="http://x-front-team.github.io/2017/03/21/Performance知多少/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/xkeshi.png"
+               alt="x-front-team" />
+          <p class="site-author-name" itemprop="name">x-front-team</p>
+          <p class="site-description motion-element" itemprop="description">Javascript改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断用户访问的页面的方式"><span class="nav-number">1.</span> <span class="nav-text">判断用户访问的页面的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#统计当前文档的加载速度"><span class="nav-number">2.</span> <span class="nav-text">统计当前文档的加载速度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各个资源的请求时间统计"><span class="nav-number">3.</span> <span class="nav-text">各个资源的请求时间统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标记与测量"><span class="nav-number">4.</span> <span class="nav-text">标记与测量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相对时间戳"><span class="nav-number">5.</span> <span class="nav-text">相对时间戳</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">x-front-team</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"x-front-team"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
