@@ -258,6 +258,426 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/26/Operating system and command-line integration/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/09/26/Operating system and command-line integration/" itemprop="url">
+                  Nodejs查漏补缺-Operating system and command-line integration
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-26T10:18:07+08:00">
+                2016-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/09/26/Operating system and command-line integration/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/Operating system and command-line integration/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>在这里记录下nodejs各种小细节</p>
+</blockquote>
+<h1 id="ch3-Operating-system-and-command-line-integration"><a href="#ch3-Operating-system-and-command-line-integration" class="headerlink" title="ch3 Operating system and command-line integration"></a>ch3 Operating system and command-line integration</h1><h2 id="1-吐槽"><a href="#1-吐槽" class="headerlink" title="1. 吐槽"></a>1. 吐槽</h2><p>其实我们的nodejs并不是那么的跨平台<br>包括windows下的fs.filewatch触发两次，node-sass在windows下安装超级困难<br>某些包因为有node-gyp编译过程，导致在一个平台安装后在其他平台不能用<br>node-gyp是一个将c++代码编译成可供nodejs调用的二进制文件的node包<br>在linux下会使用gcc编译，windows下则是visual c++</p>
+<h2 id="2-一些与runtime-env有关的flag"><a href="#2-一些与runtime-env有关的flag" class="headerlink" title="2. 一些与runtime env有关的flag"></a>2. 一些与runtime env有关的flag</h2><ul>
+<li>process.arch:  三个值：’arm’, ‘ia32’, or ‘x64’，代表32位/64位/arm系统结构</li>
+<li>process.memoryUsage(): 内存使用</li>
+<li>process.argv： 程序运行时传入的命令行参数</li>
+<li>process.cwd()： 程序运行时的目录</li>
+<li>process.env： 程序运行时的环境变量</li>
+<li>process.nextTick(callback[, arg][, …])： 将callback回调丢进Node下一个tick执行</li>
+<li>process.pid： 程序运行时的进程id<br><a href="https://nodejs.org/dist/latest-v6.x/docs/api/process.html#process_process" target="_blank" rel="external">更多属性查看</a></li>
+</ul>
+<h2 id="3-结束程序"><a href="#3-结束程序" class="headerlink" title="3. 结束程序"></a>3. 结束程序</h2><p>一般来说我们的程序是用户终止or执行完毕之后自动结束<br>那我们想精确控制程序结束时机该怎么办呢<br>答案在 <code>process.exit(arg)</code> 这个函数上<br>其中arg - 0 : 正常退出，arg - 1 : 带有错误退出<br>arg由程序编写者指定<br><a href="http://tldp.org/LDP/abs/html/exitcodes.html" target="_blank" rel="external">more code meanings</a></p>
+<h2 id="4-进程间通信"><a href="#4-进程间通信" class="headerlink" title="4. 进程间通信"></a>4. 进程间通信</h2><p>如果对进程及进程间通信感到陌生，建议先google补充基础知识</p>
+<p>先看一个例子：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">process.stdin.resume(); <span class="comment">// 让程序监听 stdin标准输入，使其不会自动停止运行，直到用户按下 ctrl+c</span></div><div class="line">process.on(<span class="string">'SIGHUP'</span>, () =&gt; &#123; <span class="comment">//监听 SIGHUP事件</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Reloading configuration...'</span>);</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'PID:'</span>, process.pid);</div></pre></td></tr></table></figure></p>
+<p>nodejs对进程间的通信也描述成事件的形式<br>process本身也是一个EventEmitter对象<br>假设该程序的运行时的进程是：9999<br>在 unix like系统下，命令行运行<code>kill -HUP 9999</code>就可以向node进程发送SIGHUP事件<br>当然我们也可以写在代码里：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">process.kill(<span class="number">9999</span>, <span class="string">'SIGHUP'</span>)</div></pre></td></tr></table></figure></p>
+<p>不过windows下SIGHUP不能用代码而只能用cmd发送，也算是与我之前吐槽向呼应了把  </p>
+<blockquote>
+<p>tips: kill [sign] [pid] 并不是指这个进程将会被killed，而仅仅是发送signal给进程</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/26/Standard IO/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/09/26/Standard IO/" itemprop="url">
+                  Nodejs查漏补缺-Standard I/O
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-26T08:18:07+08:00">
+                2016-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/09/26/Standard IO/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/Standard IO/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>在这里记录下nodejs各种小细节</p>
+</blockquote>
+<h1 id="ch2-Standard-I-O"><a href="#ch2-Standard-I-O" class="headerlink" title="ch2  Standard I/O"></a>ch2  Standard I/O</h1><p>首先讲一下什么叫做<code>Standard I/O</code>——标准输入输出流  </p>
+<blockquote>
+<p>Standard streams<br> Standard streams come in three flavors: stdin, stdout, and stderr. In Unix terminals,<br> these are referred to with numbers.  0 is used for standard input,  1 is standard output,<br> and  2 is standard error.<br> The same applies to Windows: running a program from the command prompt and add-<br> ing  2&gt; errors-file.log will send the error messages to  errors-file.log , just<br> like Unix.</p>
+<p>标准流<br> 标准流有三种类型 stdin,stdout,stderr,在类unix终端中，被引用为数字<br> 0 - 标准输入<br> 1 - 标准输入<br> 2 - 标准错误<br> 这也同样被运用在windows中:在命令行运行一个程序并在最后加上 2&gt;err.log<br> 将会把错误信息发送至err.log文件下（当然unix like系统同样如此）</p>
+</blockquote>
+<p>那么这玩意有什么用呢?</p>
+<p>nodejs提供了三个对象<code>process.stdin</code>, <code>process.stdout</code>, <code>process.stderr</code><br>可以轻松的获取到标准输入输出</p>
+<p>example:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// std.js</span></div><div class="line"><span class="meta"></span></div><div class="line">'use strict'</div><div class="line"></div><div class="line">process.stdin.resume() <span class="comment">//告诉node开始接收标准输入</span></div><div class="line"></div><div class="line">process.stdin.setEncoding(<span class="string">'utf-8'</span>)</div><div class="line">process.stdin.on(<span class="string">'data'</span>, (data) =&gt; &#123;</div><div class="line">  process.stdout.write(data.toUpperCase()); <span class="comment">// 流的读取都是分段的</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<hr>
+<p>run with:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat file.txt | node std.js | grep FOO</div></pre></td></tr></table></figure></p>
+<p>利用unix管道，可以将流pipe进node程序，node程序将读入的文本转成大写，再pipe出去<br>流会被下一个程序接收，如果是最后一个，则会打印至控制台<br>或者可以使用<code>1&gt; log.txt</code>将标准输出 pipe进文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat file.txt | node std.js | grep FOO 1&gt; log.txt</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/26/Modules/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="x-front-team">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/xkeshi.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="爱客仕-前端团队博客园">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="爱客仕-前端团队博客园" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/09/26/Modules/" itemprop="url">
+                  Nodejs查漏补缺-Modules
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-26T08:18:07+08:00">
+                2016-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/09/26/Modules/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/26/Modules/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>在这里记录下nodejs各种小细节</p>
+</blockquote>
+<h1 id="ch1-Modules"><a href="#ch1-Modules" class="headerlink" title="ch1  Modules"></a>ch1  Modules</h1><p>作为一个新世纪的前端，npm早已经是我们生活中必不可少的工具了<br>那么，这其中有多少奇怪的事情呢</p>
+<h2 id="1-全局安装不等于全局require"><a href="#1-全局安装不等于全局require" class="headerlink" title="1. 全局安装不等于全局require"></a>1. 全局安装不等于全局require</h2><p>初学nodejs的时，听闻<code>npm i xxx</code>之后，便可以在项目中直接require使用了<br>又听闻有一个<code>npm i xxx -g</code>的全局安装命令，下意识以为这样安装之后在任何地方都可以<code>require</code><br>其实不然,这个<code>-g</code>的意义更多的在于将nodejs写的命令行工具装在全局<br>这样就可以直接在命令行使用，而不需要敲全路径了</p>
+<p>比如 <code>npm i gulp -g</code><br>然后直接在命令行敲 gulp,就能使用它</p>
+<blockquote>
+<blockquote>
+<p>如果想require全局的包，则需要设置 NODE_PATH 环境变量<br>指向nodejs全局安装路径的node_modules文件夹<br>window 目录: <code>%USERPROFILE%\AppData\Roaming\npm\node_modules</code></p>
+</blockquote>
+</blockquote>
+<h2 id="2-为什么要使用module-exports-xxx-而不是-exports-xxx"><a href="#2-为什么要使用module-exports-xxx-而不是-exports-xxx" class="headerlink" title="2. 为什么要使用module.exports = xxx,而不是 exports = xxx"></a>2. 为什么要使用<code>module.exports = xxx</code>,而不是 <code>exports = xxx</code></h2><p>我们可以使用如下语句导出一个模块<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">exports.foo1 = bar1</div><div class="line">exports.foo2 = bar2</div><div class="line"></div><div class="line"><span class="comment">// or:</span></div><div class="line"><span class="built_in">module</span>.exports = bar</div></pre></td></tr></table></figure></p>
+<p>而不能使用<code>exports = bar</code><br>因为nodejs将你的模块文件包裹成<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">exports, require, module, __filename, __dirname</span>) </span>&#123;</div><div class="line">   <span class="comment">//your module</span></div><div class="line">   <span class="comment">// ...</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>其中<code>exports</code>是<code>module.exports</code>的引用<br>当我们改变<code>exports</code>的属性时，修改的是<code>module.exports</code>内存地址的对象<br>而当我们直接给<code>exports</code>赋值时，仅仅只是将<code>exports</code>指向的内存地址改变<br>而不会修改 <code>module.exports</code>的指向</p>
+<h2 id="3-解除modules缓存"><a href="#3-解除modules缓存" class="headerlink" title="3. 解除modules缓存"></a>3. 解除modules缓存</h2><p>我们知道nodejs会自动缓存require的模块，以防止多次require重复加载文件浪费性能<br>那如果我们的场景需要清除缓存，该怎么做呢？<br>其实nodejs的模块都缓存在<code>require.cache</code>对象里面，模块的键都是其文件的绝对路径<br>而通过require.resolve(‘./module/name’)可以获取到模块绝对路径<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">delete</span> <span class="built_in">require</span>.cache[<span class="built_in">require</span>.resolve(<span class="string">'./module/name'</span>)]</div></pre></td></tr></table></figure></p>
+<p>就可以删除相对应模块的缓存</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://x-front-team.github.io/2016/09/14/性能之浏览器的重绘与重排/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1094,17 +1514,24 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">66</span>
+              <span class="site-state-item-count">69</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
 
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">110</span>
+                <span class="site-state-item-count">114</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
